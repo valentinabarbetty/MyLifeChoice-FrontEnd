@@ -1,0 +1,160 @@
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #8fc9ff, #b8e1ff); /* azul claro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.splash-logo {
+  width: 420px;
+  max-width: 80%;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+}
+
+.landing-container {
+  background: url("./assets/bg-town.png") no-repeat center/cover;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  position: relative;
+}
+
+.landing-logo {
+  width: 320px;
+  margin-bottom: 30px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.landing-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.landing-buttons button {
+  width: 220px;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.btn-login {
+  background-color: #317eda;
+  color: white;
+}
+.btn-register {
+  background-color: #ffb34d;
+  color: #442200;
+}
+.btn-guest {
+  background-color: #62d26f;
+  color: white;
+}
+
+.landing-buttons button:hover {
+  transform: scale(1.05);
+}
+
+.landing-footer {
+  position: absolute;
+  bottom: 10px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #9fd8ff, #c6e8ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+
+.cloud {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 50%;
+  opacity: 0.9;
+  box-shadow:
+    30px 15px 0 0 #fff,
+    60px 15px 0 0 #fff,
+    90px 15px 0 0 #fff,
+    45px -10px 0 0 #fff;
+}
+
+@keyframes moveRight {
+  0% { transform: translateX(-250px); }
+  100% { transform: translateX(110vw); }
+}
+
+@keyframes moveLeft {
+  0% { transform: translateX(110vw); }
+  100% { transform: translateX(-250px); }
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.cloud-left {
+  width: 160px;
+  height: 70px;
+  animation: moveRight linear infinite, floatY 6s ease-in-out infinite;
+}
+
+.cloud-right {
+  width: 180px;
+  height: 80px;
+  animation: moveLeft linear infinite, floatY 8s ease-in-out infinite;
+}
+
+.cloud-center {
+  width: 200px;
+  height: 90px;
+  opacity: 0.7;
+  animation: floatY 10s ease-in-out infinite;
+}
+
+.splash-logo {
+  width: 420px;
+  max-width: 80%;
+  height: auto;
+  z-index: 2;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+}
+
+.cloud-center {
+  width: 200px;
+  height: 90px;
+  opacity: 0.7;
+  animation: floatY 10s ease-in-out infinite;
+}

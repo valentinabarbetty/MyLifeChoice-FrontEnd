@@ -1,0 +1,55 @@
+.instructions-container {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #b8e1ff, #d5f3ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.instructions-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 40px 60px;
+  text-align: center;
+  max-width: 600px;
+}
+
+.instructions-card h1 {
+  font-family: "Luckiest Guy", cursive;
+  font-size: 2.5rem;
+  color: #317eda;
+  margin-bottom: 30px;
+}
+
+.instructions-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px 0;
+  text-align: left;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.instructions-card li {
+  margin-bottom: 15px;
+}
+
+.btn-start {
+  background-color: #317eda;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-start:hover {
+  background-color: #4698f2;
+  transform: scale(1.05);
+}
