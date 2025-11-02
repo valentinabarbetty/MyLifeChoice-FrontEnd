@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import "./Landing.css";
-import vid from "../../assets/gameplay.mp4";
-import logo from "../../assets/logo.png";
+import vid from "/assets/gameplay.mp4";
+import logo from "/assets/logo.PNG";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function Landing() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 1 }}
       >
-        <button className="btn-primary" onClick={() => navigate("/instructions")}>
+        <button className="btn-primary" onClick={() => navigate("/intro")}>
           Empezar aventura
         </button>
       </motion.div>

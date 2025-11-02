@@ -1,0 +1,76 @@
+.dlg-wrapper {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* 🌼 Etiqueta del personaje */
+.dlg-tag {
+  background: #f2c94c;         /* amarillo cálido */
+  color: #7f7359;              /* texto marrón suave */
+  font: 600 0.95rem/1 "Poppins", sans-serif;
+  padding: 6px 18px;
+  border-radius: 12px;
+  margin-left: 32px;
+  margin-bottom: -12px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+/* 💬 Burbuja ovalada estilo Coral Island */
+.dlg-box {
+  position: relative;
+  background: #fef9e1;
+  color: #7f7359;
+  font: 700 1.1rem/1.6 "Poppins", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px 50px;
+  width: min(88vw, 680px);
+  min-height: 140px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+
+  /* 💫 magia: forma orgánica ovalada */
+  border-radius: 60px / 80px;
+  clip-path: ellipse(92% 70% at 50% 50%);
+  /* Esto genera curvas más redondeadas arriba y abajo */
+}
+
+.dlg-text {
+  margin: 0;
+  flex: 1;
+}
+
+/* ➡️ Flecha */
+.dlg-arrow {
+  width: 48px;
+  height: auto;
+  cursor: pointer;
+  user-select: none;
+  animation: dlg-bounce 1.5s ease-in-out infinite;
+}
+
+/* ✨ Animación */
+@keyframes dlg-bounce {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(6px);
+    opacity: 0.7;
+  }
+}
+
+/* Asegura que nada “aplane” los bordes */
+.dlg-box, .dlg-wrapper, .dlg-tag {
+  overflow: visible;
+}

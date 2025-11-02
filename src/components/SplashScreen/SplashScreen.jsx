@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import logo from "../../assets/logo.png";
+import logo from "../../../public/assets/logo.PNG";
 import "./SplashScreen.css";
 
 export default function SplashScreen({ onFinish }) {
