@@ -8,6 +8,7 @@ import dialoguesIntro from "../../data/dialogues/intro3D";
 import "./ChooseGuide.css";
 import AuthModal from "../../components/AuthModal/AuthModal";
 
+//// ESCEMA
 function PlaceholderScene({ showArrows }) {
   const group = useRef();
   const { scene } = useGLTF("/assets/models/guides/guy.glb");

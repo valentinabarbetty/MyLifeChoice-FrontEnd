@@ -33,7 +33,7 @@ export default function AuthModal({ onClose, onLoginSuccess, onNext, prueba }) {
       localStorage.setItem("sessionType", "auth");
 
       onLoginSuccess?.(response);
-      prueba();
+     // prueba();
       //onNext();
     } catch (error) {
       console.error("Error en login:", error);

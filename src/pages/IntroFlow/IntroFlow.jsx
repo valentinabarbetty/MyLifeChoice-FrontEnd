@@ -1,35 +1,42 @@
 import { useState } from "react";
-import DialogueBox from "../../components/DialogueBox/DialogueBox";
-import GuideSelect from "../ChooseGuide/ChooseGuide";
+import SelectGuide from "./components/SelectGuide/SelectGuide";
+import DialogueFlow from "./components/DialogueFlow/DialogueFlow";
 
-export default function IntroFlow({ onFinish }) {
-  const [step, setStep] = useState(1);        // controla en qué parte del flujo estamos
-  const [guide, setGuide] = useState(null);   // guarda el guía elegido
+
+export default function IntroFlow() {
+  const [step, setStep] = useState(1);
+  const [guide, setGuide] = useState(null);
+  const [playerName, setPlayerName] = useState(
+    localStorage.getItem("playerName") || ""
+  );
+
+  const nextStep = () => setStep((prev) => prev + 1);
 
   return (
-    <div
-      className="intro-container"
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "relative",
-        background: "linear-gradient(180deg, #b8e1ff 0%, #fef9e1 100%)",
-        fontFamily: "'Poppins', sans-serif",
-      }}
-    >
+    <div className="introflow-container">
       {step === 1 && (
-        <>
-
-          <GuideSelect
-            onSelect={(selected) => {
-              setGuide(selected);
-              setStep(2); // 👈 cambia al paso 2 al hacer clic
-            }}
-          />
-        </>
+        <SelectGuide
+          onSelect={(g) => {
+            setGuide(g);
+            nextStep();
+          }}
+        />
+      )}
+      {step === 2 && (
+        <DialogueFlow
+          guide={guide}
+          playerName={playerName}
+          onNameSet={setPlayerName}
+          onDialogueEnd={() => setStep(3)} // pasa a la sesión
+        />
       )}
 
-      
+      {step === 3 && (
+        <InstructionsStep
+          playerName={playerName}
+          onFinish={() => console.log("🎮 Inicia el juego")}
+        />
+      )}
     </div>
   );
 }
