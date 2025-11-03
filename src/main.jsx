@@ -3,20 +3,25 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.jsx'
 import Landing from './pages/Landing/Landing.jsx'
-import './index.css'
-import Auth from './pages/Auth/Auth.jsx'
-import Intro3D from './pages/Intro3D/Intro3D.jsx'
 import IntroFlow from './pages/IntroFlow/IntroFlow.jsx'
 import ChooseGuide from './pages/ChooseGuide/ChooseGuide.jsx'
+import { GoogleOAuthProvider } from "@react-oauth/google"
+import './index.css'
+
+// 🚀 Agrega tu Client ID de Google aquí:
+const GOOGLE_CLIENT_ID = "183624025015-56bgdj86f3ejt6uqvus8f1e1ajqq3ubt.apps.googleusercontent.com"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/landing" element={<Landing />} />
-      <Route path="/auth" element={<Auth />} />
-      <Route path="/choose-guide" element={<ChooseGuide />} />
-      <Route path="/intro" element={<IntroFlow />} />
-    </Routes>
-  </BrowserRouter>
+  <React.StrictMode>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/choose-guide" element={<ChooseGuide />} />
+          <Route path="/intro" element={<IntroFlow />} />
+        </Routes>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
+  </React.StrictMode>
 )
