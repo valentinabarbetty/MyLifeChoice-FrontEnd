@@ -4,7 +4,7 @@ import RegisterModal from "../RegisterModal/RegisterModal";
 import { GoogleLogin } from "@react-oauth/google";
 import { loginUser } from "../../services/userService";
 
-export default function AuthModal({ onClose, onLoginSuccess, onNext, prueba }) {
+export default function AuthModal({ onClose, onLoginSuccess }) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,13 +25,15 @@ export default function AuthModal({ onClose, onLoginSuccess, onNext, prueba }) {
 
         
       // Guarda la sesión local
+      localStorage.setItem("logged", "logged");
+      localStorage.setItem("userId", response.user_id);
+      console.log(response.user_id)
       localStorage.setItem("userEmail", response.email);
       localStorage.setItem(
         "playerName",
         response.nickname || response.email.split("@")[0]
       );
       localStorage.setItem("sessionType", "auth");
-
       onLoginSuccess?.(response);
      // prueba();
       //onNext();

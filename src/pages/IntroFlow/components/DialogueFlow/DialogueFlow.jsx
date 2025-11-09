@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import Scene3D from "../Scene3D/Scene3D";
 import DialogueBox from "../../../../components/DialogueBox/DialogueBox";
 import TextInputBox from "../../../../components/TextInputBox/TextInputBox";
-import SessionStep from "../SessionStep/SessionStep"; // 👈 aquí sí lo usamos DENTRO del flujo
+import SessionStep from "../SessionStep/SessionStep";
 import dialoguesIntro from "../../../../data/dialogues/intro3D";
 
 export default function DialogueFlow({
@@ -24,7 +24,6 @@ export default function DialogueFlow({
       localStorage.setItem("playerName", playerName);
     }
 
-    // si llega al último diálogo
     if (dialogueIndex >= dialogues.length - 1) {
       onDialogueEnd?.();
       return;
@@ -33,18 +32,15 @@ export default function DialogueFlow({
     setDialogueIndex((prev) => prev + 1);
   };
 
-  // ⚡ callback para avanzar tras autenticarse o continuar como invitado
   const handleSessionEnd = () => {
     setDialogueIndex((i) => i + 1);
   };
 
   return (
     <div className="dialogue-flow-container">
-      {/* 🎬 Canvas 3D */}
       <Scene3D showArrows={dialogueIndex === 7} />
 
       <div className="dialogue-container">
-        {/* 🟡 Input de nombre */}
         {dialogueIndex === 3 && (
           <div className="input-wrapper">
             <TextInputBox
@@ -56,24 +52,21 @@ export default function DialogueFlow({
           </div>
         )}
 
-        {/* 💬 Globo del diálogo SIEMPRE visible */}
-        <div className="dialogue-box-wrapper">
+        <div className="dialogue-box-wrapper" key={dialogues[dialogueIndex]}>
           <DialogueBox
             text={dialogues[dialogueIndex]}
             speaker={guide.name}
             onNext={handleNext}
+            animateOnce={dialogueIndex === 0} // 💫 solo la primera vez
           />
         </div>
 
-        {/* 🔐 Aquí se integran las opciones de sesión SIN ocultar el diálogo */}
         {dialogueIndex === 5 && (
-          <div className="input-wrapper" style={{ marginTop: "-180px" }}>
-            <SessionStep
-              guide={guide}
-              playerName={playerName}
-              onNext={handleSessionEnd}
-            />
-          </div>
+          <SessionStep
+            guide={guide}
+            playerName={playerName}
+            onNext={handleSessionEnd}
+          />
         )}
       </div>
     </div>

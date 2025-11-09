@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.jsx'
 import Landing from './pages/Landing/Landing.jsx'
 import IntroFlow from './pages/IntroFlow/IntroFlow.jsx'
-import ChooseGuide from './pages/ChooseGuide/ChooseGuide.jsx'
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import './index.css'
 
@@ -18,7 +17,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/landing" element={<Landing />} />
-          <Route path="/choose-guide" element={<ChooseGuide />} />
           <Route path="/intro" element={<IntroFlow />} />
         </Routes>
       </BrowserRouter>

@@ -30,7 +30,7 @@
 .landing-logo {
   position: relative;
   z-index: 2;
-  width: 1100px;          /* Ajusta según tamaño del logo */
+  width: 800px;          /* Ajusta según tamaño del logo */
   max-width: 80%;
   height: auto;
   margin-top: -10vh;
@@ -62,12 +62,12 @@
 
 /* 🎨 Estilos de botones */
 .btn-primary {
-  background-color: #6ecb63;
+  background-color: #f4c24c;
   color: #fff;
 }
 .btn-primary:hover {
   transform: scale(1.05);
-  background-color: #7be374;
+  background-color: #f4c24c;
 }
 
 .btn-secondary {
@@ -77,6 +77,18 @@
 .btn-secondary:hover {
   transform: scale(1.05);
   background-color: #fff;
+}
+.btn-login {
+  background-color: #4caf50;
+  color: #fff;
+
+}
+
+.login-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
 }
 
 /* ✨ Animación tipo “pop” cartoon */

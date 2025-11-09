@@ -28,7 +28,11 @@ function GuideModel({ showArrows }) {
           <img
             src="/assets/ui/keyboard-arrows.png"
             alt="Flechas"
-            className="canvas-arrows"
+            style={{
+              width: "80px", // 🔥 ajusta el tamaño aquí
+              height: "auto",
+              opacity: 0.9,
+            }}
           />
         </Html>
       )}

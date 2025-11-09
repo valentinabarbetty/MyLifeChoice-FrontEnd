@@ -1,3 +1,4 @@
+/* 🌿 Contenedor general */
 .dlg-wrapper {
   position: absolute;
   left: 50%;
@@ -11,8 +12,8 @@
 
 /* 🌼 Etiqueta del personaje */
 .dlg-tag {
-  background: #f2c94c;         /* amarillo cálido */
-  color: #7f7359;              /* texto marrón suave */
+  background: #f2c94c;
+  color: #7f7359;
   font: 600 0.95rem/1 "Poppins", sans-serif;
   padding: 6px 18px;
   border-radius: 12px;
@@ -22,7 +23,7 @@
   z-index: 2;
 }
 
-/* 💬 Burbuja ovalada estilo Coral Island */
+/* 💬 Burbuja ovalada */
 .dlg-box {
   position: relative;
   background: #fef9e1;
@@ -37,11 +38,9 @@
   min-height: 140px;
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-
-  /* 💫 magia: forma orgánica ovalada */
   border-radius: 60px / 80px;
   clip-path: ellipse(92% 70% at 50% 50%);
-  /* Esto genera curvas más redondeadas arriba y abajo */
+  overflow: visible;
 }
 
 .dlg-text {
@@ -49,7 +48,7 @@
   flex: 1;
 }
 
-/* ➡️ Flecha */
+/* ➡️ Flecha (única animación sutil que mantenemos) */
 .dlg-arrow {
   width: 48px;
   height: auto;
@@ -58,19 +57,11 @@
   animation: dlg-bounce 1.5s ease-in-out infinite;
 }
 
-/* ✨ Animación */
 @keyframes dlg-bounce {
   0%, 100% {
     transform: translateX(0);
-    opacity: 1;
   }
   50% {
     transform: translateX(6px);
-    opacity: 0.7;
   }
-}
-
-/* Asegura que nada “aplane” los bordes */
-.dlg-box, .dlg-wrapper, .dlg-tag {
-  overflow: visible;
 }

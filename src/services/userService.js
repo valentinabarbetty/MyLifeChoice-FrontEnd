@@ -42,3 +42,22 @@ export const loginUser = async (credentials) => {
     throw error;
   }
 };
+
+export const checkUserProgress = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/exploration/has_progress/${userId}/`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
+    }
+    const data = await response.json();
+    console.log("Progreso del usuario:", data);
+    return data;
+  } catch (error) {
+    console.error("Error al verificar el progreso del usuario:", error);
+    throw error;
+  }
+};

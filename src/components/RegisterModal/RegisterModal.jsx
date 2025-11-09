@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./RegisterModal.css";
 import { registerUser } from "../../services/userService";
 
-export default function RegisterModal({ onClose, onSuccess }) {
+export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
   const [nickname, setNickname] = useState(
     localStorage.getItem("playerName") || ""
   );
@@ -20,29 +20,39 @@ export default function RegisterModal({ onClose, onSuccess }) {
 
     try {
       const response = await registerUser({
-        nickname,
+        //nickname,
         email,
         password,
         player_type: 1,
       });
 
-      alert(
-        `¡Registro exitoso! Bienvenido/a, ${response.nickname || nickname}.`
-      );
-
-      // Guarda en localStorage si quieres
-      localStorage.setItem("playerName", response.nickname);
+      // ✅ Guardar datos de sesión inmediatamente
+      //localStorage.setItem("playerName", response.nickname || nickname);
       localStorage.setItem("userEmail", response.email);
+      localStorage.setItem("sessionType", "auth");
+      localStorage.setItem("logged", "logged");
 
-      // Llama callback y cierra el modal
-      onSuccess?.(response);
+      alert(`✅ ¡Registro exitoso! Bienvenido/a, ${response.nickname || nickname}.`);
+
+      // ✅ Notifica a SessionStep que ya está autenticado
+      onLoginSuccess?.(response);
+
+      // ✅ Avanza automáticamente al siguiente diálogo si lo necesita
+      if (onNext) onNext();
+
+      // ✅ Cierra el modal
       onClose();
     } catch (err) {
       try {
         const parsed = JSON.parse(err.message);
-        alert(`Error: ${JSON.stringify(parsed)}`);
+
+        if (parsed.email?.[0]?.includes("already exists")) {
+          alert("⚠️ Este correo ya está registrado. Intenta con otro o inicia sesión.");
+        } else {
+          alert(`❌ Error: ${JSON.stringify(parsed)}`);
+        }
       } catch {
-        alert("No se pudo crear la cuenta. Verifica tus datos.");
+        alert("❌ No se pudo crear la cuenta. Verifica tus datos.");
       }
     } finally {
       setLoading(false);
@@ -75,7 +85,7 @@ export default function RegisterModal({ onClose, onSuccess }) {
           onClick={handleSubmit}
           disabled={loading}
         >
-          {loading ? "Creando..." : "Crear cuenta"}
+          {loading ? "Creando..." : "Registrarme"}
         </button>
 
         <button className="register-close" onClick={onClose}>
