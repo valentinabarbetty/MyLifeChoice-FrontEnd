@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./RegisterModal.css";
 import { registerUser } from "../../services/userService";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
   const [nickname, setNickname] = useState(
@@ -9,7 +10,13 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const handleGoogleLogin = (credentialResponse) => {
+    console.log("Google token:", credentialResponse.credential);
+    alert("Sesión iniciada con Google (simulada)");
+    localStorage.setItem("authMethod", "google");
+    onLoginSuccess?.({ method: "google" });
+    onClose();
+  };
   const handleSubmit = async () => {
     if (!nickname.trim() || !email.trim() || !password.trim()) {
       alert("Por favor completa todos los campos");
@@ -20,34 +27,32 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
 
     try {
       const response = await registerUser({
-        //nickname,
+        nickname,
         email,
         password,
         player_type: 1,
+        guide: parseInt(localStorage.getItem("selectedGuide")) || 1,
       });
 
-      // ✅ Guardar datos de sesión inmediatamente
-      //localStorage.setItem("playerName", response.nickname || nickname);
+      localStorage.setItem("playerName", response.nickname || nickname);
       localStorage.setItem("userEmail", response.email);
       localStorage.setItem("sessionType", "auth");
       localStorage.setItem("logged", "logged");
 
-      alert(`✅ ¡Registro exitoso! Bienvenido/a, ${response.nickname || nickname}.`);
+      alert(
+        `✅ ¡Registro exitoso! Bienvenido/a, ${response.nickname || nickname}.`
+      );
 
-      // ✅ Notifica a SessionStep que ya está autenticado
       onLoginSuccess?.(response);
-
-      // ✅ Avanza automáticamente al siguiente diálogo si lo necesita
       if (onNext) onNext();
-
-      // ✅ Cierra el modal
       onClose();
     } catch (err) {
       try {
         const parsed = JSON.parse(err.message);
-
         if (parsed.email?.[0]?.includes("already exists")) {
-          alert("⚠️ Este correo ya está registrado. Intenta con otro o inicia sesión.");
+          alert(
+            "⚠️ Este correo ya está registrado. Intenta con otro o inicia sesión."
+          );
         } else {
           alert(`❌ Error: ${JSON.stringify(parsed)}`);
         }
@@ -87,7 +92,13 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
         >
           {loading ? "Creando..." : "Registrarme"}
         </button>
-
+        <div className="auth-divider">o</div>
+        <div className="google-login-wrapper">
+          <GoogleLogin
+            onSuccess={handleGoogleLogin}
+            onError={() => alert("Error al iniciar sesión con Google")}
+          />
+        </div>
         <button className="register-close" onClick={onClose}>
           Cerrar
         </button>

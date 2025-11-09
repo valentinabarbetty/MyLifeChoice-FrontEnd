@@ -7,12 +7,14 @@
   font-family: "Poppins", sans-serif;
 }
 
+
 .select-guide-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, #b8e1ff 0%, #fef9e1 100%);
   z-index: 0;
 }
+
 
 .guide-selection {
   position: relative;
@@ -31,6 +33,7 @@
   margin-bottom: 2rem;
   text-align: center;
 }
+
 
 .guide-options {
   display: flex;
@@ -81,6 +84,7 @@
     transform: scale(1) translateY(0px);
   }
 }
+
 
 .dialogue-container {
   position: absolute;

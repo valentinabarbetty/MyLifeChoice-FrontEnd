@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SelectGuide from "./components/SelectGuide/SelectGuide";
 import DialogueFlow from "./components/DialogueFlow/DialogueFlow";
+import SelectPlayer from "./components/SelectPlayer/SelectPlayer";
 
 export default function IntroFlow() {
   const [step, setStep] = useState(1);
@@ -60,7 +61,25 @@ export default function IntroFlow() {
           </motion.div>
         )}
 
-        
+        {step === 3 && (
+          <motion.div
+            key="select"
+            initial={{ opacity: 0, filter: "blur(10px)" }}
+            animate={{ opacity: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, filter: "blur(10px)" }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          >
+            <SelectPlayer
+              onSelect={(g) => {
+                // Fade-out con pequeño retraso
+                setTimeout(() => {
+                  setGuide(g);
+                  nextStep();
+                }, 300);
+              }}
+            />
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );

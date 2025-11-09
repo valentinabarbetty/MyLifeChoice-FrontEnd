@@ -61,3 +61,67 @@ export const checkUserProgress = async (userId) => {
     throw error;
   }
 };
+
+export const addGuide = async (userId, guideId) => {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}/assign_guide/`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ guide_id: guideId }),
+    });
+
+    const data = await response.json(); // mover aquí
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    console.log("Guía añadida exitosamente:", data);
+    return data;
+  } catch (error) {
+    console.error("Error al añadir guía:", error);
+    throw error;
+  }
+};
+
+export const addPlayer = async (email, player_type_id) => {
+  try {
+    const response = await fetch(`${API_URL}/users/assign_player_type/`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, player_type_id }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    console.log("✅ Player añadido exitosamente:", data);
+    return data;
+  } catch (error) {
+    console.error("Error al añadir player:", error);
+    throw error;
+  }
+};
+export const googleLogin = async (token) => {
+  try {
+    const response = await fetch(`${API_URL}/users/google_login/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(JSON.stringify(data));
+
+    console.log("✅ Login con Google exitoso:", data);
+    return data;
+  } catch (error) {
+    console.error("Error al iniciar sesión con Google:", error);
+    throw error;
+  }
+};
+
+
