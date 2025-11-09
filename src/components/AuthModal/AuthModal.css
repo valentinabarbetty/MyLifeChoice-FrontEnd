@@ -93,3 +93,25 @@
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
+.auth-modal-card * {
+  box-sizing: border-box;
+}
+
+.auth-modal-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Fuerza centrado horizontal */
+  justify-content: center; /* Fuerza centrado vertical si cambia el tamaño */
+  text-align: center;
+}
+
+.google-login-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-input,
+.auth-btn {
+  width: 100%;
+}

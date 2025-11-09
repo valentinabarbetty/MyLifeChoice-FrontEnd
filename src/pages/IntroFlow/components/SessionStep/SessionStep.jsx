@@ -4,7 +4,7 @@ import DialogueBox from "../../../../components/DialogueBox/DialogueBox";
 import AuthModal from "../../../../components/AuthModal/AuthModal";
 import dialoguesIntro from "../../../../data/dialogues/intro3D";
 import "./SessionStep.css";
-
+import RegisterModal from "../../../../components/RegisterModal/RegisterModal";
 export default function SessionStep({ guide, playerName, onNext }) {
   const [sessionType, setSessionType] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -80,9 +80,9 @@ export default function SessionStep({ guide, playerName, onNext }) {
     
       </div>
 
-      {/* Modal */}
+
       {showAuthModal && (
-        <AuthModal
+        <RegisterModal
           onClose={() => setShowAuthModal(false)}
           onLoginSuccess={handleLoginSuccess}
           onNext={onNext}

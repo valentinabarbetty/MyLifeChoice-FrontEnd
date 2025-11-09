@@ -3,8 +3,9 @@ import "./AuthModal.css";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import { GoogleLogin } from "@react-oauth/google";
 import { loginUser } from "../../services/userService";
+import { googleLogin } from "../../services/userService";
 
-export default function AuthModal({ onClose, onLoginSuccess, onNext, prueba }) {
+export default function AuthModal({ onClose, onLoginSuccess }) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,17 +24,18 @@ export default function AuthModal({ onClose, onLoginSuccess, onNext, prueba }) {
 
       alert(`Bienvenido/a, ${response.nickname || response.email}`);
 
-        
       // Guarda la sesión local
+      localStorage.setItem("logged", "logged");
+      localStorage.setItem("userId", response.user_id);
+      console.log(response.user_id);
       localStorage.setItem("userEmail", response.email);
       localStorage.setItem(
         "playerName",
         response.nickname || response.email.split("@")[0]
       );
       localStorage.setItem("sessionType", "auth");
-
       onLoginSuccess?.(response);
-     // prueba();
+      // prueba();
       //onNext();
     } catch (error) {
       console.error("Error en login:", error);
@@ -50,12 +52,26 @@ export default function AuthModal({ onClose, onLoginSuccess, onNext, prueba }) {
     }
   };
 
-  const handleGoogleLogin = (credentialResponse) => {
-    console.log("Google token:", credentialResponse.credential);
-    alert("Sesión iniciada con Google (simulada)");
-    localStorage.setItem("authMethod", "google");
-    onLoginSuccess?.({ method: "google" });
-    onClose();
+  const handleGoogleLogin = async (credentialResponse) => {
+    try {
+      const token = credentialResponse.credential;
+      const data = await googleLogin(token);
+
+      const user = data.user;
+
+      // Guarda los datos de sesión igual que con login normal
+      localStorage.setItem("logged", "logged");
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("playerName", user.nickname);
+      localStorage.setItem("sessionType", "google");
+
+      alert(`✅ ¡Bienvenido/a, ${user.nickname}!`);
+      onLoginSuccess?.(user);
+      onClose();
+    } catch (error) {
+      console.error("Error en Google login:", error);
+      alert("No se pudo iniciar sesión con Google.");
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-/* 🎮 Contenedor principal */
+
 .select-guide-container {
   position: relative;
   width: 100vw;
@@ -7,7 +7,6 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* 🌈 Fondo degradado mientras se elige guía */
 .select-guide-overlay {
   position: absolute;
   inset: 0;
@@ -15,7 +14,6 @@
   z-index: 0;
 }
 
-/* 🧍 Contenedor central de selección de guía */
 .guide-selection {
   position: relative;
   z-index: 5;
@@ -34,7 +32,6 @@
   text-align: center;
 }
 
-/* 🎴 Tarjetas de guías */
 .guide-options {
   display: flex;
   justify-content: center;
@@ -73,7 +70,6 @@
   margin: 0;
 }
 
-/* ✨ Animación suave flotante */
 @keyframes float3D {
   0% {
     transform: scale(1) translateY(0px);
@@ -86,12 +82,6 @@
   }
 }
 
-/* 🌅 Fondo del Canvas */
-canvas {
-  background: linear-gradient(180deg, #b8e1ff 0%, #fef9e1 100%);
-}
-
-/* 💬 Contenedor del diálogo e input */
 .dialogue-container {
   position: absolute;
   bottom: 40px;
@@ -102,67 +92,3 @@ canvas {
   align-items: center;
 }
 
-/* 🟡 Input envuelto en un contenedor */
-.input-wrapper {
-  margin-bottom: 200px; /* separa el input del diálogo */
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  animation: fadeIn 0.6s ease;
-}
-
-/* ✏️ Input de nombre */
-.name-input {
-  padding: 12px 38px;
-  border: 2px solid #f4c24c; /* amarillo */
-  border-radius: 20px;
-  outline: none;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #7f7359;
-  background-color: #706a38;
-  width: 260px;
-  text-align: center;
-  transition: all 0.25s ease;
-}
-
-.name-input:focus {
-  box-shadow: 0 0 12px rgba(244, 194, 76, 0.45);
-  transform: scale(1.03);
-}
-
-/* 💬 Contenedor del globo de diálogo */
-.dialogue-box-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  animation: fadeInUp 0.8s ease;
-}
-
-/* ☁️ Imagen de flechas (Canvas) */
-.canvas-arrows {
-  width: 130px;
-}
-
-/* 🌬️ Animaciones */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
