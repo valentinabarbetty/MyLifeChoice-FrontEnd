@@ -62,27 +62,28 @@ export const checkUserProgress = async (userId) => {
   }
 };
 
-export const addGuide = async (userId, guideId) => {
+export const addGuide = async (email, guide_id) => {
   try {
-    const response = await fetch(`${API_URL}/users/${userId}/assign_guide/`, {
+    const response = await fetch(`${API_URL}/users/assign_guide_by_email/`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ guide_id: guideId }),
+      body: JSON.stringify({ email, guide_id }),
     });
 
-    const data = await response.json(); // mover aquí
+    const data = await response.json();
 
     if (!response.ok) {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("Guía añadida exitosamente:", data);
+    console.log("✅ Guía asignada exitosamente:", data);
     return data;
   } catch (error) {
-    console.error("Error al añadir guía:", error);
+    console.error("Error al asignar guía:", error);
     throw error;
   }
 };
+
 
 export const addPlayer = async (email, player_type_id) => {
   try {
@@ -105,6 +106,7 @@ export const addPlayer = async (email, player_type_id) => {
     throw error;
   }
 };
+
 export const googleLogin = async (token) => {
   try {
     const response = await fetch(`${API_URL}/users/google_login/`, {
@@ -124,4 +126,24 @@ export const googleLogin = async (token) => {
   }
 };
 
+export const updateNickname = async (email, nickname) => {
+  try {
+    const response = await fetch(`${API_URL}/users/update_nickname/`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, nickname }),
+    });
 
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    console.log("✅ Nickname actualizado correctamente:", data);
+    return data;
+  } catch (error) {
+    console.error("Error al actualizar nickname:", error);
+    throw error;
+  }
+};

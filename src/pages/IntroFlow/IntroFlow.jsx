@@ -5,6 +5,10 @@ import DialogueFlow from "./components/DialogueFlow/DialogueFlow";
 import SelectPlayer from "./components/SelectPlayer/SelectPlayer";
 
 export default function IntroFlow() {
+  if (!localStorage.getItem("logged")) {
+    localStorage.setItem("logged", "no");
+  }
+
   const [step, setStep] = useState(1);
   const [guide, setGuide] = useState(null);
   const [playerName, setPlayerName] = useState(

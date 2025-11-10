@@ -9,22 +9,22 @@ export default function SelectGuide({ onSelect }) {
     { id: 3, name: "Andrew", color: "#a18cd1", icon: "🌈" },
   ];
   const handleSelect = async (guide) => {
-    const userId = localStorage.getItem("userId");
-    localStorage.setItem("selectedGuide", guide.id);
-
+    const userEmail = localStorage.getItem("userEmail");
+    
     try {
-      if (userId) {
-        // Si ya hay sesión → guarda en backend
-        const response = await addGuide(userId, guide.id);
+      if (userEmail) {
+        // Si ya hay sesión, guarda en backend
+        const response = await addGuide(userEmail, guide.id);
         console.log("✅ Guía asignada con éxito:", response);
       } else {
+        // Si no hay sesión, guarda localmente
+        localStorage.setItem("selectedGuide", guide.id);
         console.log("💾 Guía guardada localmente (sin usuario logueado)");
       }
 
-      // 👉 Avanza igual al siguiente paso
       onSelect?.(guide);
     } catch (error) {
-      console.error("Error al asignar la guía:", error);
+      console.error("Error al asignar guía:", error);
       alert("Error al asignar la guía, intenta de nuevo.");
     }
   };

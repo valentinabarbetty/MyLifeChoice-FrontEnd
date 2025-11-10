@@ -1,7 +1,7 @@
 import React from "react";
 import "./SelectPlayer.css";
 import { addPlayer } from "../../../../services/userService";
-
+import { addGuide } from "../../../../services/userService";
 export default function SelectPlayer({ onSelect }) {
   const players = [
     { id: 1, name: "girl", color: "#ffb6c1", icon: "🌸" },
@@ -26,7 +26,6 @@ export default function SelectPlayer({ onSelect }) {
 
       const response = await addPlayer(userEmail, player.id);
       console.log("✅ Player asignado con éxito:", response);
-
       onSelect?.(player);
     } catch (error) {
       console.error("Error al asignar el Player:", error);
