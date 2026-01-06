@@ -17,6 +17,11 @@ export default function IntroFlow() {
 
   const nextStep = () => setStep((prev) => prev + 1);
 
+  const goToWorld = () => {
+    //Guardar información y progreso!
+    navigate("/world");
+  }
+
   return (
     <div
       className="introflow-container"
@@ -27,6 +32,8 @@ export default function IntroFlow() {
         background: "linear-gradient(180deg, #b8e1ff 0%, #fef9e1 100%)",
       }}
     >
+      
+
       <AnimatePresence mode="wait">
         {step === 1 && (
           <motion.div
@@ -79,6 +86,7 @@ export default function IntroFlow() {
                 setTimeout(() => {
                   setGuide(g);
                   nextStep();
+                  goToWorld();
                 }, 300);
               }}
             />

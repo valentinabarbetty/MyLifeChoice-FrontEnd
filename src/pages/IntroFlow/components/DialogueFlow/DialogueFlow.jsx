@@ -15,8 +15,29 @@ export default function DialogueFlow({
   const [dialogueIndex, setDialogueIndex] = useState(0);
   const dialogues = useMemo(() => dialoguesIntro(playerName), [playerName]);
   const isLogged = localStorage.getItem("logged") === "logged";
+  const SESSION_STEP_INDEX = 5;
+  const isTalking = dialogueIndex !== 0;
 
-  const SESSION_STEP_INDEX = 5; // 👈 posición del diálogo de sesión
+  const animationState = useMemo(() => {
+    switch (dialogueIndex) {
+      case 0:
+        return "greet";
+      case 1:
+        return "idle";
+      case 2:
+        return "idle"
+      case 3:
+        return "idle"
+      case 4:
+        return "victory";
+      case 5:
+        return "idle";
+      case 7:
+        return "idle";
+      default:
+        return "idle";
+    }
+  }, [dialogueIndex]);
 
   const handleNext = () => {
     if (dialogueIndex === 3 && !playerName.trim()) {
@@ -50,7 +71,14 @@ export default function DialogueFlow({
 
   return (
     <div className="dialogue-flow-container">
-      <Scene3D showArrows={dialogueIndex === 7} />
+      {guide && (
+        <Scene3D
+          guideId={guide}
+          showArrows={dialogueIndex === 7}
+          animationState={animationState}
+
+        />
+      )}
 
       <div className="dialogue-container">
         {dialogueIndex === 3 && (
@@ -73,7 +101,6 @@ export default function DialogueFlow({
           />
         </div>
 
-        {/* 👇 Mostrar sesión solo si NO está loggeado y estamos en el paso correcto */}
         {!isLogged && dialogueIndex === SESSION_STEP_INDEX && (
           <SessionStep
             guide={guide}

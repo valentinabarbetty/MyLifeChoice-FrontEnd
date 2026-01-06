@@ -1,17 +1,26 @@
 import React, { useEffect } from "react";
 import "./SelectGuide.css";
 import { addGuide } from "../../../../services/userService";
-//import "../../../../../public/assets/images/girl.png"
 
 export default function SelectGuide({ onSelect }) {
   const guides = [
-    { id: 1, name: "Lili", color: "#ffeaee82", icon: "/assets/guides/girl.png" },
+    {
+      id: 1,
+      name: "Lili",
+      color: "#ffeaee82",
+      icon: "/assets/guides/girl.png",
+    },
     { id: 2, name: "Nick", color: "#bfdebbff", icon: "/assets/guides/boy.png" },
-    { id: 3, name: "Andrew", color: "#e1dcefff", icon: "/assets/guides/nb.png" },
+    {
+      id: 3,
+      name: "Andrew",
+      color: "#e1dcefff",
+      icon: "/assets/guides/nb.png",
+    },
   ];
   const handleSelect = async (guide) => {
     const userEmail = localStorage.getItem("userEmail");
-    
+
     try {
       if (userEmail) {
         // Si ya hay sesión, guarda en backend
@@ -55,18 +64,17 @@ export default function SelectGuide({ onSelect }) {
 
         <div className="guide-options">
           {guides.map((g) => (
-            <div>
-            <div
-              key={g.id}
-              className="guide-card"
-              style={{ backgroundColor: g.color }}
-              onClick={() => handleSelect(g)}
-            >
-              <img src={g.icon} alt="" className="guide-icon"/>
-              
+            <div key={g.id}>
+              <div
+                
+                className="guide-card"
+                style={{ backgroundColor: g.color }}
+                onClick={() => handleSelect(g)}
+              >
+                <img src={g.icon} alt="" className="guide-icon" />
+              </div>
+              <h3 className="guide-name">{g.name}</h3>
             </div>
-            <h3 className="guide-name">{g.name}</h3>
-           </div>
           ))}
         </div>
       </div>
