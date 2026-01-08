@@ -1,7 +1,7 @@
 import "./DialogueBox.css";
 import arrowIcon from "/assets/ui/arrow-next.png";
 
-export default function DialogueBox({ text, speaker = "", onNext, showNext = true }) {
+export default function DialogueBox({ text, speaker = "", onNext, showNext = true, children }) {
   return (
     <div className="dlg-wrapper">
       {speaker && (
@@ -12,6 +12,7 @@ export default function DialogueBox({ text, speaker = "", onNext, showNext = tru
 
       <div className="dlg-box">
         <p className="dlg-text">{text}</p>
+        {children}
 
         {showNext && (
           <img

@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import SelectGuide from "./components/SelectGuide/SelectGuide";
 import DialogueFlow from "./components/DialogueFlow/DialogueFlow";
 import SelectPlayer from "./components/SelectPlayer/SelectPlayer";
+import { useNavigate } from "react-router-dom";
+
 
 export default function IntroFlow() {
   if (!localStorage.getItem("logged")) {
@@ -16,6 +18,7 @@ export default function IntroFlow() {
   );
 
   const nextStep = () => setStep((prev) => prev + 1);
+  const navigate = useNavigate();
 
   const goToWorld = () => {
     //Guardar información y progreso!
