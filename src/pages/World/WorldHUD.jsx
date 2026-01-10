@@ -8,6 +8,16 @@ export default function WorldHUD({
   onAccept,
   onReject,
 }) {
+    if (mode === "intro" && dialogue) {
+    return (
+      <DialogueBox
+        speaker={dialogue.speaker}
+        text={dialogue.text}
+        onNext={onNext}
+        showNext
+      />
+    );
+  }
   if (mode === "interact") {
     return (
       <DialogueBox
@@ -31,4 +41,6 @@ export default function WorldHUD({
         showNext={true}
       />
     );
+
+
 }
