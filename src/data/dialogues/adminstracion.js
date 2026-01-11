@@ -15,18 +15,18 @@ export const ADMIN_NPCS = {
 
 export const ADMIN_DIALOGUE = [
   {
-    speaker: "Administrador",
+    speaker: "Raquelle",
     text: "Bienvenida. Soy el gerente de esta empresa.",
     animation: "talking",
   },
   {
-    speaker: "Administrador",
+    speaker: "Raquelle",
     text: "En Administración de Empresas tomamos decisiones para que una organización funcione.",
     animation: "talking",
   },
   {
-    speaker: "Administrador",
-    text: "¿Quieres intentar organizar un pequeño proyecto?",
+    speaker: "Raquelle",
+    text: "¿Quieres conocer más sobre Administración de Empresas?",
     animation: "thinking",
   },
 ];

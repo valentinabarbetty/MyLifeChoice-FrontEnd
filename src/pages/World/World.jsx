@@ -37,7 +37,7 @@ export default function World() {
     z: introPlayerPos[2],
   });
   const [npcState, setNpcState] = useState({
-    animation: "walk",
+    animation: "idle",
     dialogueIndex: 0,
   });
   const currentNPCDialogue =

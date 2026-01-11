@@ -15,19 +15,25 @@ export default function NPC({
   const ref = useRef();
 
   const { scene, animations } = useGLTF(modelPath);
-  const { actions } = useAnimations(animations, ref);
+  const { actions } = useAnimations(animations, scene);
+  useEffect(() => {
+    if (!actions) return;
+
+    const start = actions[animationState] || Object.values(actions)[0];
+    start.reset().fadeIn(0.3).play();
+    currentAction.current = animationState;
+  }, [actions]);
+
   const currentAction = useRef(null);
 
   const targetIndex = useRef(0);
   const speed = 0.015;
 
-  // Colocar en el primer punto del cuadrado
   useEffect(() => {
     if (!ref.current || !route) return;
     ref.current.position.set(route[0][0], route[0][1], route[0][2]);
   }, [route]);
 
-  // Animaciones
   useEffect(() => {
     if (!actions || !animationState) return;
 
@@ -42,7 +48,6 @@ export default function NPC({
   useFrame(() => {
     if (!ref.current || !route) return;
 
-    // 🛑 Si el jugador está cerca → no camina
     if (isNear) {
       if (lookAt) {
         ref.current.lookAt(lookAt.x, ref.current.position.y, lookAt.z);
