@@ -4,27 +4,37 @@ import { addGuide } from "../../../../services/userService";
 
 export default function SelectGuide({ onSelect }) {
   const guides = [
-    { id: 1, name: "Lili", color: "#ffb6c1", icon: "🌸" },
-    { id: 2, name: "Nick", color: "#6ecb63", icon: "🌿" },
-    { id: 3, name: "Andrew", color: "#a18cd1", icon: "🌈" },
+    {
+      id: 1,
+      name: "Lili",
+      color: "#ffeaee82",
+      icon: "/assets/guides/girl.png",
+    },
+    { id: 2, name: "Nick", color: "#bfdebbff", icon: "/assets/guides/boy.png" },
+    {
+      id: 3,
+      name: "Andrew",
+      color: "#e1dcefff",
+      icon: "/assets/guides/nb.png",
+    },
   ];
   const handleSelect = async (guide) => {
-    const userId = localStorage.getItem("userId");
-    localStorage.setItem("selectedGuide", guide.id);
+    const userEmail = localStorage.getItem("userEmail");
 
     try {
-      if (userId) {
-        // Si ya hay sesión → guarda en backend
-        const response = await addGuide(userId, guide.id);
+      if (userEmail) {
+        // Si ya hay sesión, guarda en backend
+        const response = await addGuide(userEmail, guide.id);
         console.log("✅ Guía asignada con éxito:", response);
       } else {
+        // Si no hay sesión, guarda localmente
+        localStorage.setItem("selectedGuide", guide.id);
         console.log("💾 Guía guardada localmente (sin usuario logueado)");
       }
 
-      // 👉 Avanza igual al siguiente paso
       onSelect?.(guide);
     } catch (error) {
-      console.error("Error al asignar la guía:", error);
+      console.error("Error al asignar guía:", error);
       alert("Error al asignar la guía, intenta de nuevo.");
     }
   };
@@ -54,14 +64,16 @@ export default function SelectGuide({ onSelect }) {
 
         <div className="guide-options">
           {guides.map((g) => (
-            <div
-              key={g.id}
-              className="guide-card"
-              style={{ backgroundColor: g.color }}
-              onClick={() => handleSelect(g)}
-            >
-              <span className="guide-icon">{g.icon}</span>
-              <h3>{g.name}</h3>
+            <div key={g.id}>
+              <div
+                
+                className="guide-card"
+                style={{ backgroundColor: g.color }}
+                onClick={() => handleSelect(g)}
+              >
+                <img src={g.icon} alt="" className="guide-icon" />
+              </div>
+              <h3 className="guide-name">{g.name}</h3>
             </div>
           ))}
         </div>

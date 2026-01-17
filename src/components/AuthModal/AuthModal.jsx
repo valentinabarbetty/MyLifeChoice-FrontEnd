@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./AuthModal.css";
 import RegisterModal from "../RegisterModal/RegisterModal";
-import { GoogleLogin } from "@react-oauth/google";
-import { loginUser } from "../../services/userService";
-import { googleLogin } from "../../services/userService";
+import { loginUser, registerUser } from "../../services/userService";
+import { auth, provider } from "../../firebaseConfig";
+import { signInWithPopup } from "firebase/auth";
 
 export default function AuthModal({ onClose, onLoginSuccess }) {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -20,57 +20,43 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     setLoading(true);
     try {
       const response = await loginUser({ email, password });
-      console.log("Respuesta del login:", response);
-
       alert(`Bienvenido/a, ${response.nickname || response.email}`);
 
-      // Guarda la sesión local
       localStorage.setItem("logged", "logged");
       localStorage.setItem("userId", response.user_id);
-      console.log(response.user_id);
       localStorage.setItem("userEmail", response.email);
-      localStorage.setItem(
-        "playerName",
-        response.nickname || response.email.split("@")[0]
-      );
+      localStorage.setItem("playerName", response.nickname || response.email.split("@")[0]);
       localStorage.setItem("sessionType", "auth");
+
       onLoginSuccess?.(response);
-      // prueba();
-      //onNext();
     } catch (error) {
       console.error("Error en login:", error);
-
-      let msg = "No se pudo iniciar sesión. Verifica tus datos.";
-      try {
-        const parsed = JSON.parse(error.message);
-        msg = parsed.detail || parsed.error || msg;
-      } catch {}
-
-      alert(msg);
+      alert("No se pudo iniciar sesión. Verifica tus datos.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleLogin = async (credentialResponse) => {
+  const handleGoogleLogin = async () => {
     try {
-      const token = credentialResponse.credential;
-      const data = await googleLogin(token);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-      const user = data.user;
+      await registerUser({
+        email: user.email,
+        nickname: user.displayName || user.email.split("@")[0],
+        password: "google_auth",
+        player_type: 1
+      });
 
-      // Guarda los datos de sesión igual que con login normal
-      localStorage.setItem("logged", "logged");
       localStorage.setItem("userEmail", user.email);
-      localStorage.setItem("playerName", user.nickname);
+      localStorage.setItem("playerName", user.displayName);
       localStorage.setItem("sessionType", "google");
-
-      alert(`✅ ¡Bienvenido/a, ${user.nickname}!`);
-      onLoginSuccess?.(user);
-      onClose();
+      localStorage.setItem("logged", "logged");
+      alert(`Bienvenido/a, ${user.displayName}!`);
     } catch (error) {
-      console.error("Error en Google login:", error);
-      alert("No se pudo iniciar sesión con Google.");
+      console.error("Error en login con Google:", error);
+      alert("Error al autenticar con Google.");
     }
   };
 
@@ -106,29 +92,25 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
               className="auth-input"
             />
 
-            <button
-              className="auth-btn"
-              onClick={handleLogin}
-              disabled={loading}
-            >
+            <button className="auth-btn" onClick={handleLogin} disabled={loading}>
               {loading ? "Ingresando..." : "Iniciar sesión"}
             </button>
 
             <div className="auth-divider">o</div>
 
-            <div className="google-login-wrapper">
-              <GoogleLogin
-                onSuccess={handleGoogleLogin}
-                onError={() => alert("Error al iniciar sesión con Google")}
+            <button onClick={handleGoogleLogin} className="google-btn">
+              <img
+                src="https://developers.google.com/identity/images/g-logo.png"
+                alt="Google"
+                width={20}
+                style={{ marginRight: "8px" }}
               />
-            </div>
+              Iniciar sesión con Google
+            </button>
 
             <p className="auth-footer">
               ¿No tienes cuenta?{" "}
-              <span
-                className="auth-link"
-                onClick={() => setIsRegistering(true)}
-              >
+              <span className="auth-link" onClick={() => setIsRegistering(true)}>
                 Regístrate
               </span>
             </p>

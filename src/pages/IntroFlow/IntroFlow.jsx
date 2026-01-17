@@ -3,8 +3,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import SelectGuide from "./components/SelectGuide/SelectGuide";
 import DialogueFlow from "./components/DialogueFlow/DialogueFlow";
 import SelectPlayer from "./components/SelectPlayer/SelectPlayer";
+import { useNavigate } from "react-router-dom";
+
 
 export default function IntroFlow() {
+  if (!localStorage.getItem("logged")) {
+    localStorage.setItem("logged", "no");
+  }
+
   const [step, setStep] = useState(1);
   const [guide, setGuide] = useState(null);
   const [playerName, setPlayerName] = useState(
@@ -12,6 +18,12 @@ export default function IntroFlow() {
   );
 
   const nextStep = () => setStep((prev) => prev + 1);
+  const navigate = useNavigate();
+
+  const goToWorld = () => {
+    //Guardar información y progreso!
+    navigate("/world");
+  }
 
   return (
     <div
@@ -23,6 +35,8 @@ export default function IntroFlow() {
         background: "linear-gradient(180deg, #b8e1ff 0%, #fef9e1 100%)",
       }}
     >
+      
+
       <AnimatePresence mode="wait">
         {step === 1 && (
           <motion.div
@@ -75,6 +89,7 @@ export default function IntroFlow() {
                 setTimeout(() => {
                   setGuide(g);
                   nextStep();
+                  goToWorld();
                 }, 300);
               }}
             />
