@@ -3,6 +3,9 @@ import { CAREER_SCENES } from "../data/careerScenes";
 
 export function useWorldState() {
   const career = localStorage.getItem("career") || "administracion";
+  const [scene, setScene] = useState("WORLD");
+  const [activeCareer, setActiveCareer] = useState(null);
+
   const sceneConfig = CAREER_SCENES[career];
 
   const isFirstTime = !localStorage.getItem("intro_done");
@@ -20,5 +23,9 @@ export function useWorldState() {
     setDialogueIndex,
     activeNPC,
     setActiveNPC,
+    scene,
+    setScene,
+    activeCareer,
+    setActiveCareer
   };
 }

@@ -1,5 +1,4 @@
-import DialogueBox from "../../components/DialogueBox/DialogueBox";
-
+import DialogueBox from "../../../components/DialogueBox/DialogueBox"
 
 export default function WorldHUD({
   mode,
