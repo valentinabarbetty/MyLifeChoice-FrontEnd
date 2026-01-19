@@ -7,13 +7,16 @@ export default function AdministracionScene({ onExit }) {
 
   return (
     <>
-      <primitive object={scene} />
+      <primitive object={scene} scale={0.5} position={[4, 0.5, 6]} rotation={[0, Math.PI/2,0]} />
 
-      <Player mode="dialogue" />
+      <Player mode="dialogue" scale={5} spawnPosition={[0, -3, 2]}
+  />
 
       <NPC
         modelPath="/assets/models/npc/administracion.glb"
         animationState="talking"
+        position={[0, -3, 0]}   // 👈 NPC
+  scale={1.8}
       />
 
   
