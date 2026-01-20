@@ -21,7 +21,10 @@ export default function IntroFlow() {
   const navigate = useNavigate();
 
   const goToWorld = () => {
-    //Guardar información y progreso!
+  
+    localStorage.setItem("intro_done", "true");
+
+    localStorage.removeItem("career");
     navigate("/world");
   }
 

@@ -48,8 +48,9 @@ export default function WorldCanvas({ children }) {
       <Sea position={[0, -6, 0]} size={300} />
 
       <OrbitControls
-        enablePan
-        enableZoom
+        enablePan={false}
+        enableZoom={false}
+        enableRotate={false}
         enableDamping
         dampingFactor={0.06}
         maxPolarAngle={Math.PI / 2.2}
