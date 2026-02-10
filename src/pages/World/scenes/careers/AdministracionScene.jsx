@@ -1,17 +1,20 @@
 import Player from "../../characters/Player";
 import NPC from "../../characters/NPC";
 import { useGLTF } from "@react-three/drei";
+import { useMemo } from "react";
 
 export default function AdministracionScene({ onExit }) {
   const { scene } = useGLTF("/assets/models/scenes/careers/administracion.glb");
+const clonedScene = useMemo(() => scene.clone(true), [scene]);
+
+<primitive object={clonedScene} scale={0.5} />
 
   return (
     <group position={[4.5, 0.7, 6.5]} rotation={[0, Math.PI / 2, 0]} scale={1}>
 
-      {/* ESCENARIO */}
-      <primitive object={scene} scale={0.5} />
+  
+      <primitive object={clonedScene} dispose={null} scale={0.5} />
 
-      {/* PLAYER */}
       <group
         position={[-0.3, 0, 2]}
         rotation={[0, Math.PI + 0.22, 0]}
@@ -19,7 +22,7 @@ export default function AdministracionScene({ onExit }) {
         <Player mode="dialogue" spawnPosition={[0, 0, 0]} />
       </group>
 
-      {/* NPC – girado al otro lado */}
+
       <group
         position={[-0.3, 0, 0]}
         rotation={[0, Math.PI/2 -2, 0]}  

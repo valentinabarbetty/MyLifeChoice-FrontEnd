@@ -5,6 +5,7 @@ import WorldCanvas from "./WorldCanvas";
 import WorldScene from "./scenes/WorldScene";
 import WorldHUD from "../World/ui/WorldHUD";
 import AdministracionScene from "./scenes/careers/AdministracionScene";
+import { CAREER_SCENES } from "./data/careerScenes";
 export default function World() {
   const {
     sceneConfig,
@@ -24,6 +25,10 @@ export default function World() {
   const [npcPositions, setNpcPositions] = useState({});
 
   const nearNPC = useNPCProximity(playerPos, npcPositions);
+  const currentDialogue =
+    scene === "CAREER" && activeCareer
+      ? CAREER_SCENES[activeCareer]?.dialogues?.manager?.[dialogueIndex]
+      : null;
 
   return (
     <>
@@ -41,10 +46,10 @@ export default function World() {
           />
         )}
 
-        {scene === "CAREER" && activeCareer === "administracion" && (
+        {scene === "CAREER" && (
           <AdministracionScene
             onExit={() => {
-              setScene("WORLD");
+              setScene("WORLD"); 
               setActiveCareer(null);
               setMode("explore");
             }}
@@ -53,20 +58,53 @@ export default function World() {
       </WorldCanvas>
 
       <WorldHUD
+        scene={scene}
         mode={mode}
-        activeNPC={activeNPC}
-        dialogueIndex={dialogueIndex}
-        setDialogueIndex={setDialogueIndex}
-        sceneConfig={sceneConfig}
-        // 🔥 AQUÍ
+        dialogue={currentDialogue}
+        onNext={() => {
+          const dialogues = CAREER_SCENES[activeCareer]?.dialogues?.manager;
+          if (!dialogues) return;
+
+          if (dialogueIndex + 1 < dialogues.length) {
+            setDialogueIndex((i) => i + 1);
+          } else {
+            setDialogueIndex(0);
+            setMode("career-feedback"); 
+          }
+        }}
         onAccept={() => {
-          setScene("CAREER");
-          setActiveCareer("administracion"); // luego será dinámico
-          setMode("dialogue");
+        
+          if (mode === "interact") {
+            setScene("CAREER");
+            setActiveCareer("administracion");
+            setDialogueIndex(0);
+            setMode("dialogue");
+            return;
+          }
+
+          if (mode === "career-feedback") {
+            setScene("WORLD");
+            setActiveCareer(null);
+            setActiveNPC(null);
+            setDialogueIndex(0);
+            setMode("explore"); 
+          }
         }}
         onReject={() => {
-          setActiveNPC(null);
-          setMode("explore");
+        
+          if (mode === "interact") {
+            setActiveNPC(null);
+            setMode("explore");
+            return;
+          }
+
+          if (mode === "career-feedback") {
+            setScene("WORLD");
+            setActiveCareer(null);
+            setActiveNPC(null);
+            setDialogueIndex(0);
+            setMode("explore"); 
+          }
         }}
       />
     </>

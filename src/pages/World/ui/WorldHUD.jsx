@@ -1,13 +1,16 @@
 import DialogueBox from "../../../components/DialogueBox/DialogueBox"
 
+
 export default function WorldHUD({
+  scene,
   mode,
   dialogue,
   onNext,
   onAccept,
   onReject,
 }) {
-    if (mode === "intro" && dialogue) {
+
+  if (mode === "intro" && dialogue) {
     return (
       <DialogueBox
         speaker={dialogue.speaker}
@@ -17,10 +20,11 @@ export default function WorldHUD({
       />
     );
   }
+
   if (mode === "interact") {
     return (
       <DialogueBox
-        speker="?"
+        speaker="?"
         text="¿Deseas iniciar una conversación?"
         showNext={false}
       >
@@ -31,15 +35,34 @@ export default function WorldHUD({
       </DialogueBox>
     );
   }
-  if (mode === "dialogue" && dialogue)
+
+  if (mode === "dialogue" && dialogue) {
     return (
       <DialogueBox
-        text={dialogue.text}
         speaker={dialogue.speaker}
+        text={dialogue.text}
         onNext={onNext}
         showNext={true}
       />
     );
+  }
+
+  if (scene === "CAREER" && mode === "career-feedback") {
+  return (
+    <DialogueBox
+      speaker="manager"
+      text="¿Te ha gustado la carrera de Administración?"
+      showNext={false}
+    >
+      <div className="dgl-options">
+        <button onClick={onAccept}>Sí</button>
+        <button onClick={onReject}>No</button>
+      </div>
+    </DialogueBox>
+  );
+}
 
 
+  // 🔕 Nada que mostrar
+  return null;
 }
