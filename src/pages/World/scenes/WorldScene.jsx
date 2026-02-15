@@ -5,7 +5,7 @@ import CameraManager from "./../camera/FollowCamera";
 import NPCGroup from "./NPCGroup";
 
 export default function WorldScene({
-    sceneConfig,
+  worldNPCs,
   mode,
   playerPos,
   setPlayerPos,
@@ -19,7 +19,7 @@ export default function WorldScene({
       <Village />
 
       <NPCGroup
-      npcs={sceneConfig.npcs}
+        npcs={worldNPCs}
         playerPos={playerPos}
         nearNPC={nearNPC}
         setNpcPositions={setNpcPositions}
