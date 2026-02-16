@@ -5,8 +5,8 @@ import WorldCanvas from "./WorldCanvas";
 import WorldScene from "./scenes/WorldScene";
 import WorldHUD from "../World/ui/WorldHUD";
 import AdministracionScene from "./scenes/careers/administracion/AdministracionScene";
-import { CAREER_SCENES } from "./data/careerScenes";
 import { useUserProgress } from "./hooks/useUserProgress";
+import { CAREER_DIALOGUES } from "./data/careerScenes";
 
 import { ALL_CAREERS } from "./data/careersList";
 import CareerRouter from "./scenes/careers/CareerRouter";
@@ -66,7 +66,7 @@ export default function World() {
   const nearNPC = useNPCProximity(playerPos, npcPositions);
   const currentDialogue =
     scene === "CAREER" && activeCareer
-      ? CAREER_SCENES[activeCareer]?.dialogues?.manager?.[dialogueIndex]
+      ? CAREER_DIALOGUES[activeCareer]?.[dialogueIndex]
       : null;
 
   return (
@@ -104,7 +104,8 @@ export default function World() {
         mode={mode}
         dialogue={currentDialogue}
         onNext={() => {
-          const dialogues = CAREER_SCENES[activeCareer]?.dialogues?.manager;
+          const dialogues = CAREER_DIALOGUES[activeCareer];
+
           if (!dialogues) return;
 
           if (dialogueIndex + 1 < dialogues.length) {
