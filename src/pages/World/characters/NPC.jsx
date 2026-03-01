@@ -17,7 +17,7 @@ export default function NPC({
   const { scene, animations } = useGLTF(modelPath);
   const hasRoute = Array.isArray(route) && route.length > 0;
 
-  const { actions } = useAnimations(animations, scene);
+  const { actions } = useAnimations(animations, ref);
   useEffect(() => {
     if (!actions) return;
 
@@ -32,13 +32,13 @@ export default function NPC({
   const speed = 0.015;
 
   useEffect(() => {
-  if (!ref.current) return;
+    if (!ref.current) return;
 
-  if (hasRoute) {
-    ref.current.position.set(route[0][0], route[0][1], route[0][2]);
-  }
-}, [hasRoute, route]);
-
+    if (hasRoute) {
+      ref.current.position.set(route[0][0], route[0][1], route[0][2]);
+      onMove?.(ref.current.position.clone());
+    }
+  }, []);
 
   useEffect(() => {
     if (!actions || !animationState) return;
@@ -52,8 +52,7 @@ export default function NPC({
   }, [animationState, actions]);
 
   useFrame(() => {
-  if (!ref.current || !hasRoute) return;
-
+    if (!ref.current || !hasRoute) return;
 
     if (isNear) {
       if (lookAt) {

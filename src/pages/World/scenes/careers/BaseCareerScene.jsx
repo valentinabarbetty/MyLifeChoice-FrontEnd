@@ -15,11 +15,11 @@ export default function BaseCareerScene({
 
   return (
     <group
-      position={[4.5, 0.7, 6.5]}
+      position={[2.8, 0.7, 3]}
       rotation={[0, Math.PI / 2, 0]}
       scale={1}
     >
-      <primitive object={clonedScene} scale={0.5} />
+      <primitive object={clonedScene} scale={0.5} frustumCulled={false}/>
 
       <group
         position={[-0.3, 0, 2]}
@@ -38,8 +38,6 @@ export default function BaseCareerScene({
           scale={4}
         />
       </group>
-
-      {/* Aquí va el mini juego */}
       {children}
     </group>
   );

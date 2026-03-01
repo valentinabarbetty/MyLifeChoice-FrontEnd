@@ -53,6 +53,7 @@
 //   },
 // };
 import { administracionDialogues } from "../scenes/careers/administracion/AdministracionDialogues";
+import { agroambientalDialogues } from "../scenes/careers/agroambiental/AgroambientalDialogues";
 import { agroforestalDialogues } from "../scenes/careers/agroforestal/AgroforestalDialogues";
 import { alimentosDialogues } from "../scenes/careers/alimentos/AlimentosDialogues";
 import { contaduriaDialogues } from "../scenes/careers/contaduria/ContaduriaDialogues";

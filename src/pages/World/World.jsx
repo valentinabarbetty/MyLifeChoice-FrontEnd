@@ -10,6 +10,8 @@ import { CAREER_DIALOGUES } from "./data/careerScenes";
 
 import { ALL_CAREERS } from "./data/careersList";
 import CareerRouter from "./scenes/careers/CareerRouter";
+import { useMemo } from "react";
+import CameraManager from "./camera/FollowCamera";
 
 export default function World() {
   const {
@@ -51,14 +53,16 @@ export default function World() {
     ],
   ];
 
-  const worldNPCs = visibleCareers.reduce((acc, careerId, index) => {
-    acc[careerId] = {
-      id: careerId,
-      model: `/assets/models/npc/${careerId}.glb`,
-      route: ROUTES[index] || ROUTES[0],
-    };
-    return acc;
-  }, {});
+  const worldNPCs = useMemo(() => {
+    return visibleCareers.reduce((acc, careerId, index) => {
+      acc[careerId] = {
+        id: careerId,
+        model: `/assets/models/npc/${careerId}.glb`,
+        route: ROUTES[index] || ROUTES[0],
+      };
+      return acc;
+    }, {});
+  }, [visibleCareers]);
 
   const [playerPos, setPlayerPos] = useState({ x: 0, y: 0, z: 0 });
   const [npcPositions, setNpcPositions] = useState({});
@@ -84,21 +88,14 @@ export default function World() {
             setMode={setMode}
           />
         )}
+
         {scene === "CAREER" && activeCareer && (
-          <CareerRouter careerId={activeCareer} />
+          <CareerRouter key={activeCareer} careerId={activeCareer} />
         )}
 
-        {/* {scene === "CAREER" && (
-          <AdministracionScene
-            onExit={() => {
-              setScene("WORLD");
-              setActiveCareer(null);
-              setMode("explore");
-            }}
-          />
-        )} */}
+        {/* ✅ Cámara SIEMPRE activa */}
+        <CameraManager scene={scene} mode={mode} playerPos={playerPos} />
       </WorldCanvas>
-
       <WorldHUD
         scene={scene}
         mode={mode}
