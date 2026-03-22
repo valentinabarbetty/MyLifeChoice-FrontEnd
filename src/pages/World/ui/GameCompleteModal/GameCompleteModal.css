@@ -1,0 +1,54 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+}
+
+.panel {
+  width: 500px;
+  background: #fef7e7;
+  border-radius: 25px;
+  padding: 30px;
+  text-align: center;
+  animation: pop 0.3s ease;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.extra {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 15px;
+  background: #22c55e;
+  color: white;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

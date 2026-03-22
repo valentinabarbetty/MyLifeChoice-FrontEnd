@@ -1,15 +1,26 @@
 import AdministracionScene from "./administracion/AdministracionScene";
-import PsicologiaScene from "./psicologia/PsicologiaScene";
-import SoftwareScene from "./software/SoftwareScene";
+import ContaduriaScene from "./contaduria/ContaduriaScene";
 
-export default function CareerRouter({ careerId }) {
+export default function CareerRouter({ careerId, mode, setMode, setDialogueIndex }) {
   switch (careerId) {
     case "administracion":
-      return <AdministracionScene />;
-    case "psicologia":
-      return <PsicologiaScene />;
-    case "software":
-      return <SoftwareScene />;
+      return (
+        <AdministracionScene
+          mode={mode}
+          setMode={setMode}
+          setDialogueIndex={setDialogueIndex}
+        />
+      );
+
+    case "contaduriaPublica":
+      return (
+        <ContaduriaScene
+          mode={mode}
+          setMode={setMode}
+          setDialogueIndex={setDialogueIndex}
+        />
+      );
+
     default:
       return null;
   }

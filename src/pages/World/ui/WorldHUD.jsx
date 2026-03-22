@@ -36,7 +36,7 @@ export default function WorldHUD({
     );
   }
 
-  if (mode === "dialogue" && dialogue) {
+  if ((mode === "dialogue" || mode === "career-ending") && dialogue) {
     return (
       <DialogueBox
         speaker={dialogue.speaker}
@@ -61,8 +61,10 @@ export default function WorldHUD({
     </DialogueBox>
   );
 }
+if (scene === "CAREER" && mode === "career-game") {
+  return null;
+}
 
 
-  // 🔕 Nada que mostrar
   return null;
 }

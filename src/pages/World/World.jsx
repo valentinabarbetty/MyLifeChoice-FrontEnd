@@ -5,11 +5,15 @@ import WorldCanvas from "./WorldCanvas";
 import WorldScene from "./scenes/WorldScene";
 import WorldHUD from "../World/ui/WorldHUD";
 import AdministracionScene from "./scenes/careers/administracion/AdministracionScene";
-import { CAREER_SCENES } from "./data/careerScenes";
 import { useUserProgress } from "./hooks/useUserProgress";
+import { CAREER_DIALOGUES } from "./data/careerScenes";
 
 import { ALL_CAREERS } from "./data/careersList";
 import CareerRouter from "./scenes/careers/CareerRouter";
+import { useMemo } from "react";
+import CameraManager from "./camera/FollowCamera";
+import AdministracionGame from "./scenes/careers/administracion/AdministracionGame";
+import ContaduriaGame from "./scenes/careers/contaduria/ContaduriaGame";
 
 export default function World() {
   const {
@@ -51,22 +55,28 @@ export default function World() {
     ],
   ];
 
-  const worldNPCs = visibleCareers.reduce((acc, careerId, index) => {
-    acc[careerId] = {
-      id: careerId,
-      model: `/assets/models/npc/${careerId}.glb`,
-      route: ROUTES[index] || ROUTES[0],
-    };
-    return acc;
-  }, {});
+  const worldNPCs = useMemo(() => {
+    return visibleCareers.reduce((acc, careerId, index) => {
+      acc[careerId] = {
+        id: careerId,
+        model: `/assets/models/npc/${careerId}.glb`,
+        route: ROUTES[index] || ROUTES[0],
+      };
+      return acc;
+    }, {});
+  }, [visibleCareers]);
 
   const [playerPos, setPlayerPos] = useState({ x: 0, y: 0, z: 0 });
   const [npcPositions, setNpcPositions] = useState({});
 
   const nearNPC = useNPCProximity(playerPos, npcPositions);
+  const careerData = CAREER_DIALOGUES[activeCareer];
+
   const currentDialogue =
-    scene === "CAREER" && activeCareer
-      ? CAREER_SCENES[activeCareer]?.dialogues?.manager?.[dialogueIndex]
+    scene === "CAREER" && activeCareer && careerData && mode !== "career-game"
+      ? careerData[mode === "career-ending" ? "ending" : "intro"]?.[
+          dialogueIndex
+        ]
       : null;
 
   return (
@@ -84,34 +94,62 @@ export default function World() {
             setMode={setMode}
           />
         )}
-        {scene === "CAREER" && activeCareer && (
-          <CareerRouter careerId={activeCareer} />
+
+        {scene === "CAREER" && activeCareer && mode !== "career-game" && (
+          <CareerRouter
+            key={activeCareer}
+            careerId={activeCareer}
+            mode={mode}
+            setMode={setMode}
+            setDialogueIndex={setDialogueIndex}
+          />
         )}
 
-        {/* {scene === "CAREER" && (
-          <AdministracionScene
-            onExit={() => {
-              setScene("WORLD");
-              setActiveCareer(null);
-              setMode("explore");
-            }}
-          />
-        )} */}
+        <CameraManager scene={scene} mode={mode} playerPos={playerPos} />
       </WorldCanvas>
+      {scene === "CAREER" && mode === "career-game" && (
+        <>
+          {activeCareer === "administracion" && (
+            <AdministracionGame
+              onComplete={() => {
+                setMode("career-ending");
+                setDialogueIndex(0);
+              }}
+            />
+          )}
 
+          {activeCareer === "contaduriaPublica" && (
+            <ContaduriaGame
+              onComplete={() => {
+                setMode("career-ending");
+                setDialogueIndex(0);
+              }}
+            />
+          )}
+        </>
+      )}
       <WorldHUD
         scene={scene}
         mode={mode}
         dialogue={currentDialogue}
         onNext={() => {
-          const dialogues = CAREER_SCENES[activeCareer]?.dialogues?.manager;
-          if (!dialogues) return;
+          const careerData = CAREER_DIALOGUES[activeCareer];
+          if (!careerData) return;
+
+          const isEnding = mode === "career-ending";
+          const phase = isEnding ? "ending" : "intro";
+          const dialogues = careerData[phase];
 
           if (dialogueIndex + 1 < dialogues.length) {
             setDialogueIndex((i) => i + 1);
           } else {
-            setDialogueIndex(0);
-            setMode("career-feedback");
+            if (!isEnding) {
+              setDialogueIndex(0);
+              setMode("career-game");
+            } else {
+              setDialogueIndex(0);
+              setMode("career-feedback");
+            }
           }
         }}
         onAccept={() => {

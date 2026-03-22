@@ -1,0 +1,129 @@
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f5f9;
+}
+
+/* PANEL */
+.panel {
+  width: 1000px;
+  background: #fef7e7;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+/* TEXTOS */
+.title {
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* LAYOUT */
+.content {
+  display: flex;
+  gap: 20px;
+}
+
+/* TABLAS */
+.table,
+.receipts {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+/* FILAS */
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.row-active {
+  background: #dcfce7;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+/* VALORES */
+.valueBox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* RECIBOS */
+.receipt {
+  background: #f3f4f6;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* BOTÓN */
+.btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 15px;
+  background: #22c55e;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* CARRUSEL */
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* IMAGEN */
+.facturaImg {
+  width: 250px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* FLECHAS */
+.arrow {
+  background: #e5e7eb;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* DOTS */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ccc;
+}
+
+.dot-active {
+  background: #333;
+}
