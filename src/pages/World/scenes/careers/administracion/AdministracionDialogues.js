@@ -12,7 +12,6 @@ export const administracionIntroDialogues = [
     text: "Si te interesa el mundo de los negocios, la organización y liderar proyectos… esta carrera podría llamarte la atención.",
   },
 
-  // ¿Qué es esta carrera?
   {
     speaker: "Raquelle",
     text: "La Administración de Empresas se trata de organizar, planear y dirigir negocios o proyectos.",
@@ -26,7 +25,6 @@ export const administracionIntroDialogues = [
     text: "Un administrador conecta muchas áreas: finanzas, marketing, recursos humanos y logística. Somos como los estrategas del negocio.",
   },
 
-  // Día típico
   {
     speaker: "Raquelle",
     text: "Te cuento cómo puede ser un día típico mío.",
@@ -48,7 +46,6 @@ export const administracionIntroDialogues = [
     text: "Y también coordino equipos, porque una empresa no funciona sola… funciona gracias a las personas.",
   },
 
-  // Áreas
   {
     speaker: "Raquelle",
     text: "Algo muy interesante de esta carrera es que puedes trabajar en muchos sectores.",
@@ -58,7 +55,6 @@ export const administracionIntroDialogues = [
     text: "Podrías trabajar en gestión empresarial, finanzas, marketing, recursos humanos, emprendimiento o consultoría.",
   },
 
-  // Habilidades
   {
     speaker: "Raquelle",
     text: "Si te gusta esta carrera, hay habilidades clave que te ayudarán mucho.",
@@ -72,7 +68,6 @@ export const administracionIntroDialogues = [
     text: "Porque muchas veces tendrás que decidir qué camino debe seguir una empresa.",
   },
 
-  // Cosas buenas
   {
     speaker: "Raquelle",
     text: "Hay cosas que suelen gustarle mucho a quienes estudian administración.",

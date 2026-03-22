@@ -1,0 +1,158 @@
+/* 🔵 OVERLAY */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eef2f7;
+}
+
+/* 🟡 PANEL PRINCIPAL */
+.panel {
+  width: 900px;
+  background: #fef7e7;
+  padding: 30px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* 🧠 TITULO */
+.panel h2 {
+  margin-bottom: 20px;
+}
+
+/* 🧩 CONTENEDOR DE CARTAS */
+.cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+/* 🎴 CARD BASE */
+.card {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 20px;
+  width: 160px;
+  height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+/* 🟢 DRAG */
+.card.drag {
+  cursor: grab;
+}
+
+.card.drag:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+}
+
+/* ✨ HOVER */
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* 🖼️ IMAGEN */
+.card-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+/* 🔤 TEXTO */
+.card h3 {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* 🟢 SELECCION */
+.selectable {
+  cursor: pointer;
+}
+
+.active {
+  border: 3px solid #22c55e;
+  background: #ecfdf5;
+}
+
+/* 🔘 BOTONES OPCIONES */
+.solutions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.solutions button {
+  flex: 1;
+  padding: 15px;
+  border-radius: 15px;
+  border: none;
+  background: #e5e7eb;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.solutions button:hover {
+  transform: scale(1.05);
+}
+
+.solutions button.active {
+  background: #22c55e;
+  color: white;
+}
+
+/* 🚀 BOTON PRINCIPAL */
+.btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(180deg, #4ade80, #22c55e);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(34,197,94,0.4);
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+}
+.selected-station {
+  background: #f8fafc;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 180px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.selected-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin: 10px 0;
+}

@@ -62,11 +62,11 @@ import { alimentosDialogues } from "../scenes/careers/alimentos/AlimentosDialogu
 import { contaduriaEndingDialogues, contaduriaIntroDialogues } from "../scenes/careers/contaduria/ContaduriaDialogues";
 import { educacionFisicaDialogues } from "../scenes/careers/educacionFisica/educacionFisicaDialogues";
 import { electronicaDialogues } from "../scenes/careers/electronica/ElectronicaDialogues";
-import { ingenieriaIndustrialDialogues } from "../scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialDialogues";
+import { ingenieriaIndustrialEndingDialogues, ingenieriaIndustrialIntroDialogues } from "../scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialDialogues";
 import { literaturaDialogues } from "../scenes/careers/literatura/LiteraturaDialogues";
 import { logisticaDialogues } from "../scenes/careers/logistica/LogisticaDialogues";
 import { mantenimientoDialogues } from "../scenes/careers/mantenimiento/MantenimientoDialogues";
-import { psicologiaDialogues } from "../scenes/careers/psicologia/PsicologiaDialogues";
+import { psicologiaEndingDialogues, psicologiaIntroDialogues } from "../scenes/careers/psicologia/PsicologiaDialogues";
 import { softwareDialogues } from "../scenes/careers/software/SoftwareDialogues";
 
 
@@ -79,11 +79,16 @@ export const CAREER_DIALOGUES = {
     intro: contaduriaIntroDialogues,
     ending: contaduriaEndingDialogues,
   },
+  ingenieriaIndustrial: {
+    intro: ingenieriaIndustrialIntroDialogues,
+    ending: ingenieriaIndustrialEndingDialogues
+  },
+  psicologia: {
+    intro: psicologiaIntroDialogues,
+    ending: psicologiaEndingDialogues
+  },
 
-
-  psicologia: psicologiaDialogues,
   software: softwareDialogues,
-  ingenieriaIndustrial: ingenieriaIndustrialDialogues,
   educacionFisica: educacionFisicaDialogues,
   literatura: literaturaDialogues,
   agroambiental: agroambientalDialogues,
