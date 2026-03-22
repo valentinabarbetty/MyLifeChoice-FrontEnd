@@ -1,46 +1,11 @@
-import AdministracionScene from "./administracion/AdministracionScene";
-import ContaduriaScene from "./contaduria/ContaduriaScene";
-import IngenieriaIndustrialScene from "./ingenieriaIndustrial/IngenieriaIndustrialScene";
-import PsicologiaScene from "./psicologia/PsicologiaScene";
+
+import { SCENE_COMPONENTS } from "../../SceneRegistry";
 
 
-export default function CareerRouter({ careerId, mode, setMode, setDialogueIndex }) {
-  switch (careerId) {
-    case "administracion":
-      return (
-        <AdministracionScene
-          mode={mode}
-          setMode={setMode}
-          setDialogueIndex={setDialogueIndex}
-        />
-      );
+export default function CareerRouter({ careerId, ...props }) {
+  const SceneComponent = SCENE_COMPONENTS[careerId];
 
-    case "contaduriaPublica":
-      return (
-        <ContaduriaScene
-          mode={mode}
-          setMode={setMode}
-          setDialogueIndex={setDialogueIndex}
-        />
-      );
-    case "ingenieriaIndustrial":
-      return (
-        <IngenieriaIndustrialScene
-         mode={mode}
-          setMode={setMode}
-          setDialogueIndex={setDialogueIndex}
-        />
-      )
-    case "psicologia":
-      return (
-        <PsicologiaScene
-         mode={mode}
-          setMode={setMode}
-          setDialogueIndex={setDialogueIndex}
-        />
-      )
+  if (!SceneComponent) return null;
 
-    default:
-      return null;
-  }
+  return <SceneComponent {...props} />;
 }

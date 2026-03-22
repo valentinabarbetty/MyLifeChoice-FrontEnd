@@ -4,7 +4,6 @@ import { useNPCProximity } from "./hooks/useNPCProximity";
 import WorldCanvas from "./WorldCanvas";
 import WorldScene from "./scenes/WorldScene";
 import WorldHUD from "../World/ui/WorldHUD";
-import AdministracionScene from "./scenes/careers/administracion/AdministracionScene";
 import { useUserProgress } from "./hooks/useUserProgress";
 import { CAREER_DIALOGUES } from "./data/careerScenes";
 
@@ -12,10 +11,8 @@ import { ALL_CAREERS } from "./data/careersList";
 import CareerRouter from "./scenes/careers/CareerRouter";
 import { useMemo } from "react";
 import CameraManager from "./camera/FollowCamera";
-import AdministracionGame from "./scenes/careers/administracion/AdministracionGame";
-import ContaduriaGame from "./scenes/careers/contaduria/ContaduriaGame";
-import IngenieriaIndustrialGame from "./scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialGame";
-import PsicologiaGame from "./scenes/careers/psicologia/PsicologiaGame";
+import { GAME_COMPONENTS } from "./GamesRegistry";
+
 
 export default function World() {
   const {
@@ -32,7 +29,7 @@ export default function World() {
     setActiveCareer,
   } = useWorldState();
   const { visited, markVisited } = useUserProgress();
-
+  const ActiveGame = GAME_COMPONENTS[activeCareer];
   const availableCareers = ALL_CAREERS.filter((c) => !visited.includes(c));
 
   const visibleCareers = availableCareers.slice(0, 3);
@@ -109,42 +106,13 @@ export default function World() {
 
         <CameraManager scene={scene} mode={mode} playerPos={playerPos} />
       </WorldCanvas>
-      {scene === "CAREER" && mode === "career-game" && (
-        <>
-          {activeCareer === "administracion" && (
-            <AdministracionGame
-              onComplete={() => {
-                setMode("career-ending");
-                setDialogueIndex(0);
-              }}
-            />
-          )}
-
-          {activeCareer === "contaduriaPublica" && (
-            <ContaduriaGame
-              onComplete={() => {
-                setMode("career-ending");
-                setDialogueIndex(0);
-              }}
-            />
-          )}
-          {activeCareer === "ingenieriaIndustrial" && (
-            <IngenieriaIndustrialGame
-              onComplete={() => {
-                setMode("career-ending");
-                setDialogueIndex(0);
-              }}
-            />
-          )}
-          {activeCareer === "psicologia" && (
-            <PsicologiaGame
-              onComplete={() => {
-                setMode("career-ending");
-                setDialogueIndex(0);
-              }}
-            />
-          )}
-        </>
+      {scene === "CAREER" && mode === "career-game" && ActiveGame && (
+        <ActiveGame
+          onComplete={() => {
+            setMode("career-ending");
+            setDialogueIndex(0);
+          }}
+        />
       )}
       <WorldHUD
         scene={scene}

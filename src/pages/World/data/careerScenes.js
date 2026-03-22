@@ -60,14 +60,14 @@ import { agroambientalDialogues } from "../scenes/careers/agroambiental/Agroambi
 import { agroforestalDialogues } from "../scenes/careers/agroforestal/AgroforestalDialogues";
 import { alimentosDialogues } from "../scenes/careers/alimentos/AlimentosDialogues";
 import { contaduriaEndingDialogues, contaduriaIntroDialogues } from "../scenes/careers/contaduria/ContaduriaDialogues";
-import { educacionFisicaDialogues } from "../scenes/careers/educacionFisica/educacionFisicaDialogues";
+import { educacionFisicaEndingDialogues, educacionFisicaIntroDialogues } from "../scenes/careers/educacionFisica/educacionFisicaDialogues";
 import { electronicaDialogues } from "../scenes/careers/electronica/ElectronicaDialogues";
 import { ingenieriaIndustrialEndingDialogues, ingenieriaIndustrialIntroDialogues } from "../scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialDialogues";
-import { literaturaDialogues } from "../scenes/careers/literatura/LiteraturaDialogues";
+import { literaturaEndingDialogues, literaturaIntroDialogues } from "../scenes/careers/literatura/LiteraturaDialogues";
 import { logisticaDialogues } from "../scenes/careers/logistica/LogisticaDialogues";
 import { mantenimientoDialogues } from "../scenes/careers/mantenimiento/MantenimientoDialogues";
 import { psicologiaEndingDialogues, psicologiaIntroDialogues } from "../scenes/careers/psicologia/PsicologiaDialogues";
-import { softwareDialogues } from "../scenes/careers/software/SoftwareDialogues";
+import { softwareEndingDialogues, softwareIntroDialogues } from "../scenes/careers/software/SoftwareDialogues";
 
 
 export const CAREER_DIALOGUES = {
@@ -87,10 +87,18 @@ export const CAREER_DIALOGUES = {
     intro: psicologiaIntroDialogues,
     ending: psicologiaEndingDialogues
   },
-
-  software: softwareDialogues,
-  educacionFisica: educacionFisicaDialogues,
-  literatura: literaturaDialogues,
+  software: {
+    intro: softwareIntroDialogues,
+    ending: softwareEndingDialogues
+  },
+  educacionFisica: {
+    intro: educacionFisicaIntroDialogues,
+    ending: educacionFisicaEndingDialogues
+  },
+  literatura: {
+    intro: literaturaIntroDialogues,
+    ending: literaturaEndingDialogues
+  },
   agroambiental: agroambientalDialogues,
   alimentos: alimentosDialogues,
   electronica: electronicaDialogues,

@@ -1,0 +1,62 @@
+.fisica {
+  width: 1100px;
+}
+
+.exercise-list {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.exercise-card {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  cursor: grab;
+  width: 120px;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+
+.exercise-card:hover {
+  transform: scale(1.05);
+}
+
+.exercise-card .emoji {
+  font-size: 2rem;
+}
+
+.exercise-card.small {
+  width: 50px;
+  padding: 10px;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.drop-zone {
+  background: #f1f5f9;
+  border-radius: 20px;
+  padding: 20px;
+  min-height: 120px;
+
+  border: 2px dashed #cbd5e1;
+}
+
+.drop-zone h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.drop-content {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
