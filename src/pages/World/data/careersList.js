@@ -1,14 +1,14 @@
 export const ALL_CAREERS = [
 //  "administracion",
   //"psicologia",
-   "software",
+  /// "software",
   // "logistica",
   // "mantenimiento",
  // "ingenieriaIndustrial",
   // "agroambiental",
   // "alimentos",
  // "contaduriaPublica",
-  // "educacionFisica",
+   "educacionFisica",
   // "electronica",
   // "literatura",
   // "produccionAgroforestal"

@@ -4,7 +4,6 @@ import { useNPCProximity } from "./hooks/useNPCProximity";
 import WorldCanvas from "./WorldCanvas";
 import WorldScene from "./scenes/WorldScene";
 import WorldHUD from "../World/ui/WorldHUD";
-import AdministracionScene from "./scenes/careers/administracion/AdministracionScene";
 import { useUserProgress } from "./hooks/useUserProgress";
 import { CAREER_DIALOGUES } from "./data/careerScenes";
 
@@ -13,6 +12,7 @@ import CareerRouter from "./scenes/careers/CareerRouter";
 import { useMemo } from "react";
 import CameraManager from "./camera/FollowCamera";
 import { GAME_COMPONENTS } from "./GamesRegistry";
+
 
 export default function World() {
   const {
