@@ -7,6 +7,7 @@ import PsicologiaScene from "./scenes/careers/psicologia/PsicologiaScene"
 import SoftwareScene from "./scenes/careers/software/SoftwareScene";
 import EducacionFisicaScene from "./scenes/careers/educacionFisica/EducacionFisicaScene";
 import LiteraturaScene from "./scenes/careers/literatura/LiteraturaScene";
+import AlimentosScene from "./scenes/careers/alimentos/AlimentosScene";
 
 export const SCENE_COMPONENTS = {
   administracion: AdministracionScene,
@@ -15,5 +16,6 @@ export const SCENE_COMPONENTS = {
   psicologia: PsicologiaScene,
   software: SoftwareScene,
   educacionFisica: EducacionFisicaScene,
-  literatura: LiteraturaScene
+  literatura: LiteraturaScene,
+  alimentos: AlimentosScene
 };

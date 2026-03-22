@@ -1,4 +1,5 @@
 import AdministracionGame from "./scenes/careers/administracion/AdministracionGame";
+import AlimentosGame from "./scenes/careers/alimentos/AlimentosGame";
 import ContaduriaGame from "./scenes/careers/contaduria/ContaduriaGame";
 import EducacionFisicaGame from "./scenes/careers/educacionFisica/EducacionFisicaGame";
 import IngenieriaIndustrialGame from "./scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialGame";
@@ -15,5 +16,6 @@ export const GAME_COMPONENTS = {
   psicologia: PsicologiaGame,
   software: SoftwareGame,
   educacionFisica: EducacionFisicaGame,
-  literatura: LiteraturaGame
+  literatura: LiteraturaGame,
+  alimentos: AlimentosGame
 };

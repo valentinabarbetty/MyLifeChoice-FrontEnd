@@ -6,10 +6,10 @@ export const ALL_CAREERS = [
   // "mantenimiento",
  // "ingenieriaIndustrial",
   // "agroambiental",
-  // "alimentos",
+  "alimentos",
  // "contaduriaPublica",
    //"educacionFisica",
   // "electronica",
-   "literatura",
+  // "literatura",
   // "produccionAgroforestal"
 ];
