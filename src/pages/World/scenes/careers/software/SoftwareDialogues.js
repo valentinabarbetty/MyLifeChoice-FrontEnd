@@ -1,32 +1,139 @@
-export const softwareDialogues = [
+export const softwareIntroDialogues = [
   {
     speaker: "Brayan",
-    text: "¡Hola! Soy Leo. Bienvenido al mundo del Desarrollo de Software, donde las ideas se convierten en aplicaciones reales.",
-    animation: "walk",
+    text: "¡Hola! 👋 Bienvenido. Soy Brayan, desarrollador de software.",
+    animation: "wave",
   },
   {
     speaker: "Brayan",
-    text: "El software está en casi todo lo que usamos hoy: celulares, videojuegos, bancos, hospitales y hasta autos inteligentes.",
+    text: "Mi trabajo es crear programas, aplicaciones y sistemas que usamos todos los días.",
     animation: "talking",
   },
   {
     speaker: "Brayan",
-    text: "Aquí aprenderás a programar, diseñar sistemas y resolver problemas usando lógica y pensamiento estructurado.",
+    text: "Desde una app de celular… hasta sistemas empresariales o videojuegos.",
     animation: "talking",
   },
   {
     speaker: "Brayan",
-    text: "Un desarrollador de software no solo escribe código, también analiza necesidades y crea soluciones eficientes.",
+    text: "Si te gusta la tecnología y crear cosas con una computadora… esta carrera podría interesarte mucho.",
+    animation: "smile",
+  },
+
+  {
+    speaker: "Brayan",
+    text: "La Tecnología en Desarrollo de Software se trata de diseñar y construir programas informáticos. 💻",
+    animation: "explain",
+  },
+  {
+    speaker: "Brayan",
+    text: "Creamos soluciones digitales para problemas reales.",
     animation: "talking",
   },
   {
     speaker: "Brayan",
-    text: "Podrás trabajar en áreas como desarrollo web, aplicaciones móviles, inteligencia artificial o ciberseguridad.",
+    text: "Como aplicaciones móviles, páginas web, sistemas empresariales, videojuegos o plataformas digitales.",
     animation: "talking",
   },
   {
     speaker: "Brayan",
-    text: "Si disfrutas resolver retos, pensar de manera lógica y crear cosas desde cero, esta carrera puede ser perfecta para ti.",
+    text: "En pocas palabras… convertimos ideas en programas que funcionan.",
+    animation: "soft",
+  },
+  {
+    speaker: "Brayan",
+    text: "Un día como desarrollador suele verse así.",
+    animation: "idle",
+  },
+  {
+    speaker: "Brayan",
+    text: "Primero reviso las tareas del proyecto y luego empiezo a escribir código.",
+    animation: "typing",
+  },
+  {
+    speaker: "Brayan",
+    text: "El código son instrucciones para que el programa funcione.",
     animation: "talking",
+  },
+  {
+    speaker: "Brayan",
+    text: "También corrijo errores, pruebo que todo funcione y mejoro sistemas existentes.",
+    animation: "thinking",
+  },
+  {
+    speaker: "Brayan",
+    text: "Y muchas veces trabajo con otros desarrolladores para construir proyectos más grandes.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Brayan",
+    text: "Una gran ventaja de esta carrera es que puedes trabajar en muchas áreas.",
+    animation: "explain",
+  },
+  {
+    speaker: "Brayan",
+    text: "🌐 Desarrollo web, 📱 apps móviles, 🖥 software empresarial, 🎮 videojuegos y ☁️ sistemas en la nube.",
+    animation: "talking",
+  },
+  {
+    speaker: "Brayan",
+    text: "Hoy en día, casi todas las empresas necesitan software.",
+    animation: "soft",
+  },
+
+  {
+    speaker: "Brayan",
+    text: "Para aprender desarrollo de software, hay habilidades muy importantes.",
+    animation: "explain",
+  },
+  {
+    speaker: "Brayan",
+    text: "🧠 Pensamiento lógico, 🔍 resolución de problemas y 💻 gusto por la tecnología.",
+    animation: "talking",
+  },
+  {
+    speaker: "Brayan",
+    text: "También aprender constantemente y trabajar en equipo. 🤝",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Brayan",
+    text: "Muchos disfrutan esta carrera porque pueden crear cosas desde cero y resolver problemas de forma creativa.",
+    animation: "smile",
+  },
+  {
+    speaker: "Brayan",
+    text: "Además, hay muchas oportunidades laborales y puedes crear tus propios proyectos.",
+    animation: "soft",
+  },
+];
+
+export const softwareEndingDialogues = [
+  {
+    speaker: "Brayan",
+    text: "Ahora piensa esto…",
+    animation: "idle",
+  },
+  {
+    speaker: "Brayan",
+    text: "¿Te gustaría crear aplicaciones, sistemas o incluso videojuegos?",
+    animation: "talking",
+  },
+  {
+    speaker: "Brayan",
+    text: "Si te gusta la tecnología, resolver problemas y construir cosas digitales…",
+    animation: "soft",
+  },
+  {
+    speaker: "Brayan",
+    text: "quizás Tecnología en Desarrollo de Software sea tu camino. 💻🚀",
+    animation: "smile",
+  },
+  {
+    speaker: "Brayan",
+    text: "Nos vemos en tu próxima aventura profesional.",
+    animation: "wave",
   },
 ];

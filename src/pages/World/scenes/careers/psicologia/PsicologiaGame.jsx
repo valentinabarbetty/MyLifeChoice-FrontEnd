@@ -4,6 +4,7 @@ import ConfettiEffect from "../../../ui/Confetti";
 import GameCompleteModal from "../../../ui/GameCompleteModal/GameCompleteModal";
 import OptionCard from "../../../ui/OptionCard";
 import "./PsicologiaGame.css";
+import GenericDecisionGame from "../../../ui/GenericDecisionGame";
 
 /* DATA */
 
@@ -38,95 +39,16 @@ const OPTIONS = [
 ];
 
 export default function PsicologiaGame({ onComplete }) {
-  const [index, setIndex] = useState(0);
-  const [selected, setSelected] = useState(null);
-  const [gameFinished, setGameFinished] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
-
-  const current = CASES[index];
-
-  const handleContinue = () => {
-    if (!selected) {
-      return Swal.fire({
-        title: "Selecciona una opción 👀",
-        text: "Debes elegir una emoción",
-        icon: "warning",
-        confirmButtonColor: "#22c55e",
-        background: "#fef7e7",
-      });
-    }
-
-    if (selected !== current.correct) {
-      return Swal.fire({
-        title: "No es la emoción correcta 😅",
-        text: "Intenta ponerte en su lugar",
-        icon: "warning",
-        confirmButtonColor: "#22c55e",
-        background: "#fef7e7",
-      });
-    }
-
-    if (index === CASES.length - 1) {
-      setGameFinished(true);
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 4000);
-      return;
-    }
-
-    setIndex((i) => i + 1);
-    setSelected(null);
-  };
-
-  /* FINAL */
-
-  if (gameFinished) {
-    return (
-      <div className="overlay">
-        {showConfetti && <ConfettiEffect />}
-
-        <GameCompleteModal
-          title="🧠 ¡Excelente!"
-          message="Has identificado correctamente las emociones."
-          onContinue={onComplete}
-        />
-      </div>
-    );
-  }
-
   return (
-    <div className="overlay">
-      <div className="panel">
-
-        {/* NPC */}
-        <div className="npc-container">
-          <img src={current.image} className="npc-img" />
-
-          <div className="bubble">
-            {current.text}
-          </div>
-        </div>
-
-        <h3 className="question">
-          Selecciona la emoción que corresponde:
-        </h3>
-
-        {/* 🔥 OPTIONS CON COMPONENTE */}
-        <div className="options">
-          {OPTIONS.map((opt) => (
-            <OptionCard
-              key={opt.value}
-              title={opt.label}
-              subtitle={opt.emoji}
-              isActive={selected === opt.value}
-              onClick={() => setSelected(opt.value)}
-            />
-          ))}
-        </div>
-
-        <button className="btn" onClick={handleContinue}>
-          CONTINUAR
-        </button>
-      </div>
-    </div>
+    <GenericDecisionGame
+      cases={CASES}
+      options={OPTIONS}
+      npcImage="/assets/ui/Psicologia/person1.png"
+      introText="Observa la situación y selecciona la emoción correcta."
+      instructionText="Selecciona la emoción:"
+      successTitle="🧠 ¡Excelente!"
+      successMessage="Has identificado correctamente las emociones."
+      onComplete={onComplete}
+    />
   );
 }

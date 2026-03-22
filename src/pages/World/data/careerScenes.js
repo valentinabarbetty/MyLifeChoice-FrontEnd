@@ -67,7 +67,7 @@ import { literaturaDialogues } from "../scenes/careers/literatura/LiteraturaDial
 import { logisticaDialogues } from "../scenes/careers/logistica/LogisticaDialogues";
 import { mantenimientoDialogues } from "../scenes/careers/mantenimiento/MantenimientoDialogues";
 import { psicologiaEndingDialogues, psicologiaIntroDialogues } from "../scenes/careers/psicologia/PsicologiaDialogues";
-import { softwareDialogues } from "../scenes/careers/software/SoftwareDialogues";
+import { softwareEndingDialogues, softwareIntroDialogues } from "../scenes/careers/software/SoftwareDialogues";
 
 
 export const CAREER_DIALOGUES = {
@@ -87,8 +87,10 @@ export const CAREER_DIALOGUES = {
     intro: psicologiaIntroDialogues,
     ending: psicologiaEndingDialogues
   },
-
-  software: softwareDialogues,
+  software: {
+    intro: softwareIntroDialogues,
+    ending: softwareEndingDialogues
+  },
   educacionFisica: educacionFisicaDialogues,
   literatura: literaturaDialogues,
   agroambiental: agroambientalDialogues,
