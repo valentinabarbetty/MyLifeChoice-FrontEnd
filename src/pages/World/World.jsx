@@ -15,6 +15,7 @@ import CameraManager from "./camera/FollowCamera";
 import AdministracionGame from "./scenes/careers/administracion/AdministracionGame";
 import ContaduriaGame from "./scenes/careers/contaduria/ContaduriaGame";
 import IngenieriaIndustrialGame from "./scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialGame";
+import PsicologiaGame from "./scenes/careers/psicologia/PsicologiaGame";
 
 export default function World() {
   const {
@@ -129,6 +130,14 @@ export default function World() {
           )}
           {activeCareer === "ingenieriaIndustrial" && (
             <IngenieriaIndustrialGame
+              onComplete={() => {
+                setMode("career-ending");
+                setDialogueIndex(0);
+              }}
+            />
+          )}
+          {activeCareer === "psicologia" && (
+            <PsicologiaGame
               onComplete={() => {
                 setMode("career-ending");
                 setDialogueIndex(0);

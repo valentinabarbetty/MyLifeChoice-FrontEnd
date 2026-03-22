@@ -1,5 +1,4 @@
 export const contaduriaIntroDialogues = [
-  // INTRO
   {
     speaker: "Isabella",
     text: "¡Hola! 👋 Bienvenido. Soy Isabella, contadora pública.",
@@ -16,7 +15,6 @@ export const contaduriaIntroDialogues = [
     animation: "talking",
   },
 
-  // ¿QUÉ ES?
   {
     speaker: "Isabella",
     text: "La Contaduría Pública se encarga de registrar, analizar y explicar la información financiera de una empresa.",
@@ -33,7 +31,6 @@ export const contaduriaIntroDialogues = [
     animation: "talking",
   },
 
-  // DÍA A DÍA
   {
     speaker: "Isabella",
     text: "Déjame contarte cómo es un día típico.",
@@ -59,8 +56,6 @@ export const contaduriaIntroDialogues = [
     text: "Y muchas veces ayudo a personas o empresas a entender cómo manejar mejor su dinero.",
     animation: "talking",
   },
-
-  // ÁREAS
   {
     speaker: "Isabella",
     text: "Una gran ventaja es que puedes trabajar en muchos campos.",
@@ -76,8 +71,6 @@ export const contaduriaIntroDialogues = [
     text: "También puedes especializarte en análisis financiero.",
     animation: "talking",
   },
-
-  // HABILIDADES
   {
     speaker: "Isabella",
     text: "Para ser buen contador necesitas atención al detalle.",
@@ -99,7 +92,6 @@ export const contaduriaIntroDialogues = [
     animation: "talking",
   },
 
-  // COSAS BUENAS
   {
     speaker: "Isabella",
     text: "Muchas personas disfrutan esta carrera por su estabilidad laboral.",
