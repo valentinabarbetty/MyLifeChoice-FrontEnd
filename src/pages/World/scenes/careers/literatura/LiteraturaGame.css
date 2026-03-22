@@ -1,0 +1,79 @@
+.literatura {
+  width: 1100px;
+}
+
+/* 🧠 TITULOS */
+.title {
+  text-align: center;
+  font-size: 22px;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* 📚 ZONAS */
+.story-zones {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.zone {
+  background: #f8fafc;
+  border-radius: 20px;
+  padding: 15px;
+  min-height: 120px;
+  border: 2px dashed #cbd5e1;
+  transition: 0.2s;
+}
+
+.zone h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* 🔒 BLOQUEADAS */
+.zone.locked {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* 🔓 ACTIVA */
+.zone.active {
+  border: 2px dashed #22c55e;
+  background: #f0fdf4;
+}
+
+/* 🧩 CARDS */
+.story-card {
+  background: white;
+  padding: 12px;
+  border-radius: 15px;
+  margin: 10px 0;
+  cursor: grab;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+
+.story-card:hover {
+  transform: scale(1.02);
+}
+
+.story-card.small {
+  font-size: 13px;
+  background: #e0f2fe;
+}
+
+/* 🔽 OPCIONES */
+.story-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
