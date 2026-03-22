@@ -52,11 +52,14 @@
 //     },
 //   },
 // };
-import { administracionDialogues } from "../scenes/careers/administracion/AdministracionDialogues";
+import {
+  administracionIntroDialogues,
+  administracionEndingDialogues
+} from "../scenes/careers/administracion/AdministracionDialogues";
 import { agroambientalDialogues } from "../scenes/careers/agroambiental/AgroambientalDialogues";
 import { agroforestalDialogues } from "../scenes/careers/agroforestal/AgroforestalDialogues";
 import { alimentosDialogues } from "../scenes/careers/alimentos/AlimentosDialogues";
-import { contaduriaDialogues } from "../scenes/careers/contaduria/ContaduriaDialogues";
+import { contaduriaEndingDialogues, contaduriaIntroDialogues } from "../scenes/careers/contaduria/ContaduriaDialogues";
 import { educacionFisicaDialogues } from "../scenes/careers/educacionFisica/educacionFisicaDialogues";
 import { electronicaDialogues } from "../scenes/careers/electronica/ElectronicaDialogues";
 import { ingenieriaIndustrialDialogues } from "../scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialDialogues";
@@ -68,10 +71,18 @@ import { softwareDialogues } from "../scenes/careers/software/SoftwareDialogues"
 
 
 export const CAREER_DIALOGUES = {
-  administracion: administracionDialogues,
+  administracion: {
+    intro: administracionIntroDialogues,
+    ending: administracionEndingDialogues,
+  },
+  contaduriaPublica: {
+    intro: contaduriaIntroDialogues,
+    ending: contaduriaEndingDialogues,
+  },
+
+
   psicologia: psicologiaDialogues,
   software: softwareDialogues,
-  contaduria: contaduriaDialogues,
   ingenieriaIndustrial: ingenieriaIndustrialDialogues,
   educacionFisica: educacionFisicaDialogues,
   literatura: literaturaDialogues,
