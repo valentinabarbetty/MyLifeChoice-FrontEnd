@@ -1,27 +1,27 @@
-export const ingenieriaIndustrialDialogues = [
+export const ingenieriaIndustrialIntroDialogues = [
+  // INTRO
   {
-    speaker: "Laura",
-    text: "Hola, soy Laura. Bienvenido a la planta industrial.",
-    animation: "walk",
+    speaker: "Isabella",
+    text: "¡Hola! 👋 Bienvenido. Soy Isabella, contadora pública.",
+    animation: "wave",
+  }
+];
+
+export const ingenieriaIndustrialEndingDialogues = [
+  {
+    speaker: "Isabella",
+    text: "Excelente trabajo. Has corregido correctamente los registros financieros.",
   },
   {
-    speaker: "Laura",
-    text: "La ingeniería industrial optimiza procesos para hacerlos más eficientes.",
-    animation: "talking",
+    speaker: "Isabella",
+    text: "La contaduría requiere precisión, análisis y atención al detalle.",
   },
   {
-    speaker: "Laura",
-    text: "Aprenderás sobre producción, calidad y mejora continua.",
-    animation: "talking",
+    speaker: "Isabella",
+    text: "Has demostrado habilidades clave para esta profesión.",
   },
   {
-    speaker: "Laura",
-    text: "Nuestro objetivo es reducir costos y mejorar resultados.",
-    animation: "talking",
-  },
-  {
-    speaker: "Laura",
-    text: "Si te gusta mejorar sistemas y organizar procesos, esta carrera es para ti.",
-    animation: "talking",
+    speaker: "Isabella",
+    text: "¡Felicidades! Has completado la experiencia de Contaduría Pública. 📊",
   },
 ];

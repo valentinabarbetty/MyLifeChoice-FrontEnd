@@ -4,7 +4,7 @@ export const ALL_CAREERS = [
   // "software",
   // "logistica",
   // "mantenimiento",
-  // "ingenieriaIndustrial",
+   "ingenieriaIndustrial",
   // "agroambiental",
   // "alimentos",
   "contaduriaPublica",
