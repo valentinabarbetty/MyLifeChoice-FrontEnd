@@ -8,7 +8,7 @@ export const ALL_CAREERS = [
   // "agroambiental",
   "alimentos",
  // "contaduriaPublica",
-   //"educacionFisica",
+  "educacionFisica",
   // "electronica",
   // "literatura",
   // "produccionAgroforestal"
