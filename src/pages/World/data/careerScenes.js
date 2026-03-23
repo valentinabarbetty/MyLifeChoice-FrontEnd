@@ -64,7 +64,7 @@ import { educacionFisicaEndingDialogues, educacionFisicaIntroDialogues } from ".
 import { electronicaDialogues } from "../scenes/careers/electronica/ElectronicaDialogues";
 import { ingenieriaIndustrialEndingDialogues, ingenieriaIndustrialIntroDialogues } from "../scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialDialogues";
 import { literaturaEndingDialogues, literaturaIntroDialogues } from "../scenes/careers/literatura/LiteraturaDialogues";
-import { logisticaDialogues } from "../scenes/careers/logistica/LogisticaDialogues";
+import { logisticaEndingDialogues, logisticaIntroDialogues } from "../scenes/careers/logistica/LogisticaDialogues";
 import { mantenimientoDialogues } from "../scenes/careers/mantenimiento/MantenimientoDialogues";
 import { psicologiaEndingDialogues, psicologiaIntroDialogues } from "../scenes/careers/psicologia/PsicologiaDialogues";
 import { softwareEndingDialogues, softwareIntroDialogues } from "../scenes/careers/software/SoftwareDialogues";
@@ -103,9 +103,12 @@ export const CAREER_DIALOGUES = {
     intro: alimentosIntroDialogues,
     ending: alimentosEndingDialogues
   },
+  logistica: {
+    intro: logisticaIntroDialogues,
+    ending: logisticaEndingDialogues
+  },
   agroambiental: agroambientalDialogues,
   electronica: electronicaDialogues,
-  logistica: logisticaDialogues,
   agroforestal: agroforestalDialogues,
   mantenimiento: mantenimientoDialogues,
 };
