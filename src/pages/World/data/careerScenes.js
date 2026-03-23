@@ -61,7 +61,7 @@ import { agroforestalDialogues } from "../scenes/careers/agroforestal/Agroforest
 import { alimentosEndingDialogues, alimentosIntroDialogues } from "../scenes/careers/alimentos/AlimentosDialogues";
 import { contaduriaEndingDialogues, contaduriaIntroDialogues } from "../scenes/careers/contaduria/ContaduriaDialogues";
 import { educacionFisicaEndingDialogues, educacionFisicaIntroDialogues } from "../scenes/careers/educacionFisica/educacionFisicaDialogues";
-import { electronicaDialogues } from "../scenes/careers/electronica/ElectronicaDialogues";
+import { electronicaIndustrialEndingDialogues, electronicaIndustrialIntroDialogues } from "../scenes/careers/electronica/ElectronicaDialogues";
 import { ingenieriaIndustrialEndingDialogues, ingenieriaIndustrialIntroDialogues } from "../scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialDialogues";
 import { literaturaEndingDialogues, literaturaIntroDialogues } from "../scenes/careers/literatura/LiteraturaDialogues";
 import { logisticaEndingDialogues, logisticaIntroDialogues } from "../scenes/careers/logistica/LogisticaDialogues";
@@ -111,7 +111,10 @@ export const CAREER_DIALOGUES = {
     intro: mantenimientoElectromecanicoIntroDialogues,
     ending: mantenimientoElectromecanicoEndingDialogues
   },
+  electronica: {
+    intro: electronicaIndustrialIntroDialogues,
+    ending: electronicaIndustrialEndingDialogues
+  },
   agroambiental: agroambientalDialogues,
-  electronica: electronicaDialogues,
   agroforestal: agroforestalDialogues,
 };
