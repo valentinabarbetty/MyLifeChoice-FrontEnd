@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./RegisterModal.css";
-import { registerUser } from "../../services/userService";
+import { registerUser, googleLogin } from "../../services/userService";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../firebaseConfig";
 import Swal from "sweetalert2";
@@ -12,31 +12,38 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      await registerUser({
-        email: user.email,
-        nickname: user.displayName || user.email.split("@")[0],
-        password: "google_auth",
-        player_type: 1,
-      });
-
-      localStorage.setItem("userEmail", user.email);
-      localStorage.setItem("playerName", user.displayName);
-      localStorage.setItem("sessionType", "google");
-      localStorage.setItem("logged", "logged");
-      alert(`Bienvenido/a, ${user.displayName || user.email}!`);
-
-      onLoginSuccess?.({ email: user.email });
-      onClose();
-    } catch (error) {
-      console.error("Error en login con Google:", error);
-      alert("Error al autenticar con Google.");
-    }
-  };
-
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+  
+        const data = await googleLogin(
+          user.email,
+          user.displayName || user.email.split("@")[0],
+        );
+  
+        localStorage.setItem("logged", "logged");
+        localStorage.setItem("userId", data.user_id);
+        localStorage.setItem("userEmail", data.email);
+        localStorage.setItem("playerName", data.nickname);
+        localStorage.setItem("sessionType", "google");
+  
+        Swal.fire({
+          icon: "success",
+          title: "Bienvenido",
+          text: data.nickname,
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        onLoginSuccess?.(data);
+      } catch (error) {
+        console.error("Error en login con Google:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error con Google",
+          text: "No se pudo autenticar con Google",
+        });
+      }
+    };
   const handleSubmit = async () => {
     if (!email.trim() || !password.trim()) {
       Swal.fire({
@@ -128,6 +135,17 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
         >
           {loading ? "Creando..." : "Registrarme"}
         </button>
+        <div className="auth-divider">o</div>
+
+            <button onClick={handleGoogleLogin} className="google-btn">
+              <img
+                src="https://developers.google.com/identity/images/g-logo.png"
+                alt="Google"
+                width={20}
+                style={{ marginRight: "8px" }}
+              />
+              Iniciar sesión con Google
+            </button>
 
         <button className="register-close" onClick={onClose}>
           Cerrar
