@@ -3,9 +3,10 @@ import "./RegisterModal.css";
 import { registerUser } from "../../services/userService";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../firebaseConfig";
+import Swal from "sweetalert2";
 export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
   const [nickname, setNickname] = useState(
-    localStorage.getItem("playerName") || ""
+    localStorage.getItem("playerName") || "",
   );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,8 +38,12 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
   };
 
   const handleSubmit = async () => {
-    if (!nickname.trim() || !email.trim() || !password.trim()) {
-      alert("Por favor completa todos los campos");
+    if (!email.trim() || !password.trim()) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campos incompletos",
+        text: "Por favor completa todos los campos",
+      });
       return;
     }
 
@@ -46,7 +51,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
 
     try {
       const response = await registerUser({
-        nickname,
+        nickname: nickname || email.split("@")[0],
         email,
         password,
         player_type: 1,
@@ -58,10 +63,12 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
       localStorage.setItem("sessionType", "auth");
       localStorage.setItem("logged", "logged");
 
-      alert(
-        `✅ ¡Registro exitoso! Bienvenido/a, ${response.nickname || nickname}.`
-      );
-
+      Swal.fire({
+        icon: "success",
+        title: "Registro exitoso",
+        text: `Bienvenido/a, ${response.nickname || nickname}`,
+        confirmButtonColor: "#3085d6",
+      });
       onLoginSuccess?.(response);
       if (onNext) onNext();
       onClose();
@@ -69,14 +76,24 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
       try {
         const parsed = JSON.parse(err.message);
         if (parsed.email?.[0]?.includes("already exists")) {
-          alert(
-            "⚠️ Este correo ya está registrado. Intenta con otro o inicia sesión."
-          );
+          Swal.fire({
+            icon: "warning",
+            title: "Correo ya registrado",
+            text: "Intenta con otro correo o inicia sesión",
+          });
         } else {
-          alert(`❌ Error: ${JSON.stringify(parsed)}`);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: JSON.stringify(parsed),
+          });
         }
       } catch {
-        alert("❌ No se pudo crear la cuenta. Verifica tus datos.");
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo crear la cuenta. Verifica tus datos.",
+        });
       }
     } finally {
       setLoading(false);
@@ -110,16 +127,6 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
           disabled={loading}
         >
           {loading ? "Creando..." : "Registrarme"}
-        </button>
-        <div className="auth-divider">o</div>
-        <button onClick={handleGoogleLogin} className="google-btn">
-          <img
-            src="https://developers.google.com/identity/images/g-logo.png"
-            alt="Google"
-            width={20}
-            style={{ marginRight: "8px" }}
-          />
-          Continuar con Google
         </button>
 
         <button className="register-close" onClick={onClose}>

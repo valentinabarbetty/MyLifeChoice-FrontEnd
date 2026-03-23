@@ -107,16 +107,22 @@ export const addPlayer = async (email, player_type_id) => {
   }
 };
 
-export const googleLogin = async (token) => {
+export const googleLogin = async (email, name) => {
   try {
     const response = await fetch(`${API_URL}/users/google_login/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({
+        email,
+        name,
+      }),
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(JSON.stringify(data));
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
 
     console.log("✅ Login con Google exitoso:", data);
     return data;
