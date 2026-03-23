@@ -1,0 +1,126 @@
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.panel.generic {
+  width: 95%;
+  max-width: 1000px;
+  height: 85vh;
+
+  background: #f8fafc;
+  border-radius: 20px;
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.panel h2 {
+  font-size: 20px;
+  text-align: center;
+}
+
+.panel p {
+  font-size: 13px;
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.cards {
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.card.drag {
+  background: white;
+  border-radius: 16px;
+
+  width: 130px;
+  height: 130px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 6px;
+  padding: 10px;
+
+  overflow: hidden;
+
+  cursor: grab;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+
+  transition: all 0.2s ease;
+}
+
+.card.drag:hover {
+  transform: translateY(-3px) scale(1.05);
+}
+
+
+.card.drag:active {
+  cursor: grabbing;
+  transform: scale(0.95);
+}
+
+
+.card.drag img {
+  width: 75px;
+  height: 75px;
+
+  object-fit: contain;
+  display: block;
+}
+
+.card.drag p {
+  font-size: 11px;
+  text-align: center;
+  margin: 0;
+  line-height: 1.2;
+}
+
+
+.btn {
+  margin-top: auto;
+  padding: 12px;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  transform: scale(1.03);
+}
+
+.cards::-webkit-scrollbar {
+  height: 6px;
+}
+
+.cards::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}

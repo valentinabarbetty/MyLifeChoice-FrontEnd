@@ -9,6 +9,7 @@ import EducacionFisicaScene from "./scenes/careers/educacionFisica/EducacionFisi
 import LiteraturaScene from "./scenes/careers/literatura/LiteraturaScene";
 import AlimentosScene from "./scenes/careers/alimentos/AlimentosScene";
 import LogisticaScene from "./scenes/careers/logistica/LogisticaScene";
+import MantenimientoScene from "./scenes/careers/mantenimiento/MantenimientoScene";
 
 
 export const SCENE_COMPONENTS = {
@@ -20,5 +21,6 @@ export const SCENE_COMPONENTS = {
   educacionFisica: EducacionFisicaScene,
   literatura: LiteraturaScene,
   alimentos: AlimentosScene,
-  logistica: LogisticaScene
+  logistica: LogisticaScene,
+  mantenimiento: MantenimientoScene
 };
