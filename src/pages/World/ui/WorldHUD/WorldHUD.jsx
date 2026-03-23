@@ -1,6 +1,6 @@
-import DialogueBox from "../../../components/DialogueBox/DialogueBox"
-
-
+import DialogueBox from "../../../../components/DialogueBox/DialogueBox";
+import "./WorldHUD.css";
+import { NPCS } from "../../data/npcsInfo";
 export default function WorldHUD({
   scene,
   mode,
@@ -8,8 +8,8 @@ export default function WorldHUD({
   onNext,
   onAccept,
   onReject,
+  activeNPC,
 }) {
-
   if (mode === "intro" && dialogue) {
     return (
       <DialogueBox
@@ -22,10 +22,13 @@ export default function WorldHUD({
   }
 
   if (mode === "interact") {
+    const npcData = NPCS[activeNPC];
+
     return (
       <DialogueBox
-        speaker="?"
-        text="¿Deseas iniciar una conversación?"
+        speaker={npcData?.name || "NPC"}
+        text={`Hola 👋, soy ${npcData?.name}, ${npcData?.career}.
+          ¿Deseas conocer más sobre lo que hago?`}
         showNext={false}
       >
         <div className="dgl-options">
@@ -48,23 +51,22 @@ export default function WorldHUD({
   }
 
   if (scene === "CAREER" && mode === "career-feedback") {
-  return (
-    <DialogueBox
-      speaker="manager"
-      text="¿Te ha gustado la carrera de Administración?"
-      showNext={false}
-    >
-      <div className="dgl-options">
-        <button onClick={onAccept}>Sí</button>
-        <button onClick={onReject}>No</button>
-      </div>
-    </DialogueBox>
-  );
-}
-if (scene === "CAREER" && mode === "career-game") {
-  return null;
-}
-
+    return (
+      <DialogueBox
+        speaker="manager"
+        text="¿Te ha gustado la carrera de Administración?"
+        showNext={false}
+      >
+        <div className="dgl-options">
+          <button onClick={onAccept}>Sí</button>
+          <button onClick={onReject}>No</button>
+        </div>
+      </DialogueBox>
+    );
+  }
+  if (scene === "CAREER" && mode === "career-game") {
+    return null;
+  }
 
   return null;
 }

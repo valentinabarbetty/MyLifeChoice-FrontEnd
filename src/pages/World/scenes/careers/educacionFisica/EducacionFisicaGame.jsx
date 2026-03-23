@@ -1,30 +1,19 @@
-import { useState } from "react";
-import "./EducacionFisicaGame.css";
+import ClassificationGame from "../../../ui/ClassificationGame/ClassificationGame";
+
+import workout1 from "../../../../../../public/assets/ui/EducacionFisica/workout1.png";
+import workout2 from "../../../../../../public/assets/ui/EducacionFisica/workout2.png";
+import workout3 from "../../../../../../public/assets/ui/EducacionFisica/workout3.png";
+import workout4 from "../../../../../../public/assets/ui/EducacionFisica/workout4.png";
+import workout5 from "../../../../../../public/assets/ui/EducacionFisica/workout5.png";
+import workout6 from "../../../../../../public/assets/ui/EducacionFisica/workout6.png";
+
 const EXERCISES = [
-  {
-    id: 1,
-    name: "Curl de bíceps",
-    emoji: "💪",
-    correct: "biceps",
-  },
-  {
-    id: 2,
-    name: "Sentadilla",
-    emoji: "🏋️",
-    correct: "piernas",
-  },
-  {
-    id: 3,
-    name: "Abdominales",
-    emoji: "🧘",
-    correct: "core",
-  },
-  {
-    id: 4,
-    name: "Dominadas",
-    emoji: "🧗",
-    correct: "espalda",
-  },
+  { id: 1, name: "Sentadilla", image: workout1, correct: "piernas" },
+  { id: 2, name: "Remo en poléa", image: workout2, correct: "espalda" },
+  { id: 3, name: "Prensa", image: workout3, correct: "piernas" },
+  { id: 4, name: "Abdominales", image: workout4, correct: "core" },
+  { id: 5, name: "Curl Bícep", image: workout5, correct: "biceps" },
+  { id: 6, name: "Dominadas", image: workout6, correct: "espalda" },
 ];
 
 const CATEGORIES = [
@@ -33,100 +22,21 @@ const CATEGORIES = [
   { id: "core", label: "Abdomen", emoji: "🔥" },
   { id: "espalda", label: "Espalda", emoji: "🏋️‍♂️" },
 ];
+
 export default function EducacionFisicaGame({ onComplete }) {
-  const [items, setItems] = useState(EXERCISES);
-  const [zones, setZones] = useState({
-    biceps: [],
-    piernas: [],
-    core: [],
-    espalda: [],
-  });
-
-  const handleDragStart = (e, item) => {
-    e.dataTransfer.setData("item", JSON.stringify(item));
-  };
-
-  const handleDrop = (e, categoryId) => {
-    e.preventDefault();
-    const item = JSON.parse(e.dataTransfer.getData("item"));
-
-    // evitar duplicados
-    if (zones[categoryId].some((i) => i.id === item.id)) return;
-
-    setZones((prev) => ({
-      ...prev,
-      [categoryId]: [...prev[categoryId], item],
-    }));
-
-    setItems((prev) => prev.filter((i) => i.id !== item.id));
-  };
-
-  const handleValidate = () => {
-    let correct = true;
-
-    Object.keys(zones).forEach((cat) => {
-      zones[cat].forEach((item) => {
-        if (item.correct !== cat) correct = false;
-      });
-    });
-
-    if (correct) {
-      onComplete();
-    } else {
-      alert("Hay ejercicios mal ubicados 😅");
-    }
-  };
-
   return (
-    <div className="overlay">
-      <div className="panel fisica">
-
-        <h2>🏃 Clasifica los ejercicios</h2>
-        <p>Arrastra cada ejercicio a la parte del cuerpo correspondiente</p>
-
-        {/* 🧩 EJERCICIOS */}
-        <div className="exercise-list">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className="exercise-card"
-              draggable
-              onDragStart={(e) => handleDragStart(e, item)}
-            >
-              <span className="emoji">{item.emoji}</span>
-              <p>{item.name}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* 🎯 CATEGORÍAS */}
-        <div className="categories">
-          {CATEGORIES.map((cat) => (
-            <div
-              key={cat.id}
-              className="drop-zone"
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => handleDrop(e, cat.id)}
-            >
-              <h3>
-                {cat.emoji} {cat.label}
-              </h3>
-
-              <div className="drop-content">
-                {zones[cat.id].map((item) => (
-                  <div key={item.id} className="exercise-card small">
-                    {item.emoji}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <button className="btn" onClick={handleValidate}>
-          CONTINUAR
-        </button>
-      </div>
-    </div>
+    <ClassificationGame
+      title="🏃 Clasifica los ejercicios"
+      subtitle="Arrastra cada ejercicio al grupo muscular correcto"
+      itemsData={EXERCISES}
+      categories={CATEGORIES}
+      onComplete={onComplete}
+      renderItem={(item) => (
+        <>
+          <img src={item.image} alt={item.name} />
+          <p>{item.name}</p>
+        </>
+      )}
+    />
   );
 }

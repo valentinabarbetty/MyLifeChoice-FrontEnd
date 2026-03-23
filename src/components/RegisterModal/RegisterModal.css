@@ -40,6 +40,11 @@
   border-color: #f4c24c;
   box-shadow: 0 0 10px rgba(244, 194, 76, 0.4);
 }
+.auth-divider {
+  margin: 10px 0;
+  color: #b8a876;
+  font-weight: 500;
+}
 
 .register-btn {
   background: #f4c24c;
@@ -74,9 +79,4 @@
   width: 100%;
   display: flex;
   justify-content: center;
-}
-.auth-divider {
-  margin: 10px 0;
-  color: #b8a876;
-  font-weight: 500;
 }

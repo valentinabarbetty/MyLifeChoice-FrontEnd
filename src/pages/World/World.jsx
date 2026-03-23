@@ -3,7 +3,7 @@ import { useWorldState } from "./hooks/useWorldState";
 import { useNPCProximity } from "./hooks/useNPCProximity";
 import WorldCanvas from "./WorldCanvas";
 import WorldScene from "./scenes/WorldScene";
-import WorldHUD from "../World/ui/WorldHUD";
+import WorldHUD from "./ui/WorldHUD/WorldHUD";
 import { useUserProgress } from "./hooks/useUserProgress";
 import { CAREER_DIALOGUES } from "./data/careerScenes";
 
@@ -173,6 +173,7 @@ export default function World() {
             setMode("explore");
           }
         }}
+        activeNPC={activeNPC}
       />
     </>
   );

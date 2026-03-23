@@ -3,13 +3,13 @@ export const ALL_CAREERS = [
   //"psicologia",
   /// "software",
   // "logistica",
-  // "mantenimiento",
+ // "mantenimiento",
  // "ingenieriaIndustrial",
   // "agroambiental",
-  // "alimentos",
+  //"alimentos",
  // "contaduriaPublica",
-   //"educacionFisica",
-  // "electronica",
-   "literatura",
+ //"educacionFisica",
+   "electronica",
+  // "literatura",
   // "produccionAgroforestal"
 ];

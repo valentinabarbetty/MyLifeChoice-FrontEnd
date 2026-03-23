@@ -58,14 +58,14 @@ import {
 } from "../scenes/careers/administracion/AdministracionDialogues";
 import { agroambientalDialogues } from "../scenes/careers/agroambiental/AgroambientalDialogues";
 import { agroforestalDialogues } from "../scenes/careers/agroforestal/AgroforestalDialogues";
-import { alimentosDialogues } from "../scenes/careers/alimentos/AlimentosDialogues";
+import { alimentosEndingDialogues, alimentosIntroDialogues } from "../scenes/careers/alimentos/AlimentosDialogues";
 import { contaduriaEndingDialogues, contaduriaIntroDialogues } from "../scenes/careers/contaduria/ContaduriaDialogues";
 import { educacionFisicaEndingDialogues, educacionFisicaIntroDialogues } from "../scenes/careers/educacionFisica/educacionFisicaDialogues";
-import { electronicaDialogues } from "../scenes/careers/electronica/ElectronicaDialogues";
+import { electronicaIndustrialEndingDialogues, electronicaIndustrialIntroDialogues } from "../scenes/careers/electronica/ElectronicaDialogues";
 import { ingenieriaIndustrialEndingDialogues, ingenieriaIndustrialIntroDialogues } from "../scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialDialogues";
 import { literaturaEndingDialogues, literaturaIntroDialogues } from "../scenes/careers/literatura/LiteraturaDialogues";
-import { logisticaDialogues } from "../scenes/careers/logistica/LogisticaDialogues";
-import { mantenimientoDialogues } from "../scenes/careers/mantenimiento/MantenimientoDialogues";
+import { logisticaEndingDialogues, logisticaIntroDialogues } from "../scenes/careers/logistica/LogisticaDialogues";
+import { mantenimientoElectromecanicoEndingDialogues, mantenimientoElectromecanicoIntroDialogues } from "../scenes/careers/mantenimiento/MantenimientoDialogues";
 import { psicologiaEndingDialogues, psicologiaIntroDialogues } from "../scenes/careers/psicologia/PsicologiaDialogues";
 import { softwareEndingDialogues, softwareIntroDialogues } from "../scenes/careers/software/SoftwareDialogues";
 
@@ -99,10 +99,22 @@ export const CAREER_DIALOGUES = {
     intro: literaturaIntroDialogues,
     ending: literaturaEndingDialogues
   },
+  alimentos: {
+    intro: alimentosIntroDialogues,
+    ending: alimentosEndingDialogues
+  },
+  logistica: {
+    intro: logisticaIntroDialogues,
+    ending: logisticaEndingDialogues
+  },
+  mantenimiento: {
+    intro: mantenimientoElectromecanicoIntroDialogues,
+    ending: mantenimientoElectromecanicoEndingDialogues
+  },
+  electronica: {
+    intro: electronicaIndustrialIntroDialogues,
+    ending: electronicaIndustrialEndingDialogues
+  },
   agroambiental: agroambientalDialogues,
-  alimentos: alimentosDialogues,
-  electronica: electronicaDialogues,
-  logistica: logisticaDialogues,
   agroforestal: agroforestalDialogues,
-  mantenimiento: mantenimientoDialogues,
 };
