@@ -51,19 +51,22 @@ export default function WorldHUD({
   }
 
   if (scene === "CAREER" && mode === "career-feedback") {
-    return (
-      <DialogueBox
-        speaker="manager"
-        text="¿Te ha gustado la carrera de Administración?"
-        showNext={false}
-      >
-        <div className="dgl-options">
-          <button onClick={onAccept}>Sí</button>
-          <button onClick={onReject}>No</button>
-        </div>
-      </DialogueBox>
-    );
-  }
+  const npcData = NPCS[activeNPC];
+
+
+  return (
+    <DialogueBox
+      speaker={npcData?.name || "NPC"}
+      text={`¿Te ha gustado la carrera de ${npcData?.career_name}?`}
+      showNext={false}
+    >
+      <div className="dgl-options">
+        <button onClick={onAccept}>Sí</button>
+        <button onClick={onReject}>No</button>
+      </div>
+    </DialogueBox>
+  );
+}
   if (scene === "CAREER" && mode === "career-game") {
     return null;
   }

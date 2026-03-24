@@ -50,6 +50,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       localStorage.setItem("sessionType", "auth");
 
       onLoginSuccess?.(response);
+      window.location.reload(); 
     } catch (error) {
       console.error("Error en login:", error);
       Swal.fire({
@@ -67,7 +68,6 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // 🔥 SOLO LLAMAS AL SERVICE
       const data = await googleLogin(
         user.email,
         user.displayName || user.email.split("@")[0],
@@ -88,6 +88,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
         showConfirmButton: false,
       });
       onLoginSuccess?.(data);
+       window.location.reload(); 
     } catch (error) {
       console.error("Error en login con Google:", error);
       Swal.fire({

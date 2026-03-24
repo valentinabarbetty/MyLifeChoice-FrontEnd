@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWorldState } from "./hooks/useWorldState";
 import { useNPCProximity } from "./hooks/useNPCProximity";
 import WorldCanvas from "./WorldCanvas";
@@ -12,8 +12,8 @@ import CareerRouter from "./scenes/careers/CareerRouter";
 import { useMemo } from "react";
 import CameraManager from "./camera/FollowCamera";
 import { GAME_COMPONENTS } from "./GamesRegistry";
-
-
+import { getUserProgress, saveProgress } from "../../services/userService";
+import { NPCS } from "./data/npcsInfo";
 export default function World() {
   const {
     sceneConfig,
@@ -30,7 +30,9 @@ export default function World() {
   } = useWorldState();
   const { visited, markVisited } = useUserProgress();
   const ActiveGame = GAME_COMPONENTS[activeCareer];
-  const availableCareers = ALL_CAREERS.filter((c) => !visited.includes(c));
+  const availableCareers = ALL_CAREERS.filter(
+    (c) => !visited.includes(NPCS[c].id),
+  );
 
   const visibleCareers = availableCareers.slice(0, 3);
   const ROUTES = [
@@ -64,7 +66,31 @@ export default function World() {
       return acc;
     }, {});
   }, [visibleCareers]);
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("userId");
 
+  //   // 🟢 INVITADO → usa localStorage
+  //   if (!userId) {
+  //     const local = JSON.parse(localStorage.getItem("mlc_progress"));
+  //     if (local?.visited) {
+  //       setVisited(local.visited);
+  //     }
+  //     return;
+  //   }
+
+  //   // 🔵 LOGUEADO → trae backend
+  //   getUserProgress(userId)
+  //     .then((data) => {
+  //       setVisited(data.visited);
+
+  //       // sincroniza localStorage
+  //       localStorage.setItem("mlc_progress", JSON.stringify(data));
+  //     })
+  //     .catch(() => {
+  //       console.log("Error cargando progreso");
+  //     });
+
+  // }, []);
   const [playerPos, setPlayerPos] = useState({ x: 0, y: 0, z: 0 });
   const [npcPositions, setNpcPositions] = useState({});
 
@@ -138,7 +164,44 @@ export default function World() {
             }
           }
         }}
-        onAccept={() => {
+        // onAccept={() => {
+        //   if (mode === "interact") {
+        //     setScene("CAREER");
+        //     setActiveCareer(activeNPC);
+        //     setDialogueIndex(0);
+        //     setMode("dialogue");
+        //     return;
+        //   }
+
+        //   // if (mode === "career-feedback") {
+        //   //   markVisited(activeCareer);
+
+        //   //   setScene("WORLD");
+        //   //   setActiveCareer(null);
+        //   //   setActiveNPC(null);
+        //   //   setDialogueIndex(0);
+
+        //   //   setMode("explore");
+        //   // }
+        //   if (mode === "career-feedback") {
+
+        //     await saveProgress({
+        //       user_id: localStorage.getItem("userId"),
+        //       career_id: activeCareer,
+        //       state: "done",
+        //       feedback: "liked"
+        //     });
+
+        //     markVisited(activeCareer);
+
+        //     setScene("WORLD");
+        //     setActiveCareer(null);
+        //     setActiveNPC(null);
+        //     setDialogueIndex(0);
+        //     setMode("explore");
+        //   }
+        // }}
+        onAccept={async () => {
           if (mode === "interact") {
             setScene("CAREER");
             setActiveCareer(activeNPC);
@@ -146,15 +209,32 @@ export default function World() {
             setMode("dialogue");
             return;
           }
-
           if (mode === "career-feedback") {
-            markVisited(activeCareer);
+            const npcData = NPCS[activeCareer];
+
+            const isGuest = !localStorage.getItem("userId");
+
+            // 🟢 SI ES INVITADO → SOLO LOCAL
+            if (isGuest) {
+              markVisited(activeCareer);
+            }
+            // 🔵 SI ESTÁ LOGUEADO → BACKEND + LOCAL
+            else {
+              await saveProgress({
+                user_id: localStorage.getItem("userId"),
+                career_id: npcData.id,
+                state: "done",
+                feedback: "liked",
+                progress: "done",
+              });
+
+              markVisited(activeCareer);
+            }
 
             setScene("WORLD");
             setActiveCareer(null);
             setActiveNPC(null);
             setDialogueIndex(0);
-
             setMode("explore");
           }
         }}

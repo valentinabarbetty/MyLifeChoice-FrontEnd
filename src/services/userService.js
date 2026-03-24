@@ -153,3 +153,45 @@ export const updateNickname = async (email, nickname) => {
     throw error;
   }
 };
+
+export const getUserProgress = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/exploration/progress/${userId}/`);
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error al obtener progreso:", error);
+    throw error;
+  }
+};
+
+export const saveProgress = async (progressData) => {
+  try {
+    const response = await fetch(`${API_URL}/exploration/progress/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(progressData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    console.log("✅ Progreso guardado:", data);
+    return data;
+
+  } catch (error) {
+    console.error("❌ Error al guardar progreso:", error);
+    throw error;
+  }
+};
