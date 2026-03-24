@@ -28,40 +28,61 @@ export default function World() {
     activeCareer,
     setActiveCareer,
   } = useWorldState();
+  const [playerPos, setPlayerPos] = useState({ x: 0, y: 0, z: 0 });
+  const SAFE_ZONE = {
+    minX: -5,
+    maxX: 20,
+    minZ: -30,
+    maxZ: 0,
+  };
+    // useEffect(() => {
+  //   console.log("Player position:", playerPos);
+  // }, [playerPos]);
   const { visited, markVisited } = useUserProgress();
   const ActiveGame = GAME_COMPONENTS[activeCareer];
-  const availableCareers = ALL_CAREERS.filter(
-    (c) => !visited.includes(NPCS[c].id),
-  );
+  const availableCareers = ALL_CAREERS.filter((c) => {
+    const npc = NPCS[c];
+    return npc && !visited.includes(npc.id);
+  });
 
   const visibleCareers = availableCareers.slice(0, 3);
-  const ROUTES = [
-    [
-      [2, -3, 1],
-      [4, -3, 1],
-      [4, -3, 3],
-      [2, -3, 3],
-    ],
-    [
-      [-4, -3, 2],
-      [-2, -3, 2],
-      [-2, -3, 4],
-      [-4, -3, 4],
-    ],
-    [
-      [0, -3, -2],
-      [2, -3, -2],
-      [2, -3, 0],
-      [0, -3, 0],
-    ],
-  ];
+ const ROUTES = [
+  // Ruta izquierda (zona oeste)
+  [
+    [-6, -3, -5],
+    [-2, -3, -5],
+    [-2, -3, -20],
+    [-6, -3, -20],
+  ],
 
+  // Ruta central
+  [
+    [2, -3, -8],
+    [10, -3, -8],
+    [10, -3, -25],
+    [2, -3, -25],
+  ],
+
+  // Ruta derecha (zona este)
+  [
+    [15, -3, -6],
+    [24, -3, -6],
+    [24, -3, -22],
+    [15, -3, -22],
+  ],
+];
+  const SPAWNS = [
+    [-3, -3, -7],
+    [6, -3, -10],
+    [16, -3, -8],
+  ];
   const worldNPCs = useMemo(() => {
     return visibleCareers.reduce((acc, careerId, index) => {
       acc[careerId] = {
         id: careerId,
         model: `/assets/models/npc/${careerId}.glb`,
         route: ROUTES[index] || ROUTES[0],
+        position: SPAWNS[index] || [0, -3, 0], // 🔥 NUEVO
       };
       return acc;
     }, {});
@@ -91,7 +112,6 @@ export default function World() {
   //     });
 
   // }, []);
-  const [playerPos, setPlayerPos] = useState({ x: 0, y: 0, z: 0 });
   const [npcPositions, setNpcPositions] = useState({});
 
   const nearNPC = useNPCProximity(playerPos, npcPositions);
