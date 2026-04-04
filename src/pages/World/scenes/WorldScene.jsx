@@ -17,9 +17,10 @@ export default function WorldScene({
 }) {
   const playerPosRef = useRef(new THREE.Vector3());
   const lastUpdateRef = useRef(0);
+  const villageRef = useRef();
   return (
     <>
-      <Village />
+     <Village ref={villageRef} />
 
 
       <RigidBody type="fixed" colliders={false}>
@@ -53,12 +54,11 @@ export default function WorldScene({
         spawnPosition={[0, -2.8, -10]}
         onMove={(pos) => {
           playerPosRef.current.copy(pos); 
-          //setPlayerPos(pos);
         }}
       />
 
 
-      <CameraManager mode={mode} playerPosRef={playerPosRef} scene="WORLD" />
+      <CameraManager mode={mode}villageRef={villageRef} playerPosRef={playerPosRef} scene="WORLD" />
     </>
   );
 }
