@@ -6,7 +6,7 @@ export const NPCS = {
     career_name: "Administración de Empresas",
   },
 
-  contaduria: {
+  contaduriaPublica: {
     id: 2,
     name: "Isabella",
     career: "contadora pública",

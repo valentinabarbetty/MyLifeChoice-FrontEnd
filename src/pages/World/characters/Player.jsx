@@ -1,14 +1,17 @@
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import { RigidBody, CapsuleCollider } from "@react-three/rapier";
 import { useEffect, useMemo, useRef, useState } from "react";
+import * as THREE from "three";
 
-export default function Player({ onMove, mode, lookAt, spawnPosition }) {
-  const playerRef = useRef(null);
-  const direction = useRef(0);
-  const wasMoving = useRef(false);
+export default function Player({ onMove, mode, spawnPosition }) {
+  const rb = useRef();
+  const modelRef = useRef();
 
   const [isMoving, setIsMoving] = useState(false);
   const currentAction = useRef(null);
+  const wasMoving = useRef(false);
+  const direction = useRef(0);
 
   const keys = useRef({
     ArrowUp: false,
@@ -25,40 +28,62 @@ export default function Player({ onMove, mode, lookAt, spawnPosition }) {
         return "/assets/models/players/player_girl_animated.glb";
       case "2":
         return "/assets/models/players/player_boy_animated.glb";
-      case "3":
-        return "/assets/models/players/player_nb_animated.glb";
       default:
         return "/assets/models/players/player_boy_animated.glb";
     }
   }, [selectedPlayer]);
 
   const { scene, animations } = useGLTF(modelPath);
+  const { actions } = useAnimations(animations, modelRef);
 
- 
-  const { actions } = useAnimations(animations, playerRef);
-
+  useEffect(() => {
+    if (!actions) return;
+    const idle = actions["idle"] || Object.values(actions)[0];
+    idle?.reset().play();
+    currentAction.current = "idle";
+  }, [actions]);
+  const lastPos = useRef(new THREE.Vector3());
 
   useEffect(() => {
     if (!actions) return;
 
-    const idle = actions["idle"] || Object.values(actions)[0];
-    idle.reset().fadeIn(0.3).play();
-    currentAction.current = "idle";
-  }, [actions]);
+    const next = isMoving ? "walking" : "idle";
+    if (currentAction.current === next) return;
 
+    actions[currentAction.current]?.fadeOut(0.2);
+    const nextAction = actions[next] || Object.values(actions)[0];
+    nextAction?.reset().fadeIn(0.2).play();
+
+    currentAction.current = next;
+  }, [isMoving, actions]);
 
   useEffect(() => {
-    if (!playerRef.current || !spawnPosition) return;
+    if (!rb.current) return;
 
-    playerRef.current.position.set(
-      spawnPosition[0],
-      spawnPosition[1],
-      spawnPosition[2]
-    );
+    const saved = localStorage.getItem("playerPosition");
 
-    onMove?.(playerRef.current.position.clone());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); 
+    if (saved) {
+      const pos = JSON.parse(saved);
+
+      rb.current.setTranslation(
+        {
+          x: pos.x,
+          y: pos.y,
+          z: pos.z,
+        },
+        true,
+      );
+    } else {
+      rb.current.setTranslation(
+        {
+          x: spawnPosition[0],
+          y: spawnPosition[1],
+          z: spawnPosition[2],
+        },
+        true,
+      );
+    }
+  }, [spawnPosition]);
 
 
   useEffect(() => {
@@ -78,88 +103,112 @@ export default function Player({ onMove, mode, lookAt, spawnPosition }) {
     };
   }, []);
 
-  useEffect(() => {
-    if (!actions) return;
-
-    const next = isMoving ? "walking" : "idle";
-    if (currentAction.current === next) return;
-
-    actions[currentAction.current]?.fadeOut(0.2);
-
-    const action = actions[next] || Object.values(actions)[0];
-    action.reset().fadeIn(0.2).play();
-
-    currentAction.current = next;
-  }, [isMoving, actions]);
-
   useFrame(() => {
-    if (!playerRef.current) return;
+    if (!rb.current) return;
 
-    if (lookAt) {
-      playerRef.current.lookAt(
-        lookAt[0],
-        playerRef.current.position.y,
-        lookAt[2]
-      );
-    }
-
-
-    if (mode !== "explore") return;
-
-    const speed = 0.05;
-
+    const speed = 4;
+    let x = 0;
+    let z = 0;
     let moving = false;
 
-   
     if (keys.current.ArrowUp) {
-      direction.current = Math.PI; // norte
+      z -= 1;
       moving = true;
     }
     if (keys.current.ArrowDown) {
-      direction.current = 0; // sur
+      z += 1;
       moving = true;
     }
     if (keys.current.ArrowLeft) {
-      direction.current = -Math.PI / 2; // oeste
+      x -= 1;
       moving = true;
     }
     if (keys.current.ArrowRight) {
-      direction.current = Math.PI / 2; // este
+      x += 1;
       moving = true;
     }
 
-    if (moving) {
-      
-      playerRef.current.rotation.y = direction.current;
-
-   
-      playerRef.current.position.x += Math.sin(direction.current) * speed;
-      playerRef.current.position.z += Math.cos(direction.current) * speed;
-
-
-      if (!wasMoving.current) setIsMoving(true);
-      wasMoving.current = true;
-
-      onMove?.(playerRef.current.position.clone());
-    } else {
-      if (wasMoving.current) setIsMoving(false);
-      wasMoving.current = false;
+    if (x !== 0 || z !== 0) {
+      const len = Math.hypot(x, z);
+      x /= len;
+      z /= len;
+      direction.current = Math.atan2(x, z);
     }
+
+    const vel = rb.current.linvel();
+
+    if (moving) {
+      rb.current.setLinvel(
+        {
+          x: x * speed,
+          y: vel.y,
+          z: z * speed,
+        },
+        true,
+      );
+    } else {
+      rb.current.setLinvel(
+        {
+          x: 0,
+          y: vel.y,
+          z: 0,
+        },
+        true,
+      );
+    }
+    if (modelRef.current) {
+      modelRef.current.rotation.y = direction.current;
+    }
+
+    if (!wasMoving.current && moving) setIsMoving(true);
+    if (wasMoving.current && !moving) setIsMoving(false);
+    wasMoving.current = moving;
+
+    const p = rb.current.translation();
+    // const dx = Math.abs(p.x - lastPos.current.x);
+    // const dz = Math.abs(p.z - lastPos.current.z);
+
+    // if (dx > 0.1 || dz > 0.1) {
+    //   console.log(
+    //     `POS → x:${p.x.toFixed(2)} y:${p.y.toFixed(2)} z:${p.z.toFixed(2)}`,
+    //   );
+    //   lastPos.current.set(p.x, p.y, p.z);
+   // }
+
+    if (!rb.current._lastSave) rb.current._lastSave = 0;
+
+    const now = Date.now();
+
+    if (now - rb.current._lastSave > 500) {
+      localStorage.setItem(
+        "playerPosition",
+        JSON.stringify({
+          x: p.x,
+          y: p.y,
+          z: p.z,
+        }),
+      );
+
+      rb.current._lastSave = now;
+    }
+    onMove?.(new THREE.Vector3(p.x, p.y, p.z));
   });
 
- 
-  const debugBox = false;
-
   return (
-    <group ref={playerRef} scale={1}>
-      <primitive object={scene} />
-
-      {debugBox && (
-        <mesh position={[0, 1, 0]}>
-          <boxGeometry args={[0.3, 0.3, 0.3]} />
-          <meshStandardMaterial />
-        </mesh>
-      )}
-    </group>
+    <RigidBody
+      ref={rb}
+      type="dynamic"
+      colliders={false}
+      enabledRotations={[false, false, false]}
+      gravityScale={2}
+      linearDamping={8}
+      angularDamping={8}
+      ccd
+    >
+      <CapsuleCollider args={[0.45, 0.35]} />
+      <group ref={modelRef} position={[0, -0.9, 0]}>
+        <primitive object={scene} />
+      </group>
+    </RigidBody>
   );
 }

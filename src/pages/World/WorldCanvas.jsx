@@ -2,6 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import FloatingCloud from "./elements/FunctionCloud";
 import Sea from "./elements/Sea";
+import { Physics } from "@react-three/rapier";
 
 export default function WorldCanvas({ children }) {
   const skyColor = "#b8e1ff"; // cielo azul día soleado
@@ -58,7 +59,9 @@ export default function WorldCanvas({ children }) {
         maxDistance={20}
       />
 
-      {children}
+  
+  {children}
+
     </Canvas>
   );
 }

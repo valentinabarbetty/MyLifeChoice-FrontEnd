@@ -14,6 +14,7 @@ import CameraManager from "./camera/FollowCamera";
 import { GAME_COMPONENTS } from "./GamesRegistry";
 import { getUserProgress, saveProgress } from "../../services/userService";
 import { NPCS } from "./data/npcsInfo";
+import { Physics } from "@react-three/rapier";
 export default function World() {
   const {
     sceneConfig,
@@ -90,7 +91,7 @@ export default function World() {
   // useEffect(() => {
   //   const userId = localStorage.getItem("userId");
 
-  //   // 🟢 INVITADO → usa localStorage
+ 
   //   if (!userId) {
   //     const local = JSON.parse(localStorage.getItem("mlc_progress"));
   //     if (local?.visited) {
@@ -99,7 +100,6 @@ export default function World() {
   //     return;
   //   }
 
-  //   // 🔵 LOGUEADO → trae backend
   //   getUserProgress(userId)
   //     .then((data) => {
   //       setVisited(data.visited);
@@ -128,6 +128,7 @@ export default function World() {
     <>
       <WorldCanvas>
         {scene === "WORLD" && (
+              <Physics gravity={[0, -9.8, 0]} debug>
           <WorldScene
             worldNPCs={worldNPCs}
             mode={mode}
@@ -138,6 +139,7 @@ export default function World() {
             setActiveNPC={setActiveNPC}
             setMode={setMode}
           />
+          </Physics>
         )}
 
         {scene === "CAREER" && activeCareer && mode !== "career-game" && (
