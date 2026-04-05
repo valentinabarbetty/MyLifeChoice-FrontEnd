@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useWorldState } from "./hooks/useWorldState";
 import { useNPCProximity } from "./hooks/useNPCProximity";
 import WorldCanvas from "./WorldCanvas";
@@ -15,6 +15,9 @@ import { GAME_COMPONENTS } from "./GamesRegistry";
 import { getUserProgress, saveProgress } from "../../services/userService";
 import { NPCS } from "./data/npcsInfo";
 import { Physics } from "@react-three/rapier";
+import BackButton from "./ui/BackButton/BackButton";
+import Loader from "./ui/Loader/Loader";
+import HelpModal from "./ui/HelpModal/HelpModal";
 export default function World() {
   const {
     sceneConfig,
@@ -36,7 +39,7 @@ export default function World() {
     minZ: -30,
     maxZ: 0,
   };
-    // useEffect(() => {
+  // useEffect(() => {
   //   console.log("Player position:", playerPos);
   // }, [playerPos]);
   const { visited, markVisited } = useUserProgress();
@@ -45,33 +48,34 @@ export default function World() {
     const npc = NPCS[c];
     return npc && !visited.includes(npc.id);
   });
-
+  const [loading, setLoading] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const visibleCareers = availableCareers.slice(0, 3);
- const ROUTES = [
-  // Ruta izquierda (zona oeste)
-  [
-    [-6, -3, -5],
-    [-2, -3, -5],
-    [-2, -3, -20],
-    [-6, -3, -20],
-  ],
+  const ROUTES = [
+    // Ruta izquierda (zona oeste)
+    [
+      [-6, -3, -5],
+      [-2, -3, -5],
+      [-2, -3, -20],
+      [-6, -3, -20],
+    ],
 
-  // Ruta central
-  [
-    [2, -3, -8],
-    [10, -3, -8],
-    [10, -3, -25],
-    [2, -3, -25],
-  ],
+    // Ruta central
+    [
+      [2, -3, -8],
+      [10, -3, -8],
+      [10, -3, -25],
+      [2, -3, -25],
+    ],
 
-  // Ruta derecha (zona este)
-  [
-    [15, -3, -6],
-    [24, -3, -6],
-    [24, -3, -22],
-    [15, -3, -22],
-  ],
-];
+    // Ruta derecha (zona este)
+    [
+      [15, -3, -6],
+      [24, -3, -6],
+      [24, -3, -22],
+      [15, -3, -22],
+    ],
+  ];
   const SPAWNS = [
     [-3, -3, -7],
     [6, -3, -10],
@@ -91,7 +95,6 @@ export default function World() {
   // useEffect(() => {
   //   const userId = localStorage.getItem("userId");
 
- 
   //   if (!userId) {
   //     const local = JSON.parse(localStorage.getItem("mlc_progress"));
   //     if (local?.visited) {
@@ -112,6 +115,15 @@ export default function World() {
   //     });
 
   // }, []);
+  //   useEffect(() => {
+  //   setLoading(true);
+
+  //   const timeout = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1500); // simula carga
+
+  //   return () => clearTimeout(timeout);
+  // }, []);
   const [npcPositions, setNpcPositions] = useState({});
 
   const nearNPC = useNPCProximity(playerPos, npcPositions);
@@ -126,33 +138,49 @@ export default function World() {
 
   return (
     <>
+      <BackButton />
+
+      <button
+        style={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+          zIndex: 10,
+        }}
+        onClick={() => setHelpOpen(true)}
+      >
+        ❓
+      </button>
+
       <WorldCanvas>
-        {scene === "WORLD" && (
-          <Physics gravity={[0, -9.8, 0]} debug>
-            <WorldScene
-              worldNPCs={worldNPCs}
+        <Suspense fallback={<Loader />}>
+          {scene === "WORLD" && (
+            <Physics gravity={[0, -9.8, 0]} debug>
+              <WorldScene
+                worldNPCs={worldNPCs}
+                mode={mode}
+                playerPos={playerPos}
+                setPlayerPos={setPlayerPos}
+                nearNPC={nearNPC}
+                setNpcPositions={setNpcPositions}
+                setActiveNPC={setActiveNPC}
+                setMode={setMode}
+              />
+            </Physics>
+          )}
+
+          {scene === "CAREER" && activeCareer && mode !== "career-game" && (
+            <CareerRouter
+              key={activeCareer}
+              careerId={activeCareer}
               mode={mode}
-              playerPos={playerPos}
-              setPlayerPos={setPlayerPos}
-              nearNPC={nearNPC}
-              setNpcPositions={setNpcPositions}
-              setActiveNPC={setActiveNPC}
               setMode={setMode}
+              setDialogueIndex={setDialogueIndex}
             />
-          </Physics>
-        )}
+          )}
 
-        {scene === "CAREER" && activeCareer && mode !== "career-game" && (
-          <CareerRouter
-            key={activeCareer}
-            careerId={activeCareer}
-            mode={mode}
-            setMode={setMode}
-            setDialogueIndex={setDialogueIndex}
-          />
-        )}
-
-        <CameraManager scene={scene} mode={mode} playerPos={playerPos} />
+          <CameraManager scene={scene} mode={mode} playerPos={playerPos} />
+        </Suspense>
       </WorldCanvas>
       {scene === "CAREER" && mode === "career-game" && ActiveGame && (
         <ActiveGame
@@ -236,11 +264,9 @@ export default function World() {
 
             const isGuest = !localStorage.getItem("userId");
 
-         
             if (isGuest) {
               markVisited(activeCareer);
-            }
-            else {
+            } else {
               await saveProgress({
                 user_id: localStorage.getItem("userId"),
                 career_id: npcData.id,
@@ -276,6 +302,7 @@ export default function World() {
         }}
         activeNPC={activeNPC}
       />
+      <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
     </>
   );
 }
