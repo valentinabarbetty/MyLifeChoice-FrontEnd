@@ -124,6 +124,7 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 
 export default function NPC({
   modelPath,
@@ -140,6 +141,8 @@ export default function NPC({
   const hasRoute = Array.isArray(route) && route.length > 0;
 
   const { actions } = useAnimations(animations, ref);
+  const rb = useRef();
+
   useEffect(() => {
     if (!actions) return;
 
@@ -153,14 +156,47 @@ export default function NPC({
   const targetIndex = useRef(0);
   const speed = 0.015;
 
-  useEffect(() => {
-    if (!ref.current) return;
+  useFrame(() => {
+    if (!ref.current || !rb.current || !hasRoute) return;
 
-    if (hasRoute) {
-      ref.current.position.set(route[0][0], route[0][1], route[0][2]);
-      onMove?.(ref.current.position.clone());
+    if (isNear && lookAt) {
+      const pos = rb.current.translation();
+
+      const angle = Math.atan2(lookAt.x - pos.x, lookAt.z - pos.z);
+
+      ref.current.rotation.y = angle + Math.PI;
+
+      return;
     }
-  }, []);
+    const target = route[targetIndex.current];
+    const targetVec = new THREE.Vector3(target[0], target[1], target[2]);
+
+    const t = rb.current.translation();
+    const pos = new THREE.Vector3(t.x, t.y, t.z);
+
+    const dir = targetVec.clone().sub(pos);
+    const dist = dir.length();
+
+    if (dist < 0.05) {
+      targetIndex.current = (targetIndex.current + 1) % route.length;
+      return;
+    }
+
+    dir.normalize();
+    const newPos = pos.clone().add(dir.multiplyScalar(speed));
+
+    newPos.y = route[0][1];
+
+    rb.current.setNextKinematicTranslation({
+      x: newPos.x,
+      y: newPos.y,
+      z: newPos.z,
+    });
+
+    ref.current.lookAt(targetVec.x, newPos.y, targetVec.z);
+
+    onMove?.(newPos.clone());
+  });
 
   useEffect(() => {
     if (!actions || !animationState) return;
@@ -173,37 +209,18 @@ export default function NPC({
     currentAction.current = animationState;
   }, [animationState, actions]);
 
-  useFrame(() => {
-    if (!ref.current || !hasRoute) return;
-
-    if (isNear) {
-      if (lookAt) {
-        ref.current.lookAt(lookAt.x, ref.current.position.y, lookAt.z);
-      }
-      return;
-    }
-
-    const target = route[targetIndex.current];
-    const targetVec = new THREE.Vector3(target[0], target[1], target[2]);
-    const pos = ref.current.position;
-
-    const dir = targetVec.clone().sub(pos);
-    const dist = dir.length();
-
-    if (dist < 0.05) {
-      targetIndex.current = (targetIndex.current + 1) % route.length;
-      return;
-    }
-
-    dir.normalize();
-    pos.add(dir.multiplyScalar(speed));
-    ref.current.lookAt(targetVec.x, pos.y, targetVec.z);
-    onMove?.(ref.current.position.clone());
-  });
-
   return (
-    <group ref={ref} onClick={onInteract}>
-      <primitive object={scene} />
-    </group>
+    <RigidBody
+      ref={rb}
+      type="kinematicPosition"
+      colliders={false}
+      enabledRotations={[false, false, false]}
+    >
+      <CapsuleCollider args={[0.35, 0.5]} />
+
+      <group ref={ref} onClick={onInteract}>
+        <primitive object={scene} />
+      </group>
+    </RigidBody>
   );
 }

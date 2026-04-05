@@ -286,7 +286,7 @@ export default function CameraManager({
   const desiredLookAt = useRef(new Vector3());
 
   const raycaster = useRef(new THREE.Raycaster());
-  const hiddenMeshes = useRef([]); // 🔥 ARRAY (no Map)
+  const hiddenMeshes = useRef([]); 
 
   useEffect(() => {
     if (scene === "CAREER") {
@@ -308,7 +308,6 @@ export default function CameraManager({
   useFrame(() => {
     if (scene === "CAREER") return;
 
-    // 🔥 SOLO sigue en explore (NO interact)
     if (mode === "explore") {
       desiredPosition.current.set(
         playerPos.x + 6,
@@ -326,7 +325,6 @@ export default function CameraManager({
     camera.position.lerp(desiredPosition.current, 0.08);
     camera.lookAt(desiredLookAt.current);
 
-    // 🔥 RESTAURAR materiales
     hiddenMeshes.current.forEach((entry) => {
       const { material, oldTransparent, oldOpacity } = entry;
       if (!material) return;

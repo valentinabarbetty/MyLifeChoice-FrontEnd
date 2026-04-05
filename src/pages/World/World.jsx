@@ -128,17 +128,17 @@ export default function World() {
     <>
       <WorldCanvas>
         {scene === "WORLD" && (
-              <Physics gravity={[0, -9.8, 0]} debug>
-          <WorldScene
-            worldNPCs={worldNPCs}
-            mode={mode}
-            playerPos={playerPos}
-            setPlayerPos={setPlayerPos}
-            nearNPC={nearNPC}
-            setNpcPositions={setNpcPositions}
-            setActiveNPC={setActiveNPC}
-            setMode={setMode}
-          />
+          <Physics gravity={[0, -9.8, 0]} debug>
+            <WorldScene
+              worldNPCs={worldNPCs}
+              mode={mode}
+              playerPos={playerPos}
+              setPlayerPos={setPlayerPos}
+              nearNPC={nearNPC}
+              setNpcPositions={setNpcPositions}
+              setActiveNPC={setActiveNPC}
+              setMode={setMode}
+            />
           </Physics>
         )}
 
@@ -236,11 +236,10 @@ export default function World() {
 
             const isGuest = !localStorage.getItem("userId");
 
-            // 🟢 SI ES INVITADO → SOLO LOCAL
+         
             if (isGuest) {
               markVisited(activeCareer);
             }
-            // 🔵 SI ESTÁ LOGUEADO → BACKEND + LOCAL
             else {
               await saveProgress({
                 user_id: localStorage.getItem("userId"),

@@ -25,7 +25,7 @@ export default function BaseCareerScene({
         position={[-0.3, 0, 2]}
         rotation={[0, Math.PI + 0.22, 0]}
       >
-        <Player mode="dialogue" spawnPosition={[0, 0, 0]} />
+        <Player mode="dialogue" spawnPosition={[0, 0, 0]} scene="CAREER" />
       </group>
 
       <group
