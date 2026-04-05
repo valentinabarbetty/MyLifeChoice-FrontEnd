@@ -162,9 +162,7 @@ export default function NPC({
     if (isNear && lookAt) {
       const pos = rb.current.translation();
 
-      const angle = Math.atan2(lookAt.x - pos.x, lookAt.z - pos.z);
-
-      ref.current.rotation.y = angle + Math.PI;
+      ref.current.lookAt(lookAt.x, pos.y, lookAt.z);
 
       return;
     }
