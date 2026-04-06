@@ -18,6 +18,7 @@ import { Physics } from "@react-three/rapier";
 import BackButton from "./ui/BackButton/BackButton";
 import Loader from "./ui/Loader/Loader";
 import HelpModal from "./ui/HelpModal/HelpModal";
+import CareerSummary from "../Summary/Summary";
 export default function World() {
   const {
     sceneConfig,
@@ -51,6 +52,13 @@ export default function World() {
   const [loading, setLoading] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const visibleCareers = availableCareers.slice(0, 3);
+  //..........
+  const allCompleted = availableCareers.length === 0;
+  useEffect(() => {
+  if (allCompleted) {
+    setScene("SUMMARY");
+  }
+}, [allCompleted]);
   const ROUTES = [
     // Ruta izquierda (zona oeste)
     [
@@ -190,6 +198,7 @@ export default function World() {
           }}
         />
       )}
+      {scene === "SUMMARY" && <CareerSummary />}
       <WorldHUD
         scene={scene}
         mode={mode}
@@ -260,24 +269,7 @@ export default function World() {
             return;
           }
           if (mode === "career-feedback") {
-            const npcData = NPCS[activeCareer];
-
-            const isGuest = !localStorage.getItem("userId");
-
-            if (isGuest) {
-              markVisited(activeCareer);
-            } else {
-              await saveProgress({
-                user_id: localStorage.getItem("userId"),
-                career_id: npcData.id,
-                state: "done",
-                feedback: "liked",
-                progress: "done",
-              });
-
-              markVisited(activeCareer);
-            }
-
+            markVisited(activeCareer);
             setScene("WORLD");
             setActiveCareer(null);
             setActiveNPC(null);
@@ -301,6 +293,8 @@ export default function World() {
           }
         }}
         activeNPC={activeNPC}
+          activeCareer={activeCareer}
+
       />
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
     </>

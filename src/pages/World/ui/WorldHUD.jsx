@@ -1,5 +1,5 @@
-import DialogueBox from "../../../components/DialogueBox/DialogueBox"
-
+import DialogueBox from "../../../components/DialogueBox/DialogueBox";
+import CareerFeedback from "./CareerFeedback/CareerFeedback";
 
 export default function WorldHUD({
   scene,
@@ -8,8 +8,11 @@ export default function WorldHUD({
   onNext,
   onAccept,
   onReject,
+  activeCareer
 }) {
-
+    if (scene === "CAREER" && mode === "career-feedback") {
+    return <CareerFeedback career={activeCareer} onFinish={onAccept} />;
+  }
   if (mode === "intro" && dialogue) {
     return (
       <DialogueBox
@@ -47,24 +50,24 @@ export default function WorldHUD({
     );
   }
 
-  if (scene === "CAREER" && mode === "career-feedback") {
-  return (
-    <DialogueBox
-      speaker="manager"
-      text="¿Te ha gustado la carrera de Administración?"
-      showNext={false}
-    >
-      <div className="dgl-options">
-        <button onClick={onAccept}>Sí</button>
-        <button onClick={onReject}>No</button>
-      </div>
-    </DialogueBox>
-  );
-}
-if (scene === "CAREER" && mode === "career-game") {
-  return null;
-}
-
+  // if (scene === "CAREER" && mode === "career-feedback") {
+  //   // return (
+  //   //   <DialogueBox
+  //   //     speaker="manager"
+  //   //     text="¿Te ha gustado la carrera de Administración?"
+  //   //     showNext={false}
+  //   //   >
+  //   //     <div className="dgl-options">
+  //   //       <button onClick={onAccept}>Sí</button>
+  //   //       <button onClick={onReject}>No</button>
+  //   //     </div>
+  //   //   </DialogueBox>
+  //   // );
+  //   return <CareerFeedback career={activeCareer} onFinish={onAccept} />;
+  // }
+  if (scene === "CAREER" && mode === "career-game") {
+    return null;
+  }
 
   return null;
 }
