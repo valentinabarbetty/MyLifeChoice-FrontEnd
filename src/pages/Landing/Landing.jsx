@@ -5,7 +5,7 @@ import vid from "/assets/gameplay.mp4";
 import logo from "/assets/logo.PNG";
 import AuthModal from "../../components/AuthModal/AuthModal";
 import { useEffect, useState } from "react";
-import { checkUserProgress } from "../../services/userService";
+import { checkIntroStatus } from "../../services/userService";
 export default function Landing() {
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -17,13 +17,13 @@ export default function Landing() {
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId) {
-      checkUserProgress(userId)
-        .then((res) => setHasProgress(res.has_progress))
-        .catch((err) => console.error("Error checking user progress:", err));
+      checkIntroStatus(userId)
+        .then((res) => setHasProgress(res.has_intro))
+        .catch((err) => console.error("Error checking intro:", err));
     }
-    console.log(localStorage.getItem('logged'))
+    console.log(localStorage.getItem("logged"));
   }, []);
-  const handleLoginSuccess = (userData) => {
+  const handleLoginSuccess = async (userData) => {
     console.log("✅ Login exitoso:", userData);
     if (userData?.nickname) {
       localStorage.setItem("playerName", userData.nickname);
@@ -34,10 +34,29 @@ export default function Landing() {
 
     localStorage.setItem("sessionType", "auth");
     localStorage.setItem("logged", "logged");
+    try {
+      const res = await checkIntroStatus(userId);
+      setHasProgress(res.has_intro);
+    } catch (err) {
+      console.error("Error checking intro:", err);
+    }
+
     setShowLoginModal(false);
-    
+
     // setIsAuthenticated(true);
+
   };
+      const logout = () => {
+      localStorage.removeItem("userId");
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("playerName");
+      localStorage.removeItem("logged");
+      localStorage.removeItem("selectedGuide");
+      localStorage.removeItem("mlc_progress");
+      localStorage.removeItem("sessionType");
+
+      window.location.href = "/";
+    };
   return (
     <div className="landing-container">
       <video
@@ -49,13 +68,17 @@ export default function Landing() {
         playsInline
       />
       <div className="overlay"></div>
-      {localStorage.getItem("logged") !== "logged" && (
-        <div className="login-container">
+      <div className="login-container">
+        {localStorage.getItem("logged") === "logged" ? (
+          <button className="btn-login" onClick={logout}>
+            Cerrar Sesión
+          </button>
+        ) : (
           <button className="btn-login" onClick={() => setShowLoginModal(true)}>
             Iniciar Sesión
           </button>
-        </div>
-      )}
+        )}
+      </div>
       <motion.img
         src={logo}
         alt="My Life Choice Logo"
@@ -71,11 +94,12 @@ export default function Landing() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 1 }}
       >
-        <button className="btn-primary" onClick={() => navigate("/intro")}>
-          Empezar Nueva Aventura
-        </button>
-        {hasProgress && (
+        {!hasProgress ? (
           <button className="btn-primary" onClick={() => navigate("/intro")}>
+            Empezar Nueva Aventura
+          </button>
+        ) : (
+          <button className="btn-primary" onClick={() => navigate("/world")}>
             Continuar Partida
           </button>
         )}

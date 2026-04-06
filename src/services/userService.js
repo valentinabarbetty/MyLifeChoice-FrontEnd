@@ -195,3 +195,52 @@ export const saveProgress = async (progressData) => {
     throw error;
   }
 };
+
+export const checkIntroStatus = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/users/check-intro/${userId}/`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
+    }
+
+    const data = await response.json();
+    console.log("🧠 Estado de intro:", data);
+      if (data.has_intro) {
+      localStorage.setItem("intro_done", "true");
+    } else {
+      localStorage.removeItem("intro_done");
+    }
+    return data;
+
+  } catch (error) {
+    console.error("❌ Error al verificar intro:", error);
+    throw error;
+  }
+};
+
+export const completeIntro = async (userId, guideId) => {
+  try {
+    const response = await fetch(`${API_URL}/users/complete-intro/${userId}/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ guide_id: guideId }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    return data;
+
+  } catch (error) {
+    console.error("Error al completar intro:", error);
+    throw error;
+  }
+};
