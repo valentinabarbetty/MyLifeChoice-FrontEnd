@@ -1,0 +1,144 @@
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f5eee9;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+
+  max-height: 85vh;
+  background: #ffffff;
+
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.title {
+  text-align: center;
+  padding: 14px;
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 600;
+  color: #7b5e57;
+
+  border-bottom: 1px solid #eee;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section h2 {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cardSoft {
+  background: #fde2ec;
+  padding: 10px;
+  border-radius: 10px;
+
+  text-align: center;
+  font-size: 12px;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+
+  padding: 8px 4px;
+
+  border-bottom: 1px solid #eee;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.rank {
+  font-size: 12px;
+  font-weight: 600;
+  color: #aaa;
+}
+
+.careerName {
+  font-size: 13px;
+  color: #333;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.score {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7c3aed;
+}
+
+
+.stars {
+  font-size: 10px;
+  opacity: 0.6;
+  margin-left: 6px;
+}
+
+
+.row:first-child {
+  font-weight: 600;
+}
+
+.row:first-child .rank {
+  color: #7c3aed;
+}
+
+.recommendation {
+  margin-top: 6px;
+  background: #f1ebff;
+
+  padding: 12px;
+  border-radius: 10px;
+
+  text-align: center;
+  font-size: 12px;
+
+  box-shadow: 0 5px 12px rgba(0,0,0,0.04);
+}

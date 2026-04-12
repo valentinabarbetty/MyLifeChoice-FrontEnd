@@ -244,3 +244,25 @@ export const completeIntro = async (userId, guideId) => {
     throw error;
   }
 };
+
+export const getUserFeedback = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/exploration/feedback/${userId}/`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
+    }
+
+    const data = await response.json();
+    console.log("📊 Feedback del usuario:", data);
+    return data;
+
+  } catch (error) {
+    console.error("❌ Error al obtener feedback:", error);
+    throw error;
+  }
+};
