@@ -1,4 +1,5 @@
 import DialogueBox from "../../../components/DialogueBox/DialogueBox";
+import { NPCS } from "../data/npcsInfo";
 import CareerFeedback from "./CareerFeedback/CareerFeedback";
 
 export default function WorldHUD({
@@ -10,6 +11,7 @@ export default function WorldHUD({
   onReject,
   activeCareer
 }) {
+  const npc = NPCS[activeCareer];
     if (scene === "CAREER" && mode === "career-feedback") {
     return <CareerFeedback career={activeCareer} onFinish={onAccept} />;
   }
@@ -27,8 +29,8 @@ export default function WorldHUD({
   if (mode === "interact") {
     return (
       <DialogueBox
-        speaker="?"
-        text="¿Deseas iniciar una conversación?"
+        speaker={npc?.name}
+        text={`Hola, soy ${npc?.name}, ${npc?.career}. ¿Quieres conocer mi carrera?`}
         showNext={false}
       >
         <div className="dgl-options">

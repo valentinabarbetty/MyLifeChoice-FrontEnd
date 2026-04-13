@@ -11,11 +11,19 @@ export default function WorldHUD({
   onAccept,
   onReject,
   activeCareer,
+  activeNPC, // 🔥 IMPORTANTE
 }) {
+
+  // 🔥 CLAVE: usa el que exista
+  const currentKey = activeCareer || activeNPC;
+  const npc = currentKey ? NPCS[currentKey] : null;
+
+  // 🎯 FEEDBACK
   if (scene === "CAREER" && mode === "career-feedback") {
     return <CareerFeedback career={activeCareer} onFinish={onAccept} />;
   }
 
+  // 🎯 INTRO
   if (mode === "intro" && dialogue) {
     return (
       <DialogueBox
@@ -27,11 +35,16 @@ export default function WorldHUD({
     );
   }
 
+  // 🎯 INTERACCIÓN NPC
   if (mode === "interact") {
     return (
       <DialogueBox
-        speaker="?"
-        text="¿Deseas iniciar una conversación?"
+        speaker={npc?.name || "Guía"}
+        text={
+          npc
+            ? `Hola, soy ${npc.name}, ${npc.career}. ¿Quieres conocer mi carrera?`
+            : "¿Deseas iniciar una conversación?"
+        }
         showNext={false}
       >
         <div className="dgl-options">
@@ -42,6 +55,7 @@ export default function WorldHUD({
     );
   }
 
+  // 🎯 DIÁLOGOS NORMALES
   if ((mode === "dialogue" || mode === "career-ending") && dialogue) {
     return (
       <DialogueBox
@@ -53,6 +67,7 @@ export default function WorldHUD({
     );
   }
 
+  // 🎯 JUEGO
   if (scene === "CAREER" && mode === "career-game") {
     return null;
   }

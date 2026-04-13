@@ -2,7 +2,7 @@ export const educacionFisicaIntroDialogues = [
   {
     speaker: "Samuel",
     text: "¡Hola! 👋 ¿Listo para moverte un poco? Soy Samuel, profesor de educación física.",
-    animation: "wave",
+    animation: "talking",
   },
   {
     speaker: "Samuel",
@@ -12,30 +12,29 @@ export const educacionFisicaIntroDialogues = [
   {
     speaker: "Samuel",
     text: "Si te gusta la actividad física, el deporte y trabajar con personas… esta carrera podría ser muy interesante para ti.",
-    animation: "smile",
+    animation: "talking",
   },
 
   {
     speaker: "Samuel",
     text: "La Licenciatura en Educación Física se enfoca en enseñar actividad física, deporte y hábitos de vida saludables. 🏃",
-    animation: "explain",
+    animation: "talking",
   },
   {
     speaker: "Samuel",
     text: "Ayudamos a que las personas mejoren su condición física, aprendan deportes y desarrollen habilidades motoras.",
-    animation: "talking",
+    animation: "idle",
   },
   {
     speaker: "Samuel",
     text: "También promovemos hábitos saludables para el bienestar.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Samuel",
     text: "No se trata solo de hacer ejercicio… también se trata de educar sobre el cuerpo y el movimiento.",
-    animation: "soft",
+    animation: "talking2",
   },
-
 
   {
     speaker: "Samuel",
@@ -45,7 +44,7 @@ export const educacionFisicaIntroDialogues = [
   {
     speaker: "Samuel",
     text: "Primero preparo las actividades o ejercicios que vamos a realizar.",
-    animation: "thinking",
+    animation: "talking",
   },
   {
     speaker: "Samuel",
@@ -55,18 +54,18 @@ export const educacionFisicaIntroDialogues = [
   {
     speaker: "Samuel",
     text: "También observo su desempeño para ayudarles a mejorar su técnica.",
-    animation: "observe",
+    animation: "talking",
   },
   {
     speaker: "Samuel",
     text: "Cada clase tiene un objetivo importante… aprender mientras nos movemos.",
-    animation: "smile",
+    animation: "idle",
   },
 
   {
     speaker: "Samuel",
     text: "Esta carrera tiene muchas áreas donde puedes trabajar.",
-    animation: "explain",
+    animation: "talking",
   },
   {
     speaker: "Samuel",
@@ -76,13 +75,13 @@ export const educacionFisicaIntroDialogues = [
   {
     speaker: "Samuel",
     text: "También puedes promover hábitos saludables en diferentes contextos.",
-    animation: "soft",
+    animation: "talking",
   },
 
   {
     speaker: "Samuel",
     text: "Para esta profesión, hay habilidades muy importantes.",
-    animation: "explain",
+    animation: "talking",
   },
   {
     speaker: "Samuel",
@@ -98,12 +97,12 @@ export const educacionFisicaIntroDialogues = [
   {
     speaker: "Samuel",
     text: "Muchos aman esta carrera porque trabajan en movimiento y ayudan a otros a mejorar su salud.",
-    animation: "smile",
+    animation: "idle",
   },
   {
     speaker: "Samuel",
     text: "Es una profesión dinámica, activa y llena de energía.",
-    animation: "soft",
+    animation: "talking2",
   },
 ];
 export const educacionFisicaEndingDialogues = [
@@ -120,16 +119,16 @@ export const educacionFisicaEndingDialogues = [
   {
     speaker: "Samuel",
     text: "Si disfrutas el deporte, el movimiento y enseñar a otros…",
-    animation: "soft",
+    animation: "talking",
   },
   {
     speaker: "Samuel",
     text: "quizás Licenciatura en Educación Física sea tu camino. ⚽🏃‍♂️",
-    animation: "smile",
+    animation: "talking",
   },
   {
     speaker: "Samuel",
     text: "Nos vemos en la próxima decisión de tu aventura profesional.",
-    animation: "wave",
+    animation: "clap",
   },
 ];

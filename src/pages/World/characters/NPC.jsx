@@ -135,7 +135,22 @@ export default function NPC({
   onInteract,
   onMove,
 }) {
+  
   const ref = useRef();
+  const animationMap = {
+    talking: "talking",
+    talking2: "talking2",
+    walking: "walk", // 🔥 ESTE era el error principal
+    walk: "walk",
+    idle: "idle",
+
+    // 👇 fallback inteligentes
+    explain: "talking",
+    soft: "idle",
+    thinking: "idle",
+    smile: "clap",
+    wave: "clap",
+  };
 
   const { scene, animations } = useGLTF(modelPath);
   const hasRoute = Array.isArray(route) && route.length > 0;
@@ -143,19 +158,30 @@ export default function NPC({
   const { actions } = useAnimations(animations, ref);
   const rb = useRef();
 
-  useEffect(() => {
-    if (!actions) return;
+  // useEffect(() => {
+  //   if (!actions) return;
 
-    const start = actions[animationState] || Object.values(actions)[0];
-    start.reset().fadeIn(0.3).play();
-    currentAction.current = animationState;
-  }, [actions]);
+  //   const start = actions[animationState] || Object.values(actions)[0];
+  //   start.reset().fadeIn(0.3).play();
+  //   currentAction.current = animationState;
+  // }, [actions]);
 
   const currentAction = useRef(null);
 
   const targetIndex = useRef(0);
   const speed = 0.015;
+useEffect(() => {
+  if (!actions) return;
 
+  const first = actions["idle"] || Object.values(actions)[0];
+  if (!first) return;
+
+  first.reset().fadeIn(0.3).play();
+  currentAction.current = first;
+
+  console.log("🚀 INIT ANIMATION:", first);
+
+}, [actions]);
   useFrame(() => {
     if (!ref.current || !rb.current || !hasRoute) return;
 
@@ -195,18 +221,42 @@ export default function NPC({
 
     onMove?.(newPos.clone());
   });
-
   useEffect(() => {
-    if (!actions || !animationState) return;
+    if (!actions) return;
 
-    if (currentAction.current === animationState) return;
+    console.log("ANIMACIONES DISPONIBLES:", Object.keys(actions));
+  }, [actions]);
+  useEffect(() => {
+    if (!actions) return;
 
-    actions[currentAction.current]?.fadeOut(0.2);
-    const next = actions[animationState] || Object.values(actions)[0];
-    next?.reset().fadeIn(0.2).play();
-    currentAction.current = animationState;
+    console.log("🔥 animationState recibido:", animationState);
+
+    const keys = Object.keys(actions);
+
+    const mapped = animationMap[animationState] || animationState;
+
+    const match = keys.find((k) => k.toLowerCase() === mapped?.toLowerCase());
+
+    const next = match ? actions[match] : actions["idle"];
+
+    console.log("🎬 animación final:", match);
+
+    if (!next) return;
+
+    // 🔥 SI ES LA MISMA, NO HAGAS NADA
+    if (currentAction.current === next) return;
+
+    // 🔥 SOLO apagamos la anterior
+    if (currentAction.current) {
+      currentAction.current.fadeOut(0.2);
+    }
+
+    // 🔥 nueva animación
+    next.reset().fadeIn(0.2).play();
+
+    // 🔥 GUARDAR LA ACCIÓN (NO STRING)
+    currentAction.current = next;
   }, [animationState, actions]);
-
   return (
     <RigidBody
       ref={rb}
@@ -217,7 +267,7 @@ export default function NPC({
       <CapsuleCollider args={[0.35, 0.5]} />
 
       <group ref={ref} onClick={onInteract}>
-        <primitive object={scene} />
+        <primitive ref={ref} object={scene} onClick={onInteract} />
       </group>
     </RigidBody>
   );

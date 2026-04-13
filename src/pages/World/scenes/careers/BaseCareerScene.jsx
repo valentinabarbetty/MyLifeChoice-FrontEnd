@@ -5,6 +5,7 @@ import { useMemo } from "react";
 
 export default function BaseCareerScene({
   careerId,
+  currentAnimation,
   children
 }) {
   const { scene } = useGLTF(
@@ -34,7 +35,7 @@ export default function BaseCareerScene({
       >
         <NPC
           modelPath={`/assets/models/npc/${careerId}.glb`}
-          animationState="talking"
+          animationState={currentAnimation || "idle"}
           scale={4}
         />
       </group>

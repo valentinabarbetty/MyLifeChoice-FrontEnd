@@ -2,7 +2,7 @@ export const ingenieriaIndustrialIntroDialogues = [
   {
     speaker: "Laura",
     text: "¡Hey! 👋 Bienvenido. Soy Laura, ingeniera industrial.",
-    animation: "wave",
+    animation: "talking",
   },
   {
     speaker: "Laura",
@@ -27,41 +27,41 @@ export const ingenieriaIndustrialIntroDialogues = [
   {
     speaker: "Laura",
     text: "Siempre buscamos responder una pregunta clave: ¿cómo podemos hacer esto mejor?",
-    animation: "talking",
+    animation: "idle",
   },
 
   {
     speaker: "Laura",
     text: "Un día típico puede ser muy variado.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Laura",
     text: "Reviso datos de producción y analizo procesos para detectar problemas como retrasos o desperdicios.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Laura",
     text: "Luego trabajo con equipos para proponer mejoras y optimizar cómo se hacen las cosas.",
-    animation: "talking",
+    animation: "talking2",
   },
 
   {
     speaker: "Laura",
     text: "Puedes trabajar en muchas áreas: producción, logística, consultoría, calidad o incluso tecnología.",
-    animation: "talking",
+    animation: "talking2",
   },
 
   {
     speaker: "Laura",
     text: "Necesitas pensamiento analítico, interpretación de datos, organización y trabajo en equipo.",
-    animation: "talking",
+    animation: "talking2",
   },
 
   {
     speaker: "Laura",
     text: "Si te gusta entender cómo funcionan las cosas y mejorarlas… Ingeniería Industrial podría ser tu camino.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Laura",
@@ -69,21 +69,26 @@ export const ingenieriaIndustrialIntroDialogues = [
     animation: "idle",
   },
 ];
+
 export const ingenieriaIndustrialEndingDialogues = [
   {
     speaker: "Laura",
     text: "Excelente trabajo. Organizaste correctamente la línea de producción.",
+    animation: "talking",
   },
   {
     speaker: "Laura",
     text: "Identificaste el cuello de botella y tomaste una buena decisión para optimizar el proceso.",
+    animation: "talking",
   },
   {
     speaker: "Laura",
     text: "Eso es exactamente lo que hace un ingeniero industrial: analizar, mejorar y optimizar.",
+    animation: "talking",
   },
   {
     speaker: "Laura",
     text: "¡Felicidades! Has completado la experiencia de Ingeniería Industrial.",
+    animation: "clap",
   },
 ];

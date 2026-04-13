@@ -183,7 +183,9 @@ export default function World() {
               careerId={activeCareer}
               mode={mode}
               setMode={setMode}
+              dialogueIndex={dialogueIndex}
               setDialogueIndex={setDialogueIndex}
+              
             />
           )}
 
@@ -292,8 +294,9 @@ export default function World() {
             setMode("explore");
           }
         }}
+        activeCareer={activeCareer}
         activeNPC={activeNPC}
-          activeCareer={activeCareer}
+        
 
       />
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />

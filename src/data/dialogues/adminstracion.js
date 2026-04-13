@@ -17,7 +17,7 @@ export const ADMIN_DIALOGUE = [
   {
     speaker: "Raquelle",
     text: "Bienvenida. Soy el gerente de esta empresa.",
-    animation: "talking",
+    animation: "walking",
   },
   {
     speaker: "Raquelle",

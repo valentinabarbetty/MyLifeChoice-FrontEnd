@@ -2,7 +2,7 @@ export const contaduriaIntroDialogues = [
   {
     speaker: "Isabella",
     text: "¡Hola! 👋 Bienvenido. Soy Isabella, contadora pública.",
-    animation: "wave",
+    animation: "talking",
   },
   {
     speaker: "Isabella",
@@ -64,32 +64,32 @@ export const contaduriaIntroDialogues = [
   {
     speaker: "Isabella",
     text: "Contabilidad empresarial, auditoría, consultoría financiera, sector público o impuestos.",
-    animation: "talking",
+    animation: "idle",
   },
   {
     speaker: "Isabella",
     text: "También puedes especializarte en análisis financiero.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Isabella",
     text: "Para ser buen contador necesitas atención al detalle.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Isabella",
     text: "También análisis, pensamiento lógico y conocimiento de normas contables.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Isabella",
     text: "Y hoy en día, saber usar herramientas digitales es clave.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Isabella",
     text: "Porque en esta profesión… la precisión lo es todo.",
-    animation: "talking",
+    animation: "idle",
   },
 
   {
@@ -116,22 +116,22 @@ export const contaduriaIntroDialogues = [
   {
     speaker: "Isabella",
     text: "Tenemos un libro de gastos con algunos errores… y varias facturas como referencia.",
-    animation: "talking",
+    animation: "idle",
   },
   {
     speaker: "Isabella",
     text: "Tu tarea será revisar cada registro y corregir los valores para que coincidan con las facturas.",
-    animation: "explaining",
+    animation: "talking2",
   },
   {
     speaker: "Isabella",
     text: "Observa bien los detalles… en contaduría, un pequeño error puede cambiar todo.",
-    animation: "thinking",
+    animation: "talking2",
   },
   {
     speaker: "Isabella",
     text: "Cuando creas que todo está correcto, presiona VALIDAR. ¡Buena suerte! 🧾✨",
-    animation: "wave",
+    animation: "talking2",
   },
 ];
 
@@ -139,17 +139,21 @@ export const contaduriaEndingDialogues = [
   {
     speaker: "Isabella",
     text: "Excelente trabajo. Has corregido correctamente los registros financieros.",
+    animation: "talking"
   },
   {
     speaker: "Isabella",
     text: "La contaduría requiere precisión, análisis y atención al detalle.",
+    animation: "talking"
   },
   {
     speaker: "Isabella",
     text: "Has demostrado habilidades clave para esta profesión.",
+    animation: "talking",
   },
   {
     speaker: "Isabella",
     text: "¡Felicidades! Has completado la experiencia de Contaduría Pública. 📊",
+    animation: "clap"
   },
 ];
