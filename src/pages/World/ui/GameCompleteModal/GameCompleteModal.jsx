@@ -19,8 +19,8 @@ export default function GameCompleteModal({
 
         {extra && <div className="extra">{extra}</div>}
 
-        <button className="btn" onClick={onContinue}>
-          CONTINUAR 🚀
+        <button className="gamefinished-btn" onClick={onContinue}>
+          Continuar
         </button>
       </div>
     </div>
