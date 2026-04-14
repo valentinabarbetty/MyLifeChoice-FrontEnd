@@ -11,10 +11,11 @@ export default function OptionCard({
       onClick={onClick}
     >
       <h3>{title}</h3>
+      
 
-      {image && <img src={image} className="card-img" />}
-
-      {subtitle && <p>{subtitle}</p>}
+      {image && <img src={image} className="card-img" alt={title} />}
+      
+      {subtitle && !image && <p>{subtitle}</p>}
     </div>
   );
 }

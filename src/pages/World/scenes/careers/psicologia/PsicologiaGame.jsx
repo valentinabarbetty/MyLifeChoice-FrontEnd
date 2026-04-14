@@ -4,9 +4,8 @@ import ConfettiEffect from "../../../ui/Confetti";
 import GameCompleteModal from "../../../ui/GameCompleteModal/GameCompleteModal";
 import OptionCard from "../../../ui/OptionCard";
 import "./PsicologiaGame.css";
-import GenericDecisionGame from "../../../ui/GenericDecisionGame";
+import GenericDecisionGame from "../../../ui/GenericDecisionGame/GenericDecisionGame";
 
-/* DATA */
 
 const CASES = [
   {
@@ -32,10 +31,26 @@ const CASES = [
 ];
 
 const OPTIONS = [
-  { value: "felicidad", label: "Felicidad", emoji: "🥳" },
-  { value: "frustracion", label: "Frustración", emoji: "😩" },
-  { value: "tristeza", label: "Tristeza", emoji: "😭" },
-  { value: "sorpresa", label: "Sorpresa", emoji: "😲" },
+  { 
+    value: "felicidad", 
+    label: "Felicidad", 
+    image: "/assets/ui/Psicologia/emotions/happiness.png" 
+  },
+  { 
+    value: "frustracion", 
+    label: "Frustración", 
+    image: "/assets/ui/Psicologia/emotions/frustrated.png" 
+  },
+  { 
+    value: "tristeza", 
+    label: "Tristeza", 
+    image: "/assets/ui/Psicologia/emotions/sadness.png" 
+  },
+  { 
+    value: "sorpresa", 
+    label: "Sorpresa", 
+    image: "/assets/ui/Psicologia/emotions/surprised.png" 
+  },
 ];
 
 export default function PsicologiaGame({ onComplete }) {
@@ -43,10 +58,9 @@ export default function PsicologiaGame({ onComplete }) {
     <GenericDecisionGame
       cases={CASES}
       options={OPTIONS}
-      npcImage="/assets/ui/Psicologia/person1.png"
       introText="Observa la situación y selecciona la emoción correcta."
       instructionText="Selecciona la emoción:"
-      successTitle="🧠 ¡Excelente!"
+      successTitle="¡Excelente!"
       successMessage="Has identificado correctamente las emociones."
       onComplete={onComplete}
     />

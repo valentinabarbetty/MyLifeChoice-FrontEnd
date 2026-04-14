@@ -1,14 +1,14 @@
-/* 🔵 OVERLAY */
+
 .overlay {
   position: fixed;
   inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #eef2f7;
+  background: linear-gradient(135deg, #b8f5fb 0%, #f4f4f4 100%);
 }
 
-/* 🟡 PANEL PRINCIPAL */
+
 .panel {
   width: 900px;
   background: #fef7e7;
@@ -16,14 +16,16 @@
   border-radius: 25px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  position: relative;
+  padding-bottom: 80px;
 }
 
-/* 🧠 TITULO */
+
 .panel h2 {
   margin-bottom: 20px;
 }
 
-/* 🧩 CONTENEDOR DE CARTAS */
+
 .cards {
   display: flex;
   justify-content: center;
@@ -33,7 +35,7 @@
   flex-wrap: wrap;
 }
 
-/* 🎴 CARD BASE */
+
 .card {
   background: #f8fafc;
   padding: 15px;
@@ -52,7 +54,7 @@
   transition: all 0.2s ease;
 }
 
-/* 🟢 DRAG */
+
 .card.drag {
   cursor: grab;
 }
@@ -62,25 +64,25 @@
   transform: scale(1.05);
 }
 
-/* ✨ HOVER */
+
 .card:hover {
   transform: translateY(-5px);
 }
 
-/* 🖼️ IMAGEN */
+
 .card-img {
   width: 80px;
   height: 80px;
   object-fit: contain;
 }
 
-/* 🔤 TEXTO */
+
 .card h3 {
   font-size: 14px;
   font-weight: bold;
 }
 
-/* 🟢 SELECCION */
+
 .selectable {
   cursor: pointer;
 }
@@ -90,7 +92,7 @@
   background: #ecfdf5;
 }
 
-/* 🔘 BOTONES OPCIONES */
+
 .solutions {
   display: flex;
   gap: 15px;
@@ -117,25 +119,26 @@
   color: white;
 }
 
-/* 🚀 BOTON PRINCIPAL */
-.btn {
-  margin-top: 20px;
-  width: 100%;
-  padding: 15px;
-  background: linear-gradient(180deg, #4ade80, #22c55e);
+
+.ing-btn {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  padding: 8px 20px;
+  background: #22c55e;
   color: white;
+  border-radius: 40px;
   border: none;
-  border-radius: 20px;
-  font-size: 16px;
-  font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 6px 15px rgba(34,197,94,0.4);
-  transition: all 0.2s ease;
+  font-weight: bold;
+  font-size: 13px;
+  transition: all 0.2s;
 }
 
-.btn:hover {
+.ing-btn:hover {
   transform: scale(1.03);
 }
+
 .selected-station {
   background: #f8fafc;
   border-radius: 20px;
@@ -155,4 +158,53 @@
   height: 80px;
   object-fit: contain;
   margin: 10px 0;
+}
+
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 30px auto;
+  width: 80%;
+  max-width: 400px;
+}
+
+
+.option-button {
+  width: 100%;
+  padding: 15px 20px;
+  background: #f7f7f7;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f2937;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.option-button:hover {
+  transform: scale(1.02);
+  background: #d1d5db;
+}
+
+.option-button.selected {
+  background: #22c55e;
+  color: white;
+  border-color: #15803d;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+
+.panel {
+  width: 900px;
+  background: #fef7e7;
+  padding: 30px;
+  padding-bottom: 80px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  position: relative;
 }

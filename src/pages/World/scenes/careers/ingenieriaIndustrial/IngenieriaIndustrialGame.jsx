@@ -17,7 +17,6 @@ import { CSS } from "@dnd-kit/utilities";
 import OptionButtons from "../../../ui/OptionButtons";
 import OptionCard from "../../../ui/OptionCard";
 
-
 const INITIAL_ORDER = ["Empaque", "Pintura", "Ensamble", "Corte"];
 
 const CORRECT_ORDER = ["Corte", "Ensamble", "Pintura", "Empaque"];
@@ -35,7 +34,6 @@ const IMAGES = {
   Ensamble: "/assets/ui/IngenieriaIndustrial/cogwheel.png",
   Corte: "/assets/ui/IngenieriaIndustrial/axe.png",
 };
-
 
 function SortableItem({ id }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -55,11 +53,10 @@ function SortableItem({ id }) {
       {...listeners}
     >
       <h3>{id}</h3>
-      <img src={IMAGES[id]} className="card-img" />
+      <img src={IMAGES[id]} className="card-img" alt={id} />
     </div>
   );
 }
-
 
 export default function IngenieriaIndustrialGame({ onComplete }) {
   const [phase, setPhase] = useState(1);
@@ -68,7 +65,6 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
   const [selectedSolution, setSelectedSolution] = useState(null);
   const [gameFinished, setGameFinished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-
 
   const showError = () => {
     Swal.fire({
@@ -113,7 +109,6 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
     }
   };
 
-
   if (gameFinished) {
     return (
       <div className="overlay">
@@ -128,11 +123,9 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
     );
   }
 
-
   return (
     <div className="overlay">
       <div className="panel">
-  
         {phase === 1 && (
           <>
             <h2>Organiza la línea de producción</h2>
@@ -164,7 +157,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
               </SortableContext>
             </DndContext>
 
-            <button className="btn" onClick={validatePhase1}>
+            <button className="ing-btn" onClick={validatePhase1}>
               Continuar
             </button>
           </>
@@ -187,39 +180,54 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
               ))}
             </div>
 
-            <button className="btn" onClick={validatePhase2}>
+            <button className="ing-btn" onClick={validatePhase2}>
               Continuar
             </button>
           </>
         )}
 
-    
         {phase === 3 && (
-          <>
-            <h2>¿Cómo optimizamos?</h2>
+  <>
+    <h2>¿Cómo optimizamos?</h2>
 
-            <div className="selected-station">
-              <h3>{selectedBottleneck}</h3>
+    <div className="selected-station">
+      <h3>{selectedBottleneck}</h3>
+      <img
+        src={IMAGES[selectedBottleneck]}
+        className="selected-img"
+        alt={selectedBottleneck}
+      />
+      <p>{TIMES[selectedBottleneck]} segundos</p>
+    </div>
 
-              <img src={IMAGES[selectedBottleneck]} className="selected-img" />
+    <div className="options-container">
+      <button
+        className={`option-button ${selectedSolution === "personal" ? "selected" : ""}`}
+        onClick={() => setSelectedSolution("personal")}
+      >
+        📋 Contratar más personal
+      </button>
+      
+      <button
+        className={`option-button ${selectedSolution === "mejorar" ? "selected" : ""}`}
+        onClick={() => setSelectedSolution("mejorar")}
+      >
+        🏭 Comprar máquinas de empaque
+      </button>
+      
+      <button
+        className={`option-button ${selectedSolution === "nada" ? "selected" : ""}`}
+        onClick={() => setSelectedSolution("nada")}
+      >
+        ❌ Nada
+      </button>
+    </div>
 
-              <p>{TIMES[selectedBottleneck]} segundos</p>
-            </div>
-            <OptionButtons
-              options={[
-                { value: "personal", label: "Contratar más personal" },
-                { value: "mejorar", label: "Comprar máquinas de empaque" },
-                { value: "nada", label: "Nada" },
-              ]}
-              selected={selectedSolution}
-              onSelect={setSelectedSolution}
-            />
-
-            <button className="btn" onClick={validatePhase3}>
-              Finalizar
-            </button>
-          </>
-        )}
+    <button className="ing-btn" onClick={validatePhase3}>
+      Finalizar
+    </button>
+  </>
+)}
       </div>
     </div>
   );

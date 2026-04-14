@@ -1,14 +1,13 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
-import OptionCard from "./OptionCard";
-import ConfettiEffect from "./Confetti";
-import GameCompleteModal from "./GameCompleteModal/GameCompleteModal";
-
+import OptionCard from "../OptionCard";
+import ConfettiEffect from "../Confetti";
+import GameCompleteModal from "../GameCompleteModal/GameCompleteModal";
+import "./GenericDecisionGame.css";
 
 export default function GenericDecisionGame({
   cases,
   options,
-  npcImage,
   introText,
   instructionText,
   successTitle,
@@ -28,6 +27,8 @@ export default function GenericDecisionGame({
         title: "Selecciona una opción 👀",
         text: "Debes elegir una respuesta",
         icon: "warning",
+        confirmButtonColor: "#22c55e",
+        background: "#fef7e7",
       });
     }
 
@@ -36,6 +37,8 @@ export default function GenericDecisionGame({
         title: "No es correcto 😅",
         text: "Intenta nuevamente",
         icon: "warning",
+        confirmButtonColor: "#22c55e",
+        background: "#fef7e7",
       });
     }
 
@@ -52,49 +55,52 @@ export default function GenericDecisionGame({
 
   if (gameFinished) {
     return (
-      <div className="overlay">
+      <>
         {showConfetti && <ConfettiEffect />}
         <GameCompleteModal
           title={successTitle}
           message={successMessage}
           onContinue={onComplete}
         />
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="overlay">
-      <div className="panel">
+    <div className="generic-game-overlay">
+      <div className="generic-game-panel">
 
-        {/* NPC */}
-        <div className="npc-container">
-          <img src={npcImage} className="npc-img" />
+        <div className="generic-game-intro">{introText}</div>
 
-          <div className="bubble">
-            {introText}
+
+        <div className="generic-game-npc-container">
+          <img 
+            src={current.image} 
+            className="generic-game-npc-img" 
+            alt="Personaje" 
+          />
+          <div className="generic-game-bubble">
+            <p className="generic-game-bubble-text">"{current.text}"</p>
           </div>
         </div>
 
-        <h3 className="question">{current.text}</h3>
+        <div className="generic-game-instruction">{instructionText}</div>
 
-        <p className="instruction">{instructionText}</p>
-
-        {/* OPTIONS */}
-        <div className="options">
+       
+        <div className="generic-game-options">
           {options.map((opt) => (
             <OptionCard
               key={opt.value}
               title={opt.label}
-              subtitle={opt.emoji}
+              image={opt.image}
               isActive={selected === opt.value}
               onClick={() => setSelected(opt.value)}
             />
           ))}
         </div>
 
-        <button className="btn" onClick={handleContinue}>
-          CONTINUAR
+        <button className="generic-game-btn" onClick={handleContinue}>
+          Continuar
         </button>
       </div>
     </div>

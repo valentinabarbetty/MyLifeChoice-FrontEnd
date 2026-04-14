@@ -9,17 +9,22 @@ export default function GameCompleteModal({
   showConfetti = true,
 }) {
   return (
-    <div className="overlay">
+    <div className="game-complete-overlay">
       {showConfetti && <ConfettiEffect />}
 
-      <div className="panel">
-        <h1 className="title">{title}</h1>
-
-        <p className="subtitle">{message}</p>
-
-        {extra && <div className="extra">{extra}</div>}
-
-        <button className="gamefinished-btn" onClick={onContinue}>
+      <div className="game-complete-modal">
+  
+        <div className="game-complete-icon">🏆</div>
+        
+        <h1 className="game-complete-title">{title}</h1>
+        
+        <div className="game-complete-divider"></div>
+        
+        <p className="game-complete-message">{message}</p>
+        
+        {extra && <div className="game-complete-extra">{extra}</div>}
+        
+        <button className="game-complete-btn" onClick={onContinue}>
           Continuar
         </button>
       </div>

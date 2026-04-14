@@ -4,39 +4,19 @@ import Swal from "sweetalert2";
 import "./ContaduriaGame.css";
 import GameCompleteModal from "../../../ui/GameCompleteModal/GameCompleteModal";
 
-const DATA = [
-  {
-    id: 0,
-    fecha: "12/03",
-    descripcion: "Alquiler",
-    valor: 1200,
-    correcto: 1400,
-  },
-  {
-    id: 1,
-    fecha: "22/08",
-    descripcion: "Aire acondicionado",
-    valor: 2500,
-    correcto: 3000,
-  },
-  {
-    id: 2,
-    fecha: "02/04",
-    descripcion: "Servicios desarrollo",
-    valor: 3000,
-    correcto: 3700,
-  },
-  {
-    id: 3,
-    fecha: "08/12",
-    descripcion: "Servicios energía",
-    valor: 500,
-    correcto: 700,
-  },
-];
+const VALORES_CORRECTOS = {
+  alquiler: 1400,
+  aire: 3000,
+  desarrollo: 3700,
+  energia: 700,
+};
 
 export default function ContaduriaGame({ onComplete }) {
-  const [rows, setRows] = useState(DATA);
+  const [valorAlquiler, setValorAlquiler] = useState(1200);
+  const [valorAire, setValorAire] = useState(2500);
+  const [valorDesarrollo, setValorDesarrollo] = useState(3000);
+  const [valorEnergia, setValorEnergia] = useState(500);
+
   const [currentFactura, setCurrentFactura] = useState(0);
   const [gameFinished, setGameFinished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -48,12 +28,20 @@ export default function ContaduriaGame({ onComplete }) {
     "/assets/ui/Contaduria/factura4.png",
   ];
 
-  const updateValue = (index, delta) => {
-    setRows((prev) =>
-      prev.map((row, i) =>
-        i === index ? { ...row, valor: Math.max(0, row.valor + delta) } : row,
-      ),
-    );
+  const updateAlquiler = (delta) => {
+    setValorAlquiler((prev) => Math.max(0, prev + delta));
+  };
+
+  const updateAire = (delta) => {
+    setValorAire((prev) => Math.max(0, prev + delta));
+  };
+
+  const updateDesarrollo = (delta) => {
+    setValorDesarrollo((prev) => Math.max(0, prev + delta));
+  };
+
+  const updateEnergia = (delta) => {
+    setValorEnergia((prev) => Math.max(0, prev + delta));
   };
 
   const nextFactura = () => {
@@ -65,23 +53,60 @@ export default function ContaduriaGame({ onComplete }) {
   };
 
   const handleCheck = () => {
+    const alquilerCorrecto = valorAlquiler === VALORES_CORRECTOS.alquiler;
+    const aireCorrecto = valorAire === VALORES_CORRECTOS.aire;
+    const desarrolloCorrecto = valorDesarrollo === VALORES_CORRECTOS.desarrollo;
+    const energiaCorrecto = valorEnergia === VALORES_CORRECTOS.energia;
+
     let correctCount = 0;
+    if (alquilerCorrecto) correctCount++;
+    if (aireCorrecto) correctCount++;
+    if (desarrolloCorrecto) correctCount++;
+    if (energiaCorrecto) correctCount++;
 
-    rows.forEach((r) => {
-      const diff = Math.abs(r.valor - r.correcto);
-      if (diff <= 100) correctCount++;
-    });
+    const allCorrect = correctCount === 4;
 
-    if (correctCount >= 3) {
+    console.log("=== RESULTADOS DE VALIDACIÓN ===");
+    console.log(
+      `Alquiler: ${valorAlquiler} (correcto: ${VALORES_CORRECTOS.alquiler}) → ${alquilerCorrecto ? "✅" : "❌"}`,
+    );
+    console.log(
+      `Aire: ${valorAire} (correcto: ${VALORES_CORRECTOS.aire}) → ${aireCorrecto ? "✅" : "❌"}`,
+    );
+    console.log(
+      `Desarrollo: ${valorDesarrollo} (correcto: ${VALORES_CORRECTOS.desarrollo}) → ${desarrolloCorrecto ? "✅" : "❌"}`,
+    );
+    console.log(
+      `Energía: ${valorEnergia} (correcto: ${VALORES_CORRECTOS.energia}) → ${energiaCorrecto ? "✅" : "❌"}`,
+    );
+    console.log(`Total correctos: ${correctCount} de 4`);
+
+    if (allCorrect) {
+      console.log("🎉 ¡TODOS CORRECTOS! Mostrando confeti...");
       setGameFinished(true);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 4000);
     } else {
+      console.log("❌ Hay errores, no se completa el juego");
+
+      let errores = [];
+      if (!alquilerCorrecto)
+        errores.push(`Alquiler: debe ser $${VALORES_CORRECTOS.alquiler}`);
+      if (!aireCorrecto)
+        errores.push(`Aire acondicionado: debe ser $${VALORES_CORRECTOS.aire}`);
+      if (!desarrolloCorrecto)
+        errores.push(
+          `Servicios desarrollo: debe ser $${VALORES_CORRECTOS.desarrollo}`,
+        );
+      if (!energiaCorrecto)
+        errores.push(
+          `Servicios energía: debe ser $${VALORES_CORRECTOS.energia}`,
+        );
+
       Swal.fire({
-        title: "Casi lo logras 😅",
-        text: "Revisa bien las facturas y vuelve a intentar",
+        title: "📋 Valores incorrectos",
         icon: "warning",
-        confirmButtonText: "Reintentar",
+        confirmButtonText: "Revisar de nuevo",
         confirmButtonColor: "#22c55e",
         background: "#fef7e7",
         backdrop: `rgba(0,0,0,0.4)`,
@@ -91,72 +116,209 @@ export default function ContaduriaGame({ onComplete }) {
 
   if (gameFinished) {
     return (
-      <GameCompleteModal
-        title="🎉 ¡Felicidades!"
-        message="Has completado el desafío de contaduría pública."
-        onContinue={() => onComplete?.()}
-      />
+      <>
+        {showConfetti && <ConfettiEffect />}
+        <GameCompleteModal
+          title="🎉 ¡Felicidades!"
+          message="¡Has completado el desafío de contaduría pública!"
+          extra={
+            <div style={{ textAlign: "center", marginTop: "10px" }}>
+              <p style={{ fontSize: "16px", color: "#22c55e" }}>
+                ¡Excelente trabajo detective!
+              </p>
+              <p style={{ fontSize: "14px", color: "#666" }}>
+                Has corregido todos los gastos correctamente
+              </p>
+            </div>
+          }
+          onContinue={() => onComplete?.()}
+        />
+      </>
     );
   }
 
   return (
-    <div className="overlay">
-      <div className="panel">
-        <h1 className="title">Detective de cuentas 🕵️</h1>
+    <div className="contaduriaOverlay">
+      <div className="contaduriaPanel">
+        <div className="contaduriaHeader">
+          <div className="contaduriaIcon">🕵️</div>
+          <div>
+            <h1 className="contaduriaTitle">Detective de cuentas</h1>
+            <p className="contaduriaSubtitle">
+              Corrige los errores en el libro de gastos usando las facturas
+            </p>
+          </div>
+        </div>
 
-        <p className="subtitle">
-          Corrige los errores en el libro de gastos usando las facturas.
-        </p>
+        <div className="contaduriaContent">
+          <div className="contaduriaTable">
+            <div className="contaduriaTableHeader">
+              <span>📅 FECHA</span>
+              <span>📝 DESCRIPCIÓN</span>
+              <span>💰 VALOR</span>
+            </div>
 
-        <div className="content">
-          <div className="table">
-            <h3>LIBRO DIARIO DE GASTOS</h3>
-
-            {rows.map((row, i) => (
+            <div className="contaduriaTableBody">
               <div
-                key={i}
-                className={`row ${i === currentFactura ? "row-active" : ""}`}
+                className={`contaduriaRow ${0 === currentFactura ? "contaduriaRowActive" : ""}`}
               >
-                <span>{row.fecha}</span>
-                <span>{row.descripcion}</span>
-
-                <div className="valueBox">
-                  <button onClick={() => updateValue(i, -100)}>-</button>
-                  <span>${row.valor}</span>
-                  <button onClick={() => updateValue(i, 100)}>+</button>
+                <span className="contaduriaFecha">12/03</span>
+                <span className="contaduriaDescripcion">Alquiler</span>
+                <div className="contaduriaValueBox">
+                  <button
+                    className="contaduriaBtnMinus"
+                    onClick={() => updateAlquiler(-100)}
+                  >
+                    −
+                  </button>
+                  <span className="contaduriaValor">
+                    ${valorAlquiler.toLocaleString()}
+                  </span>
+                  <button
+                    className="contaduriaBtnPlus"
+                    onClick={() => updateAlquiler(100)}
+                  >
+                    +
+                  </button>
                 </div>
               </div>
-            ))}
+
+              <div
+                className={`contaduriaRow ${1 === currentFactura ? "contaduriaRowActive" : ""}`}
+              >
+                <span className="contaduriaFecha">22/08</span>
+                <span className="contaduriaDescripcion">
+                  Aire acondicionado
+                </span>
+                <div className="contaduriaValueBox">
+                  <button
+                    className="contaduriaBtnMinus"
+                    onClick={() => updateAire(-100)}
+                  >
+                    −
+                  </button>
+                  <span className="contaduriaValor">
+                    ${valorAire.toLocaleString()}
+                  </span>
+                  <button
+                    className="contaduriaBtnPlus"
+                    onClick={() => updateAire(100)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className={`contaduriaRow ${2 === currentFactura ? "contaduriaRowActive" : ""}`}
+              >
+                <span className="contaduriaFecha">02/04</span>
+                <span className="contaduriaDescripcion">
+                  Servicios desarrollo
+                </span>
+                <div className="contaduriaValueBox">
+                  <button
+                    className="contaduriaBtnMinus"
+                    onClick={() => updateDesarrollo(-100)}
+                  >
+                    −
+                  </button>
+                  <span className="contaduriaValor">
+                    ${valorDesarrollo.toLocaleString()}
+                  </span>
+                  <button
+                    className="contaduriaBtnPlus"
+                    onClick={() => updateDesarrollo(100)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className={`contaduriaRow ${3 === currentFactura ? "contaduriaRowActive" : ""}`}
+              >
+                <span className="contaduriaFecha">08/12</span>
+                <span className="contaduriaDescripcion">Servicios energía</span>
+                <div className="contaduriaValueBox">
+                  <button
+                    className="contaduriaBtnMinus"
+                    onClick={() => updateEnergia(-100)}
+                  >
+                    −
+                  </button>
+                  <span className="contaduriaValor">
+                    ${valorEnergia.toLocaleString()}
+                  </span>
+                  <button
+                    className="contaduriaBtnPlus"
+                    onClick={() => updateEnergia(100)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="receipts">
-            <h3>FACTURAS Y RECIBOS</h3>
+          <div className="contaduriaReceipts">
+            <div className="contaduriaReceiptsHeader">
+              <span>📄 FACTURAS Y RECIBOS</span>
+              <span className="contaduriaHint">💡 Haz clic en las flechas</span>
+            </div>
 
-            <div className="carousel">
-              <button className="arrow" onClick={prevFactura}>
-                ←
+            <div className="contaduriaCarousel">
+              <button className="contaduriaArrow" onClick={prevFactura}>
+                ◀
               </button>
-
-              <img src={FACTURAS[currentFactura]} className="facturaImg" />
-
-              <button className="arrow" onClick={nextFactura}>
-                →
+              <div className="contaduriaImageContainer">
+                <img
+                  src={FACTURAS[currentFactura]}
+                  className="contaduriaFacturaImg"
+                  alt={`Factura ${currentFactura + 1}`}
+                />
+                <div className="contaduriaImageOverlay">
+                  <span>
+                    Factura {currentFactura + 1} de {FACTURAS.length}
+                  </span>
+                </div>
+              </div>
+              <button className="contaduriaArrow" onClick={nextFactura}>
+                ▶
               </button>
             </div>
 
-            <div className="dots">
+            <div className="contaduriaDots">
               {FACTURAS.map((_, i) => (
-                <div
+                <button
                   key={i}
-                  className={`dot ${i === currentFactura ? "dot-active" : ""}`}
+                  className={`contaduriaDot ${i === currentFactura ? "contaduriaDotActive" : ""}`}
+                  onClick={() => setCurrentFactura(i)}
                 />
               ))}
+            </div>
+
+            <div className="contaduriaProgress">
+              <div className="contaduriaProgressText">
+                <span>Progreso</span>
+                <span>
+                  {currentFactura + 1}/{FACTURAS.length}
+                </span>
+              </div>
+              <div className="contaduriaProgressBar">
+                <div
+                  className="contaduriaProgressFill"
+                  style={{
+                    width: `${((currentFactura + 1) / FACTURAS.length) * 100}%`,
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <button className="btn" onClick={handleCheck}>
-          Validar
+        <button className="contaduriaBtn" onClick={handleCheck}>
+          Validar gastos
         </button>
       </div>
     </div>
