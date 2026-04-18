@@ -1,41 +1,59 @@
 
-.overlay {
+.classification-game-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.6);
+   background: linear-gradient(135deg, #b8f5fb 0%, #f4f4f4 100%);
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  z-index: 1000;
 }
 
 
-.panel.generic {
+.classification-game-panel {
   width: 95%;
   max-width: 1000px;
   height: 85vh;
-
-  background: #f8fafc;
-  border-radius: 20px;
-  padding: 18px;
-
+  background: linear-gradient(135deg, #fef7e7 0%, #fff9f0 100%);
+  border-radius: 32px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: classificationSlideIn 0.3s ease-out;
+}
+
+@keyframes classificationSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
-.panel h2 {
-  font-size: 20px;
+.classification-game-panel h2 {
+  font-size: 22px;
+  font-weight: bold;
   text-align: center;
+  margin: 0 0 5px 0;
+  color: #1e293b;
 }
 
-.panel p {
+.classification-game-panel > p {
   font-size: 13px;
   text-align: center;
   color: #64748b;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
 }
 
-.game-layout {
+
+.classification-game-layout {
   flex: 1;
   display: grid;
   grid-template-columns: 200px 1fr;
@@ -44,87 +62,113 @@
 }
 
 
-.items {
+.classification-game-items {
   background: #e2e8f0;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 8px;
-
   display: flex;
   flex-direction: column;
   gap: 10px;
-
   overflow-y: auto;
+  align-items: center;
 }
 
 
-.card {
+.classification-game-card {
   background: white;
   border-radius: 14px;
-  width: 100%;
-
+  width: 80%;
   flex-shrink: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 10px;
   cursor: grab;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
 }
 
+.classification-game-card:active {
+  cursor: grabbing;
+}
 
-.card.text-only {
+.classification-game-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.15);
+  border-color: #22c55e;
+}
+
+.classification-game-card.text-only {
   height: auto;
 }
 
-
-.card.with-image {
+.classification-game-card.with-image {
   flex-direction: column;
   height: 90px;
   justify-content: center;
 }
 
-.card.with-image img {
+.classification-game-card.with-image img {
   width: 100%;
   height: 90px;
   object-fit: contain;
 }
 
-
-.card p {
+.classification-game-card p {
   font-size: 12px;
   margin: 0;
   text-align: center;
   line-height: 1.3;
+  font-weight: 500;
+  color: #1e293b;
 }
 
-.categories {
+
+.classification-game-categories {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  overflow-y: auto;
 }
 
 
-.drop-zone {
+.classification-game-drop-zone {
   background: #f1f5f9;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 8px;
-
   height: 130px;
   overflow-y: auto;
-
   border: 2px dashed #cbd5e1;
+  transition: all 0.2s ease;
 }
 
+.classification-game-drop-zone:hover {
+  border-color: #22c55e;
+  background: #f8fafc;
+}
 
-.drop-zone h3 {
+.classification-game-drop-zone.drag-over {
+  border-color: #22c55e;
+  background: #dcfce7;
+  transform: scale(1.01);
+}
+
+.classification-game-drop-zone h3 {
   font-size: 12px;
   text-align: center;
+  margin: 0 0 8px 0;
+  padding: 6px;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
-
-.drop-content {
+.classification-game-drop-content {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
@@ -132,59 +176,152 @@
 }
 
 
-.card.small {
+.classification-game-card.small {
   width: 65px;
   height: auto;
   padding: 4px;
-
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.card.small {
-  height: auto;
-  padding: 6px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   border-radius: 12px;
+  cursor: grab;
+  transition: all 0.2s ease;
 }
 
+.classification-game-card.small:hover {
+  transform: translateY(-2px);
+  border-color: #22c55e;
+}
 
-.card.small.text-only {
-  width: 110px;      
+.classification-game-card.small.text-only {
+  width: 110px;
   min-height: 55px;
   padding: 8px;
-
   text-align: center;
 }
 
-.card.small.with-image {
+.classification-game-card.small.with-image {
   width: 65px;
   height: 75px;
 }
 
-.card.small.with-image img {
+.classification-game-card.small.with-image img {
   width: 100%;
   height: 40px;
   object-fit: contain;
 }
 
-
-.card.small p {
+.classification-game-card.small p {
   font-size: 9px;
   margin: 0;
   line-height: 1.2;
+  color: #1e293b;
 }
 
-.btn {
-  margin-top: auto;
-  padding: 10px;
-  border-radius: 10px;
-  background: #22c55e;
+
+.classification-game-btn {
+  margin-top: 15px;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
   color: white;
   border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  width: auto;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.classification-game-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+}
+
+.classification-game-btn:active {
+  transform: translateY(0);
+}
+
+
+.classification-game-items::-webkit-scrollbar,
+.classification-game-categories::-webkit-scrollbar,
+.classification-game-drop-zone::-webkit-scrollbar {
+  width: 5px;
+}
+
+.classification-game-items::-webkit-scrollbar-track,
+.classification-game-categories::-webkit-scrollbar-track,
+.classification-game-drop-zone::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.classification-game-items::-webkit-scrollbar-thumb,
+.classification-game-categories::-webkit-scrollbar-thumb,
+.classification-game-drop-zone::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  border-radius: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .classification-game-layout {
+    grid-template-columns: 180px 1fr;
+  }
+  
+  .classification-game-card.with-image {
+    height: 80px;
+  }
+  
+  .classification-game-card.with-image img {
+    height: 80px;
+  }
+  
+  .classification-game-drop-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .classification-game-card.small {
+    width: 55px;
+  }
+  
+  .classification-game-card.small.with-image {
+    width: 55px;
+    height: 65px;
+  }
+  
+  .classification-game-card.small.text-only {
+    width: 90px;
+  }
+}
+
+@media (max-width: 600px) {
+  .classification-game-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .classification-game-items {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-height: 180px;
+  }
+  
+  .classification-game-card.with-image {
+    width: calc(33% - 10px);
+  }
+  
+  .classification-game-categories {
+    grid-template-columns: 1fr;
+  }
+  
+  .classification-game-btn {
+    align-self: center;
+    width: 100%;
+    justify-content: center;
+  }
 }

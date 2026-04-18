@@ -56,7 +56,7 @@ import {
   administracionIntroDialogues,
   administracionEndingDialogues
 } from "../scenes/careers/administracion/AdministracionDialogues";
-import { agroambientalDialogues } from "../scenes/careers/agroambiental/AgroambientalDialogues";
+import { agroambientalEndingDialogues, agroambientalIntroDialogues } from "../scenes/careers/agroambiental/AgroambientalDialogues";
 import { agroforestalDialogues } from "../scenes/careers/agroforestal/AgroforestalDialogues";
 import { alimentosEndingDialogues, alimentosIntroDialogues } from "../scenes/careers/alimentos/AlimentosDialogues";
 import { contaduriaEndingDialogues, contaduriaIntroDialogues } from "../scenes/careers/contaduria/ContaduriaDialogues";
@@ -115,6 +115,9 @@ export const CAREER_DIALOGUES = {
     intro: electronicaIndustrialIntroDialogues,
     ending: electronicaIndustrialEndingDialogues
   },
-  agroambiental: agroambientalDialogues,
+  agroambiental: {
+    intro: agroambientalIntroDialogues,
+    ending: agroambientalEndingDialogues
+  },
   agroforestal: agroforestalDialogues,
 };

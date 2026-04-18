@@ -1,126 +1,231 @@
 
-.overlay {
+.order-game-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.6);
+  background: linear-gradient(135deg, #b8f5fb 0%, #f4f4f4 100%);
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  z-index: 1000;
 }
 
 
-.panel.generic {
+.order-game-panel {
   width: 95%;
   max-width: 1000px;
-  height: 85vh;
-
-  background: #f8fafc;
-  border-radius: 20px;
-  padding: 18px;
-
+  height: auto;
+  min-height: 500px;
+  background: linear-gradient(135deg, #fef7e7 0%, #fff9f0 100%);
+  border-radius: 32px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: orderGameSlideIn 0.3s ease-out;
 }
 
-.panel h2 {
-  font-size: 20px;
+@keyframes orderGameSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.order-game-panel h2 {
+  font-size: 24px;
+  font-weight: bold;
   text-align: center;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.panel p {
-  font-size: 13px;
+.order-game-panel p {
+  font-size: 14px;
   text-align: center;
   color: #64748b;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
-.cards {
-  flex: 1;
 
+.order-game-cards {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 14px;
-
+  gap: 20px;
   flex-wrap: wrap;
-  padding: 10px;
+  padding: 20px;
+  min-height: 300px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+  margin: 10px 0;
 }
 
-.card.drag {
+
+.order-game-card {
   background: white;
-  border-radius: 16px;
-
-  width: 130px;
-  height: 130px;
-
+  border-radius: 20px;
+  width: 150px;
+  min-height: 160px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  gap: 6px;
-  padding: 10px;
-
-  overflow: hidden;
-
+  gap: 10px;
+  padding: 15px;
   cursor: grab;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
-
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
+  border: 2px solid #e2e8f0;
+  position: relative;
 }
 
-.card.drag:hover {
-  transform: translateY(-3px) scale(1.05);
+.order-game-card::before {
+  content: attr(data-order);
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
+.order-game-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.2);
+  border-color: #22c55e;
+}
 
-.card.drag:active {
+.order-game-card:active {
   cursor: grabbing;
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 
-.card.drag img {
-  width: 75px;
-  height: 75px;
-
+.order-game-card img {
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   display: block;
 }
 
-.card.drag p {
-  font-size: 11px;
+
+.order-game-card p {
+  font-size: 13px;
+  font-weight: 600;
   text-align: center;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.3;
+  color: #1e293b;
 }
 
-
-.btn {
-  margin-top: auto;
-  padding: 12px;
-  border-radius: 12px;
-
-  background: linear-gradient(135deg, #4ade80, #22c55e);
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn:hover {
+.order-game-btn {
+  margin-top: 20px;
+  padding: 12px 28px;
   background: linear-gradient(135deg, #22c55e, #16a34a);
-  transform: scale(1.03);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  width: auto;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.cards::-webkit-scrollbar {
-  height: 6px;
+.order-game-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
 }
 
-.cards::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+.order-game-btn:active {
+  transform: translateY(0);
+}
+
+.order-game-cards::-webkit-scrollbar {
+  height: 8px;
+}
+
+.order-game-cards::-webkit-scrollbar-track {
+  background: #e2e8f0;
   border-radius: 10px;
+}
+
+.order-game-cards::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .order-game-panel {
+    padding: 20px;
+  }
+  
+  .order-game-card {
+    width: 120px;
+    min-height: 130px;
+    padding: 10px;
+  }
+  
+  .order-game-card img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .order-game-card p {
+    font-size: 11px;
+  }
+  
+  .order-game-card::before {
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
+    top: -8px;
+    left: -8px;
+  }
+  
+  .order-game-btn {
+    align-self: center;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 550px) {
+  .order-game-card {
+    width: 100px;
+    min-height: 110px;
+  }
+  
+  .order-game-card img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .order-game-card p {
+    font-size: 10px;
+  }
 }

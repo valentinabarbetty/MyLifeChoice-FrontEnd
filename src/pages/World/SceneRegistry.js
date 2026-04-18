@@ -11,6 +11,7 @@ import AlimentosScene from "./scenes/careers/alimentos/AlimentosScene";
 import LogisticaScene from "./scenes/careers/logistica/LogisticaScene";
 import MantenimientoScene from "./scenes/careers/mantenimiento/MantenimientoScene";
 import ElectronicaScene from "./scenes/careers/electronica/ElectronicaScene";
+import AgroambientalScene from "./scenes/careers/agroambiental/AgroambientalScene";
 
 
 
@@ -25,5 +26,6 @@ export const SCENE_COMPONENTS = {
   alimentos: AlimentosScene,
   logistica: LogisticaScene,
   mantenimiento: MantenimientoScene,
-  electronica: ElectronicaScene
+  electronica: ElectronicaScene,
+  agroambiental: AgroambientalScene
 };

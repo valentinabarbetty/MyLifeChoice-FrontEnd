@@ -2,7 +2,6 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import "./OrderGame.css"
 
-
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -14,7 +13,7 @@ import { CSS } from "@dnd-kit/utilities";
 import ConfettiEffect from "../Confetti";
 import GameCompleteModal from "../GameCompleteModal/GameCompleteModal";
 
-function SortableItem({ item, renderItem }) {
+function SortableItem({ item, renderItem, index }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
 
@@ -27,7 +26,8 @@ function SortableItem({ item, renderItem }) {
     <div
       ref={setNodeRef}
       style={style}
-      className="card drag"
+      className="order-game-card"
+      data-order={index + 1}
       {...attributes}
       {...listeners}
     >
@@ -60,6 +60,8 @@ export default function OrderGame({
         text: errorMessage,
         icon: "warning",
         confirmButtonColor: "#22c55e",
+        background: "#fef7e7",
+        backdrop: `rgba(0,0,0,0.4)`,
       });
       return;
     }
@@ -74,7 +76,7 @@ export default function OrderGame({
       <>
         {showConfetti && <ConfettiEffect />}
         <GameCompleteModal
-          title="🎉 ¡Excelente!"
+          title="¡Excelente!"
           message="Ordenaste correctamente el proceso."
           onContinue={() => onComplete?.()}
         />
@@ -83,8 +85,8 @@ export default function OrderGame({
   }
 
   return (
-    <div className="overlay">
-      <div className="panel generic">
+    <div className="order-game-overlay">
+      <div className="order-game-panel">
         <h2>{title}</h2>
         <p>{subtitle}</p>
 
@@ -105,11 +107,12 @@ export default function OrderGame({
             items={order.map((i) => i.id)}
             strategy={horizontalListSortingStrategy}
           >
-            <div className="cards">
-              {order.map((item) => (
+            <div className="order-game-cards">
+              {order.map((item, idx) => (
                 <SortableItem
                   key={item.id}
                   item={item}
+                  index={idx}
                   renderItem={renderItem}
                 />
               ))}
@@ -117,7 +120,7 @@ export default function OrderGame({
           </SortableContext>
         </DndContext>
 
-        <button className="btn" onClick={handleValidate}>
+        <button className="order-game-btn" onClick={handleValidate}>
           Continuar
         </button>
       </div>
