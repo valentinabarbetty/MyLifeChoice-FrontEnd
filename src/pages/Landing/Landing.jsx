@@ -4,14 +4,36 @@ import "./Landing.css";
 import vid from "/assets/gameplay.mp4";
 import logo from "/assets/logo.PNG";
 import AuthModal from "../../components/AuthModal/AuthModal";
-import { useEffect, useState } from "react";
 import { checkIntroStatus } from "../../services/userService";
+import landingMusic from "/assets/music/Landing.mp3";
+import { useEffect, useRef, useState } from "react";
 export default function Landing() {
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [hasProgress, setHasProgress] = useState(false);
   const handleLoginClick = () => {
     setShowLoginModal(true);
+  };
+  const audioRef = useRef(null);
+  useEffect(() => {
+    audioRef.current = new Audio(landingMusic);
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.4;
+
+    audioRef.current.play().catch(() => {
+      console.log("Autoplay bloqueado por el navegador");
+    });
+
+    return () => {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    };
+  }, []);
+  const stopMusic = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
   };
 
   useEffect(() => {
@@ -44,19 +66,18 @@ export default function Landing() {
     setShowLoginModal(false);
 
     // setIsAuthenticated(true);
-
   };
-      const logout = () => {
-      localStorage.removeItem("userId");
-      localStorage.removeItem("userEmail");
-      localStorage.removeItem("playerName");
-      localStorage.removeItem("logged");
-      localStorage.removeItem("selectedGuide");
-      localStorage.removeItem("mlc_progress");
-      localStorage.removeItem("sessionType");
+  const logout = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("playerName");
+    localStorage.removeItem("logged");
+    localStorage.removeItem("selectedGuide");
+    localStorage.removeItem("mlc_progress");
+    localStorage.removeItem("sessionType");
 
-      window.location.href = "/";
-    };
+    window.location.href = "/";
+  };
   return (
     <div className="landing-container">
       <video
@@ -95,11 +116,23 @@ export default function Landing() {
         transition={{ delay: 0.6, duration: 1 }}
       >
         {!hasProgress ? (
-          <button className="btn-primary" onClick={() => navigate("/intro")}>
+          <button
+            className="btn-primary"
+            onClick={() => {
+              stopMusic();
+              navigate("/intro");
+            }}
+          >
             Empezar Nueva Aventura
           </button>
         ) : (
-          <button className="btn-primary" onClick={() => navigate("/world")}>
+          <button
+            className="btn-primary"
+            onClick={() => {
+              stopMusic();
+              navigate("/world");
+            }}
+          >
             Continuar Partida
           </button>
         )}
