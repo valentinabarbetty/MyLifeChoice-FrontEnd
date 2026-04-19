@@ -5,11 +5,11 @@ export const ALL_CAREERS = [
    //"logistica",
   //"mantenimiento",
    //"ingenieriaIndustrial",
-   "agroambiental",
+   //"agroambiental",
   //"alimentos",
    //"contaduriaPublica",
   // "educacionFisica",
    //"electronica",
    //"literatura",
-  // "produccionAgroforestal",
+  "agroforestal",
 ];

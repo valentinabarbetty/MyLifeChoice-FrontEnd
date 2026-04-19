@@ -89,9 +89,9 @@ export default function CareerFeedback({ career, onFinish }) {
             size="large"
           />
 
-          <Typography variant="body2" sx={{ mt: 1 }}>
+          {/* <Typography variant="body2" sx={{ mt: 1 }}>
             {labels[hover !== -1 ? hover : answers[current]] || ""}
-          </Typography>
+          </Typography> */}
 
         </Box>
 

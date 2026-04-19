@@ -12,6 +12,7 @@ import LogisticaScene from "./scenes/careers/logistica/LogisticaScene";
 import MantenimientoScene from "./scenes/careers/mantenimiento/MantenimientoScene";
 import ElectronicaScene from "./scenes/careers/electronica/ElectronicaScene";
 import AgroambientalScene from "./scenes/careers/agroambiental/AgroambientalScene";
+import AgroforestalScene from "./scenes/careers/agroforestal/AgroforestalScene";
 
 
 
@@ -27,5 +28,6 @@ export const SCENE_COMPONENTS = {
   logistica: LogisticaScene,
   mantenimiento: MantenimientoScene,
   electronica: ElectronicaScene,
-  agroambiental: AgroambientalScene
+  agroambiental: AgroambientalScene,
+  agroforestal: AgroforestalScene
 };
