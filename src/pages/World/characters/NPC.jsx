@@ -140,11 +140,10 @@ export default function NPC({
   const animationMap = {
     talking: "talking",
     talking2: "talking2",
-    walking: "walk", // 🔥 ESTE era el error principal
+    walking: "walk", 
     walk: "walk",
     idle: "idle",
 
-    // 👇 fallback inteligentes
     explain: "talking",
     soft: "idle",
     thinking: "idle",
@@ -179,7 +178,6 @@ useEffect(() => {
   first.reset().fadeIn(0.3).play();
   currentAction.current = first;
 
-  console.log("🚀 INIT ANIMATION:", first);
 
 }, [actions]);
   useFrame(() => {
@@ -224,12 +222,12 @@ useEffect(() => {
   useEffect(() => {
     if (!actions) return;
 
-    console.log("ANIMACIONES DISPONIBLES:", Object.keys(actions));
+   
   }, [actions]);
   useEffect(() => {
     if (!actions) return;
 
-    console.log("🔥 animationState recibido:", animationState);
+   
 
     const keys = Object.keys(actions);
 
@@ -239,22 +237,21 @@ useEffect(() => {
 
     const next = match ? actions[match] : actions["idle"];
 
-    console.log("🎬 animación final:", match);
+   
 
     if (!next) return;
 
-    // 🔥 SI ES LA MISMA, NO HAGAS NADA
+  
     if (currentAction.current === next) return;
 
-    // 🔥 SOLO apagamos la anterior
     if (currentAction.current) {
       currentAction.current.fadeOut(0.2);
     }
 
-    // 🔥 nueva animación
+  
     next.reset().fadeIn(0.2).play();
 
-    // 🔥 GUARDAR LA ACCIÓN (NO STRING)
+
     currentAction.current = next;
   }, [animationState, actions]);
   return (

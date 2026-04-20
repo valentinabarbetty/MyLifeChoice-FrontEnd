@@ -82,12 +82,11 @@ export default function ContaduriaGame({ onComplete }) {
     console.log(`Total correctos: ${correctCount} de 4`);
 
     if (allCorrect) {
-      console.log("🎉 ¡TODOS CORRECTOS! Mostrando confeti...");
+   
       setGameFinished(true);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 4000);
     } else {
-      console.log("❌ Hay errores, no se completa el juego");
 
       let errores = [];
       if (!alquilerCorrecto)

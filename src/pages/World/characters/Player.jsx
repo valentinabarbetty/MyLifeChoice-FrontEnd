@@ -171,11 +171,13 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { RigidBody, CapsuleCollider } from "@react-three/rapier";
+import footstepsSound from "/assets/music/Footsteps.mp3";
 import * as THREE from "three";
 export default function Player({ onMove, mode, lookAt, spawnPosition, scene }) {
   const playerRef = useRef(null);
   const direction = useRef(0);
   const wasMoving = useRef(false);
+  const footstepsRef = useRef(null);
 
   const [isMoving, setIsMoving] = useState(false);
   const currentAction = useRef(null);
@@ -261,149 +263,161 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene }) {
     currentAction.current = next;
   }, [isMoving, actions]);
 
- useFrame(() => {
-  if (mode !== "explore") return;
+  useFrame(() => {
+    if (mode !== "explore") return;
 
-  // =============================
-  // 🚫 CAREER → SIN FÍSICA
-  // =============================
-  if (scene === "CAREER") {
-    if (!playerRef.current) return;
+    if (scene === "CAREER") {
+      if (!playerRef.current) return;
 
-    const speed = 0.05;
+      const speed = 0.05;
+      let moving = false;
+
+      if (keys.current.ArrowUp) {
+        direction.current = Math.PI;
+        moving = true;
+      }
+      if (keys.current.ArrowDown) {
+        direction.current = 0;
+        moving = true;
+      }
+      if (keys.current.ArrowLeft) {
+        direction.current = -Math.PI / 2;
+        moving = true;
+      }
+      if (keys.current.ArrowRight) {
+        direction.current = Math.PI / 2;
+        moving = true;
+      }
+
+      if (moving) {
+        playerRef.current.rotation.y = direction.current;
+
+        playerRef.current.position.x += Math.sin(direction.current) * speed;
+        playerRef.current.position.z += Math.cos(direction.current) * speed;
+
+        if (!wasMoving.current) setIsMoving(true);
+        wasMoving.current = true;
+
+        onMove?.(playerRef.current.position.clone());
+      } else {
+        if (wasMoving.current) setIsMoving(false);
+        wasMoving.current = false;
+      }
+
+      return;
+    }
+    if (!rb.current) return;
+
+    const speed = 2.5;
+
+    let dirX = 0;
+    let dirZ = 0;
     let moving = false;
 
     if (keys.current.ArrowUp) {
       direction.current = Math.PI;
+      dirZ = -1;
       moving = true;
     }
     if (keys.current.ArrowDown) {
       direction.current = 0;
+      dirZ = 1;
       moving = true;
     }
     if (keys.current.ArrowLeft) {
       direction.current = -Math.PI / 2;
+      dirX = -1;
       moving = true;
     }
     if (keys.current.ArrowRight) {
       direction.current = Math.PI / 2;
+      dirX = 1;
       moving = true;
     }
 
-    if (moving) {
-      playerRef.current.rotation.y = direction.current;
-
-      playerRef.current.position.x += Math.sin(direction.current) * speed;
-      playerRef.current.position.z += Math.cos(direction.current) * speed;
-
-      if (!wasMoving.current) setIsMoving(true);
-      wasMoving.current = true;
-
-      onMove?.(playerRef.current.position.clone());
-    } else {
-      if (wasMoving.current) setIsMoving(false);
-      wasMoving.current = false;
+    if (dirX !== 0 || dirZ !== 0) {
+      const len = Math.hypot(dirX, dirZ);
+      dirX /= len;
+      dirZ /= len;
     }
 
-    return;
-  }
+    const vel = rb.current.linvel();
 
-  // =============================
-  // 🌍 WORLD → CON FÍSICA
-  // =============================
-  if (!rb.current) return;
+    const targetVel = {
+      x: moving ? dirX * speed : 0,
+      y: vel.y,
+      z: moving ? dirZ * speed : 0,
+    };
 
-  const speed = 2.5;
+    // 🔥 SUAVIZADO
+    const smooth = 0.2;
 
-  let dirX = 0;
-  let dirZ = 0;
-  let moving = false;
+    rb.current.setLinvel(
+      {
+        x: targetVel.x,
+        y: vel.y,
+        z: targetVel.z,
+      },
+      true,
+    );
 
-  if (keys.current.ArrowUp) {
-    direction.current = Math.PI;
-    dirZ = -1;
-    moving = true;
-  }
-  if (keys.current.ArrowDown) {
-    direction.current = 0;
-    dirZ = 1;
-    moving = true;
-  }
-  if (keys.current.ArrowLeft) {
-    direction.current = -Math.PI / 2;
-    dirX = -1;
-    moving = true;
-  }
-  if (keys.current.ArrowRight) {
-    direction.current = Math.PI / 2;
-    dirX = 1;
-    moving = true;
-  }
+    if (moving && playerRef.current) {
+      playerRef.current.rotation.y = direction.current;
+    }
 
-  if (dirX !== 0 || dirZ !== 0) {
-    const len = Math.hypot(dirX, dirZ);
-    dirX /= len;
-    dirZ /= len;
-  }
-
-const vel = rb.current.linvel();
-
-const targetVel = {
-  x: moving ? dirX * speed : 0,
-  y: vel.y,
-  z: moving ? dirZ * speed : 0,
-};
-
-// 🔥 SUAVIZADO
-const smooth = 0.2;
-
-rb.current.setLinvel(
-  {
-    x: vel.x + (targetVel.x - vel.x) * smooth,
-    y: vel.y,
-    z: vel.z + (targetVel.z - vel.z) * smooth,
-  },
-  true
-);
-
-  if (moving && playerRef.current) {
-    playerRef.current.rotation.y = direction.current;
-  }
-
-  if (!wasMoving.current && moving) setIsMoving(true);
-  if (wasMoving.current && !moving) setIsMoving(false);
-  wasMoving.current = moving;
-
-  const p = rb.current.translation();
-  onMove?.(new THREE.Vector3(p.x, p.y, p.z));
-});
+    if (!wasMoving.current && moving) setIsMoving(true);
+    if (wasMoving.current && !moving) setIsMoving(false);
+    wasMoving.current = moving;
+    // 🎧 FOOTSTEPS
+    if (moving) {
+      if (footstepsRef.current && footstepsRef.current.paused) {
+        footstepsRef.current.play().catch(() => {});
+      }
+    } else {
+      if (footstepsRef.current && !footstepsRef.current.paused) {
+        footstepsRef.current.pause();
+        footstepsRef.current.currentTime = 0;
+      }
+    }
+    const p = rb.current.translation();
+    onMove?.(new THREE.Vector3(p.x, p.y, p.z));
+  });
   const debugBox = false;
 
   if (scene === "CAREER") {
+    return (
+      <group ref={playerRef} scale={1}>
+        <primitive object={sceneModel} />
+      </group>
+    );
+  }
+  useEffect(() => {
+    footstepsRef.current = new Audio(footstepsSound);
+    footstepsRef.current.loop = true;
+    footstepsRef.current.volume = 0.5;
+
+    return () => {
+      footstepsRef.current?.pause();
+    };
+  }, []);
   return (
-    <group ref={playerRef} scale={1}>
-      <primitive object={sceneModel} />
-    </group>
+    <RigidBody
+      ref={rb}
+      type="KinematicPosition"
+      colliders={false}
+      enabledRotations={[false, false, false]}
+      gravityScale={1}
+      linearDamping={2}
+      angularDamping={8}
+      canSleep={false}
+      ccd
+      interpolation
+    >
+      <CapsuleCollider args={[0.45, 0.35]} />
+
+      <group ref={playerRef} position={[0, -0.5, 0]}>
+        <primitive object={sceneModel} />
+      </group>
+    </RigidBody>
   );
-}
-
-return (
-  <RigidBody
-    ref={rb}
-    type="dynamic"
-    colliders={false}
-    enabledRotations={[false, false, false]}
-    gravityScale={1}
-    linearDamping={2}
-    angularDamping={8}
-    canSleep={false}
-    ccd
-  >
-    <CapsuleCollider args={[0.45, 0.35]} />
-
-    <group ref={playerRef} position={[0, -0.5, 0]}>
-      <primitive object={sceneModel} />
-    </group>
-  </RigidBody>
-);
 }

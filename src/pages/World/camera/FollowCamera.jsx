@@ -232,7 +232,6 @@
 //   const desiredPosition = useRef(new Vector3());
 //   const desiredLookAt = useRef(new Vector3());
 
-
 //   useEffect(() => {
 //     if (scene === "CAREER") {
 
@@ -242,16 +241,14 @@
 //     }
 
 //     if (scene === "WORLD") {
-     
+
 //       camera.position.set(playerPos.x + 6, playerPos.y + 6, playerPos.z + 10);
 //       camera.lookAt(playerPos.x, playerPos.y + 1, playerPos.z);
 //     }
 //   }, [scene]);
 
-
 //   useFrame(() => {
 //     if (scene === "CAREER") return;
-
 
 //     if (mode === "explore") {
 //       desiredPosition.current.set(
@@ -274,19 +271,14 @@ import { Vector3 } from "three";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export default function CameraManager({
-  scene,
-  mode,
-  playerPos,
-  villageRef,
-}) {
+export default function CameraManager({ scene, mode, playerPos, villageRef }) {
   const { camera } = useThree();
 
   const desiredPosition = useRef(new Vector3());
   const desiredLookAt = useRef(new Vector3());
 
   const raycaster = useRef(new THREE.Raycaster());
-  const hiddenMeshes = useRef([]); 
+  const hiddenMeshes = useRef([]);
 
   useEffect(() => {
     if (scene === "CAREER") {
@@ -296,11 +288,7 @@ export default function CameraManager({
     }
 
     if (scene === "WORLD") {
-      camera.position.set(
-        playerPos.x + 6,
-        playerPos.y + 6,
-        playerPos.z + 10
-      );
+      camera.position.set(playerPos.x + 6, playerPos.y + 6, playerPos.z + 10);
       camera.lookAt(playerPos.x, playerPos.y + 1, playerPos.z);
     }
   }, [scene]);
@@ -312,18 +300,23 @@ export default function CameraManager({
       desiredPosition.current.set(
         playerPos.x + 6,
         playerPos.y + 6,
-        playerPos.z + 10
+        playerPos.z + 10,
       );
 
-      desiredLookAt.current.set(
-        playerPos.x,
-        playerPos.y + 1,
-        playerPos.z
-      );
+      desiredLookAt.current.set(playerPos.x, playerPos.y + 1, playerPos.z);
     }
 
-    camera.position.lerp(desiredPosition.current, 0.08);
+    camera.position.set(
+      desiredPosition.current.x,
+      desiredPosition.current.y,
+      desiredPosition.current.z,
+    );
+
     camera.lookAt(desiredLookAt.current);
+    const offset = new THREE.Vector3(6, 6, 10);
+
+    camera.position.copy(playerPos).add(offset);
+    camera.lookAt(playerPos.x, playerPos.y + 1, playerPos.z);
 
     hiddenMeshes.current.forEach((entry) => {
       const { material, oldTransparent, oldOpacity } = entry;
@@ -340,7 +333,7 @@ export default function CameraManager({
     const playerTarget = new THREE.Vector3(
       playerPos.x,
       playerPos.y + 1,
-      playerPos.z
+      playerPos.z,
     );
 
     const direction = new THREE.Vector3()
@@ -353,7 +346,7 @@ export default function CameraManager({
 
     const intersects = raycaster.current.intersectObject(
       villageRef.current,
-      true
+      true,
     );
 
     const blockers = intersects.filter(
@@ -362,7 +355,7 @@ export default function CameraManager({
         hit.object.isMesh &&
         hit.object.material &&
         hit.distance > 0.3 &&
-        hit.distance < distanceToPlayer - 0.5
+        hit.distance < distanceToPlayer - 0.5,
     );
 
     blockers.forEach((hit) => {

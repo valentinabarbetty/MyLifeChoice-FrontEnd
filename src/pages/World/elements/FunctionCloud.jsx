@@ -8,15 +8,12 @@ export default function FloatingCloud({
   speed = 0.001,
 }) {
   const ref = useRef();
+  const startX = position[0];
 
-  useFrame(() => {
+  useFrame(({ clock }) => {
     if (!ref.current) return;
-
-    ref.current.position.x += speed;
-
-    if (ref.current.position.x > 12) {
-      ref.current.position.x = -12;
-    }
+    // Movimiento simple de izquierda a derecha
+    ref.current.position.x = startX + Math.sin(clock.getElapsedTime() * 0.5) * 1.5;
   });
 
   return <Cloud ref={ref} position={position} scale={scale} />;

@@ -1,50 +1,83 @@
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import "./Landing.css";
 import vid from "/assets/gameplay.mp4";
 import logo from "/assets/logo.PNG";
 import AuthModal from "../../components/AuthModal/AuthModal";
+
 import { checkIntroStatus } from "../../services/userService";
 import landingMusic from "/assets/music/Landing.mp3";
 import { useEffect, useRef, useState } from "react";
+import Settings from "../World/ui/Settings/Settings";
+import HelpModal from "../World/ui/HelpModal/HelpModal";
+
 export default function Landing() {
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [hasProgress, setHasProgress] = useState(false);
-  const handleLoginClick = () => {
-    setShowLoginModal(true);
-  };
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [volume, setVolume] = useState(0.4);
+  
   const audioRef = useRef(null);
+  const userId = localStorage.getItem("userId");
+
+  // Inicializar audio
   useEffect(() => {
     audioRef.current = new Audio(landingMusic);
     audioRef.current.loop = true;
-    audioRef.current.volume = 0.4;
+    audioRef.current.volume = volume;
 
-    audioRef.current.play().catch(() => {
-      console.log("Autoplay bloqueado por el navegador");
-    });
+    // Intentar reproducir después de interacción del usuario
+    const enableAudio = () => {
+      if (audioRef.current && soundEnabled) {
+        audioRef.current.play().catch(() => console.log("Error al reproducir"));
+      }
+      window.removeEventListener("click", enableAudio);
+      window.removeEventListener("keydown", enableAudio);
+    };
+
+    window.addEventListener("click", enableAudio);
+    window.addEventListener("keydown", enableAudio);
 
     return () => {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      window.removeEventListener("click", enableAudio);
+      window.removeEventListener("keydown", enableAudio);
     };
   }, []);
-  const stopMusic = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-  };
 
+  // Controlar reproducción según estado
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
+    if (!audioRef.current) return;
+    
+    if (soundEnabled) {
+      audioRef.current.volume = volume;
+      audioRef.current.play().catch(() => {});
+    } else {
+      audioRef.current.pause();
+    }
+  }, [soundEnabled, volume]);
+
+  // Verificar progreso del usuario
+  useEffect(() => {
     if (userId) {
       checkIntroStatus(userId)
         .then((res) => setHasProgress(res.has_intro))
         .catch((err) => console.error("Error checking intro:", err));
     }
-    console.log(localStorage.getItem("logged"));
-  }, []);
+  }, [userId]);
+
+  const stopMusic = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  };
+
   const handleLoginSuccess = async (userData) => {
     console.log("✅ Login exitoso:", userData);
     if (userData?.nickname) {
@@ -56,6 +89,7 @@ export default function Landing() {
 
     localStorage.setItem("sessionType", "auth");
     localStorage.setItem("logged", "logged");
+    
     try {
       const res = await checkIntroStatus(userId);
       setHasProgress(res.has_intro);
@@ -64,10 +98,10 @@ export default function Landing() {
     }
 
     setShowLoginModal(false);
-
-    // setIsAuthenticated(true);
   };
+
   const logout = () => {
+    stopMusic();
     localStorage.removeItem("userId");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("playerName");
@@ -75,11 +109,12 @@ export default function Landing() {
     localStorage.removeItem("selectedGuide");
     localStorage.removeItem("mlc_progress");
     localStorage.removeItem("sessionType");
-
     window.location.href = "/";
   };
+
   return (
     <div className="landing-container">
+      {/* Video de fondo */}
       <video
         className="landing-video"
         src={vid}
@@ -88,18 +123,47 @@ export default function Landing() {
         loop
         playsInline
       />
+      
+      {/* Overlay con gradiente */}
       <div className="overlay"></div>
-      <div className="login-container">
+      
+      {/* Contenedor de botones superiores */}
+      <div className="top-buttons">
+        {/* Botón de Ayuda */}
+        <button 
+          className="top-btn help-btn"
+          onClick={() => setShowHelpModal(true)}
+          aria-label="Ayuda"
+        >
+          <span className="btn-icon">❓</span>
+          <span className="btn-text">Ayuda</span>
+        </button>
+
+        {/* Botón de Configuración */}
+        <button 
+          className="top-btn settings-btn"
+          onClick={() => setShowSettingsModal(true)}
+          aria-label="Configuración"
+        >
+          <span className="btn-icon">⚙️</span>
+          <span className="btn-text">Configuración</span>
+        </button>
+
+        {/* Botón de Login/Logout */}
         {localStorage.getItem("logged") === "logged" ? (
-          <button className="btn-login" onClick={logout}>
-            Cerrar Sesión
+          <button className="top-btn logout-btn" onClick={logout}>
+            <span className="btn-icon">🚪</span>
+            <span className="btn-text">Cerrar Sesión</span>
           </button>
         ) : (
-          <button className="btn-login" onClick={() => setShowLoginModal(true)}>
-            Iniciar Sesión
+          <button className="top-btn login-btn" onClick={() => setShowLoginModal(true)}>
+            <span className="btn-icon">🔓</span>
+            <span className="btn-text">Iniciar Sesión</span>
           </button>
         )}
       </div>
+
+      {/* Logo principal */}
       <motion.img
         src={logo}
         alt="My Life Choice Logo"
@@ -109,6 +173,7 @@ export default function Landing() {
         transition={{ duration: 1.2, ease: "easeOut" }}
       />
 
+      {/* Botones principales */}
       <motion.div
         className="landing-buttons"
         initial={{ opacity: 0, y: 40 }}
@@ -116,33 +181,55 @@ export default function Landing() {
         transition={{ delay: 0.6, duration: 1 }}
       >
         {!hasProgress ? (
-          <button
+          <motion.button
             className="btn-primary"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => {
               stopMusic();
               navigate("/intro");
             }}
           >
             Empezar Nueva Aventura
-          </button>
+          </motion.button>
         ) : (
-          <button
+          <motion.button
             className="btn-primary"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => {
               stopMusic();
               navigate("/world");
             }}
           >
             Continuar Partida
-          </button>
+          </motion.button>
         )}
+      </motion.div>
+
+      <AnimatePresence>
         {showLoginModal && (
           <AuthModal
             onClose={() => setShowLoginModal(false)}
             onLoginSuccess={handleLoginSuccess}
           />
         )}
-      </motion.div>
+        
+        {showHelpModal && (
+          <HelpModal open={showHelpModal} onClose={() => setShowHelpModal(false)} />
+        )}
+        
+        {showSettingsModal && (
+          <Settings
+            open={showSettingsModal}
+            onClose={() => setShowSettingsModal(false)}
+            soundEnabled={soundEnabled}
+            onSoundToggle={(enabled) => setSoundEnabled(enabled)}
+            volume={volume}
+            onVolumeChange={(newVolume) => setVolume(newVolume)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
