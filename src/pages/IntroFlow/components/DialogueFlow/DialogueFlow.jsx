@@ -5,6 +5,7 @@ import TextInputBox from "../../../../components/TextInputBox/TextInputBox";
 import SessionStep from "../SessionStep/SessionStep";
 import dialoguesIntro from "../../../../data/dialogues/intro3D";
 import { updateNickname } from "../../../../services/userService";
+import Swal from "sweetalert2";
 
 export default function DialogueFlow({
   guide,
@@ -25,9 +26,9 @@ export default function DialogueFlow({
       case 1:
         return "idle";
       case 2:
-        return "idle"
+        return "idle";
       case 3:
-        return "idle"
+        return "idle";
       case 4:
         return "victory";
       case 5:
@@ -41,10 +42,13 @@ export default function DialogueFlow({
 
   const handleNext = () => {
     if (dialogueIndex === 3 && !playerName.trim()) {
-      alert("Por favor, escribe tu nombre antes de continuar.");
+      Swal.fire({
+        icon: "warning",
+        title: "Nombre requerido",
+        text: "Por favor, escribe tu nombre antes de continuar.",
+      });
       return;
     }
-
     if (dialogueIndex === 3 && playerName.trim()) {
       localStorage.setItem("playerName", playerName);
 
@@ -53,7 +57,7 @@ export default function DialogueFlow({
         updateNickname(userEmail, playerName)
           .then(() => console.log("✅ Nickname sincronizado con backend"))
           .catch((err) =>
-            console.error("❌ Error actualizando nickname:", err)
+            console.error("❌ Error actualizando nickname:", err),
           );
       }
     }
@@ -76,7 +80,6 @@ export default function DialogueFlow({
           guideId={guide}
           showArrows={dialogueIndex === 7}
           animationState={animationState}
-
         />
       )}
 
