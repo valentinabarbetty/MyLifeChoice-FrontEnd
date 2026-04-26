@@ -173,7 +173,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { RigidBody, CapsuleCollider } from "@react-three/rapier";
 import footstepsSound from "/assets/music/Footsteps.mp3";
 import * as THREE from "three";
-export default function Player({ onMove, mode, lookAt, spawnPosition, scene }) {
+export default function Player({ onMove, mode, lookAt, spawnPosition, scene, scale }) {
   const playerRef = useRef(null);
   const direction = useRef(0);
   const wasMoving = useRef(false);
@@ -386,7 +386,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene }) {
 
   if (scene === "CAREER") {
     return (
-      <group ref={playerRef} scale={1}>
+      <group ref={playerRef} scale={scale}>
         <primitive object={sceneModel} />
       </group>
     );

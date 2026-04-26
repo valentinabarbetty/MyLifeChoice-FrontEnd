@@ -18,6 +18,9 @@ export default function ElectronicaScene({ mode, dialogueIndex }) {
     <BaseCareerScene
       careerId="electronica"
       currentAnimation={currentDialogue?.animation}
+      npcPosition={[-0.5, 0.5, -0.8]} 
+      playerPosition={[0.5, 0.4, 1.7]}
+    
     />
   );
 }

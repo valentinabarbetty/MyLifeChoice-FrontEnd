@@ -134,6 +134,7 @@ export default function NPC({
   animationState,
   onInteract,
   onMove,
+  scale = 1,
 }) {
   
   const ref = useRef();
@@ -264,7 +265,7 @@ useEffect(() => {
       <CapsuleCollider args={[0.35, 0.5]} />
 
       <group ref={ref} onClick={onInteract}>
-        <primitive ref={ref} object={scene} onClick={onInteract} />
+        <primitive ref={ref} object={scene} onClick={onInteract} scale={scale} />
       </group>
     </RigidBody>
   );

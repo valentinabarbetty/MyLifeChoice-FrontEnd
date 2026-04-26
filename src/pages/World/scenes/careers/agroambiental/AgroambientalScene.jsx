@@ -18,6 +18,10 @@ export default function AgroambientalScene({ mode, dialogueIndex }) {
     <BaseCareerScene
       careerId="agroambiental"
       currentAnimation={currentDialogue?.animation}
+      npcPosition={[-0.5, 0.5, 1]} 
+      playerScale={0.7}
+      playerPosition={[-0.3, 0.4, 2]}
+      npcScale={0.7}
     />
   );
 }

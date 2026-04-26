@@ -18,6 +18,7 @@ export default function AlimentosScene({ mode, dialogueIndex }) {
     <BaseCareerScene
       careerId="alimentos"
       currentAnimation={currentDialogue?.animation}
+      npcPosition={[-0.5, 0, -0.5]} 
     />
   );
 }
