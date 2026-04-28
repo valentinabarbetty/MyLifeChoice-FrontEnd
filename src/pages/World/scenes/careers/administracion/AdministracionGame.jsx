@@ -189,7 +189,7 @@ export default function AdministracionGame({ onComplete }) {
       <>
         {showConfetti && <ConfettiEffect />}
         <GameCompleteModal
-          title="🎉 ¡Felicidades!"
+          title="¡Felicidades!"
           message="Has completado el desafío de administración."
           extra={
             <p>

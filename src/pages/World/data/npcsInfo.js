@@ -4,6 +4,7 @@ export const NPCS = {
     name: "Raquelle",
     career: "administradora de empresas",
     career_name: "Administración de Empresas",
+    link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/administracion-de-empresas",
   },
 
   contaduriaPublica: {
@@ -11,6 +12,7 @@ export const NPCS = {
     name: "Isabella",
     career: "contadora pública",
     career_name: "Contaduría Pública",
+    link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/contaduria-publica",
   },
 
   ingenieriaIndustrial: {
@@ -18,6 +20,7 @@ export const NPCS = {
     name: "Laura",
     career: "ingeniera industrial",
     career_name: "Ingeniería Industrial",
+    link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/ingenieria-industrial",
   },
 
   educacionFisica: {
@@ -25,6 +28,7 @@ export const NPCS = {
     name: "Samuel",
     career: "licenciado en educación física",
     career_name: "Licenciatura en Educación Física",
+    link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/licenciatura-en-fisica-deportes",
   },
 
   literatura: {
@@ -32,6 +36,7 @@ export const NPCS = {
     name: "Emma",
     career: "licenciada en literatura",
     career_name: "Licenciatura en Literatura",
+    link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/licenciatura-literatura",
   },
 
   psicologia: {
@@ -39,6 +44,7 @@ export const NPCS = {
     name: "Mia",
     career: "psicóloga",
     career_name: "Psicología",
+    link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/psicologia",
   },
 
   agroambiental: {
@@ -46,6 +52,7 @@ export const NPCS = {
     name: "Liam",
     career: "tecnólogo agroambiental",
     career_name: "Tecnología Agroambiental",
+    link: "http://palmira.univalle.edu.co/tecnologia-agroambiental",
   },
 
   alimentos: {
@@ -53,6 +60,7 @@ export const NPCS = {
     name: "Olivia",
     career: "tecnóloga en procesamiento de alimentos",
     career_name: "Tecnología en Procesamiento de Alimentos",
+    link: "http://palmira.univalle.edu.co/tecnologia-en-alimentos",
   },
 
   software: {
@@ -60,6 +68,7 @@ export const NPCS = {
     name: "Brayan Julio",
     career: "tecnólogo en desarrollo de software",
     career_name: "Tecnología en Desarrollo de Software",
+    link: "http://palmira.univalle.edu.co/tecnologia-en-desarrollo-desoftware",
   },
 
   electronica: {
@@ -67,6 +76,7 @@ export const NPCS = {
     name: "Sabrina",
     career: "tecnóloga en electrónica industrial",
     career_name: "Tecnología en Electrónica Industrial",
+    link: "http://palmira.univalle.edu.co/tecnologia-electronica-industrial",
   },
 
   logistica: {
@@ -74,6 +84,7 @@ export const NPCS = {
     name: "Michael",
     career: "tecnólogo en gestión logística",
     career_name: "Tecnología en Gestión Logística",
+    link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/tecnologia-gestion-logistica",
   },
 
   agroforestal: {
@@ -81,12 +92,14 @@ export const NPCS = {
     name: "Emily",
     career: "tecnóloga en producción agroforestal",
     career_name: "Tecnología en Manejo de la Producción Agroforestal",
+    link: "http://palmira.univalle.edu.co/tecnologia-manejo-produccion-agroforestal",
   },
 
   mantenimiento: {
     id: 13,
     name: "Mathías",
-    career: "tecnólogo en mantenimiento electromecánico",
+    career: "tecnólogo en mantenimiento de sistemas electromecánico",
     career_name: "Tecnología en Mantenimiento de Sistemas Electromecánicos",
+    link: "http://palmira.univalle.edu.co/tecnologo-en-mantenimiento-de-sistemas-electromecanicos",
   },
 };

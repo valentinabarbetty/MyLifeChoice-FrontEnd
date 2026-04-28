@@ -18,6 +18,7 @@ export default function LogisticaScene({ mode, dialogueIndex }) {
     <BaseCareerScene
       careerId="logistica"
       currentAnimation={currentDialogue?.animation}
+      npcPosition={[-1.4, 0.3, -0.5]} 
     />
   );
 }

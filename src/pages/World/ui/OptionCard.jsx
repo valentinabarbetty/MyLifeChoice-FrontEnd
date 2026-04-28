@@ -12,10 +12,9 @@ export default function OptionCard({
     >
       <h3>{title}</h3>
       
-
       {image && <img src={image} className="card-img" alt={title} />}
       
-      {subtitle && !image && <p>{subtitle}</p>}
+      {subtitle && <p>{subtitle}</p>}  {/* ← ELIMINA "&& !image" */}
     </div>
   );
 }

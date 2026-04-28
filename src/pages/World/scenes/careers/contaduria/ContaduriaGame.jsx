@@ -118,7 +118,7 @@ export default function ContaduriaGame({ onComplete }) {
       <>
         {showConfetti && <ConfettiEffect />}
         <GameCompleteModal
-          title="🎉 ¡Felicidades!"
+          title="¡Felicidades!"
           message="¡Has completado el desafío de contaduría pública!"
           extra={
             <div style={{ textAlign: "center", marginTop: "10px" }}>
