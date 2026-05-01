@@ -27,7 +27,7 @@ const Village = forwardRef(function Village(props, ref) {
     <primitive
       ref={ref}
       object={clonedScene}
-      scale={1}
+      scale={1.4}
       position={[3, -4, -20]}
       {...props}
     />
