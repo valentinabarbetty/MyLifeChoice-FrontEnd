@@ -32,10 +32,9 @@ export default function NPC({
   const { actions } = useAnimations(animations, ref);
   const currentAction = useRef(null);
   const targetIndex = useRef(0);
-  const speed = 1.4;
+  const speed = 1;
   const lastUpdate = useRef(0);
 
-  // Inicializar animación
   useEffect(() => {
     if (!actions) return;
     const first =
@@ -45,7 +44,6 @@ export default function NPC({
     currentAction.current = first;
   }, [actions]);
 
-  // Cambiar animación según estado
   useEffect(() => {
     if (!actions) return;
     const keys = Object.keys(actions);
@@ -60,7 +58,6 @@ export default function NPC({
     currentAction.current = next;
   }, [animationState, actions]);
 
-  // Posición inicial
   useEffect(() => {
     if (!rb.current || !hasRoute) return;
     const start = route[0];
@@ -78,10 +75,9 @@ export default function NPC({
   useFrame((_, delta) => {
     if (!rb.current || !ref.current || !hasRoute) return;
 
-    // Si está en interacción, solo mirar
     if (isNear && lookAt) {
       const pos = rb.current.translation();
-      // Método 1: Usar posición con misma Y
+
       const dx = lookAt.x - pos.x;
       const dz = lookAt.z - pos.z;
 
@@ -104,14 +100,12 @@ export default function NPC({
       return;
     }
 
-    // Movimiento
     dir.normalize();
     const newPos = pos.clone().add(dir.multiplyScalar(speed * delta));
     newPos.y = target[1];
 
     rb.current.setTranslation(newPos, true);
 
-    // Rotación para caminar (solo en Y)
     const angle = Math.atan2(dir.x, dir.z);
     ref.current.rotation.y = angle;
 
@@ -126,10 +120,9 @@ export default function NPC({
     <RigidBody
       ref={rb}
       type="kinematicPosition"
-      colliders={false}
+      colliders="cuboid"
       enabledRotations={[false, false, false]}
     >
-      <CapsuleCollider args={[0.4, 0.8]} sensor />
       <group ref={ref} onClick={onInteract} position={[0, -0.5, 0]}>
         <primitive object={scene} scale={[scale, scale, scale]} />
       </group>
