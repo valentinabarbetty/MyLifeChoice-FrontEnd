@@ -18,6 +18,7 @@ export default function ContaduriaScene({ mode, dialogueIndex }) {
     <BaseCareerScene
       careerId="contaduriaPublica"
       currentAnimation={currentDialogue?.animation}
+      npcPosition={[0, 0.5, 0]} 
     />
   );
 }

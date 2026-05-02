@@ -11,6 +11,7 @@ export default function AdministracionScene({ mode, setMode, dialogueIndex }) {
     <BaseCareerScene
       careerId="administracion"
       currentAnimation={currentDialogue?.animation}
+      npcPosition={[0, 0.5, 0]}
     />
   );
 }

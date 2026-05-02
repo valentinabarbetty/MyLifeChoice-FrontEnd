@@ -18,7 +18,7 @@ export default function AgroforestalScene({ mode, dialogueIndex }) {
     <BaseCareerScene
       careerId="agroforestal"
       currentAnimation={currentDialogue?.animation}
-      npcPosition={[-1.2, 0.2, 0.2]}  
+      npcPosition={[-1.2, 0.5, 0.2]}  
     />
   );
 }

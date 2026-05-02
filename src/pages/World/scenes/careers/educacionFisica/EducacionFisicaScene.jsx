@@ -18,10 +18,10 @@ export default function EducacionFisicaScene({ mode, dialogueIndex }) {
     <BaseCareerScene
       careerId="educacionFisica"
       currentAnimation={currentDialogue?.animation}
-      npcPosition={[-0.5, 0.5, -0.3]} 
+      npcPosition={[0.5, 0.5, -0.3]} 
       playerScale={0.7}
-      playerPosition={[-0.3, 0.4, 0.5]}
-      npcScale={0.7}
+      playerPosition={[-0.3, 0.4, 2]}
+      npcScale={0.8}
     />
   );
 }

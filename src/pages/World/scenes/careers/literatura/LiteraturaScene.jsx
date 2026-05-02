@@ -18,6 +18,7 @@ export default function LiteraturaScene({ mode, dialogueIndex }) {
     <BaseCareerScene
       careerId="literatura"
       currentAnimation={currentDialogue?.animation}
+      npcPosition={[-0.5, 1, 0]} 
     />
   );
 }

@@ -12,6 +12,8 @@ export default function PsicologiaScene({ mode, setMode, dialogueIndex }) {
     <BaseCareerScene
       careerId="psicologia"
       currentAnimation={currentDialogue?.animation}
+      npcPosition={[-0.5, 0.5, -0.8]} 
+      scale ={2}
     ></BaseCareerScene>
   );
 }

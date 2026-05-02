@@ -12,7 +12,7 @@ export default function SoftwareScene({ mode, setMode, dialogueIndex }) {
     <BaseCareerScene
       careerId="software"
       currentAnimation={currentDialogue?.animation}
-      npcPosition={[-1.2, 0, -0.5]}  
+      npcPosition={[-1.2, 0.4, -0.5]}  
     />
   );
 }

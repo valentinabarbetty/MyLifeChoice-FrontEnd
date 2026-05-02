@@ -20,13 +20,11 @@ import worldMusic from "/assets/music/World.mp3";
 import "./World.css";
 import Settings from "./ui/Settings/Settings";
 
-// Constantes para localStorage
 const STORAGE_KEYS = {
   SOUND_ENABLED: "mlc_sound_enabled",
   VOLUME: "mlc_volume",
 };
 
-// Función para cargar configuración de sonido
 const loadSoundSettings = () => {
   const savedSoundEnabled = localStorage.getItem(STORAGE_KEYS.SOUND_ENABLED);
   const savedVolume = localStorage.getItem(STORAGE_KEYS.VOLUME);
@@ -55,7 +53,6 @@ export default function World() {
   const [userInteracted, setUserInteracted] = useState(false);
   const audioRef = useRef(null);
   
-  // Cargar configuración de sonido guardada
   const savedSettings = useMemo(() => loadSoundSettings(), []);
   const [soundEnabled, setSoundEnabled] = useState(savedSettings.soundEnabled);
   const [volume, setVolume] = useState(savedSettings.volume);
@@ -78,44 +75,46 @@ export default function World() {
     }
   }, [allCompleted, setScene]);
   
-  const ROUTES = [
-    [
-      [-6, -3, -5],
-      [-2, -3, -5],
-      [-2, -3, -20],
-      [-6, -3, -20],
-    ],
-    [
-      [2, -3, -8],
-      [10, -3, -8],
-      [10, -3, -25],
-      [2, -3, -25],
-    ],
-    [
-      [15, -3, -6],
-      [24, -3, -6],
-      [24, -3, -22],
-      [15, -3, -22],
-    ],
-  ];
-  
-  const SPAWNS = [
-    [-3, -3, -7],
-    [6, -3, -10],
-    [16, -3, -8],
-  ];
-  
-  const worldNPCs = useMemo(() => {
-    return visibleCareers.reduce((acc, careerId, index) => {
-      acc[careerId] = {
-        id: careerId,
-        model: `/assets/models/npc/${careerId}.glb`,
-        route: ROUTES[index] || ROUTES[0],
-        position: SPAWNS[index] || [0, -3, 0],
-      };
-      return acc;
-    }, {});
-  }, [visibleCareers]);
+const ROUTES = [
+  [
+    [-6, -2, -5],
+    [-2, -2, -5],
+    [-2, -2, -20],
+    [-6, -2, -20],
+  ],
+  [
+    [2, -2, -8],
+    [10, -2, -8],
+    [10, -2, -25],
+    [2, -2, -25],
+  ],
+  [
+    [15, -2, -6],
+    [24, -2, -6],
+    [24, -2, -22],
+    [15, -2, -22],
+  ],
+];
+
+const SPAWNS = [
+  [-3, -2, -7],
+  [6, -2, -10],
+  [16, -2, -8],
+];
+
+
+const worldNPCs = useMemo(() => {
+  const result = {};
+  visibleCareers.forEach((careerId, index) => {
+    result[careerId] = {
+      id: careerId,
+      model: `/assets/models/npc/${careerId}.glb`,
+      route: ROUTES[index % ROUTES.length],
+      position: SPAWNS[index % SPAWNS.length],
+    };
+  });
+  return result;
+}, [visibleCareers.join(',')]); 
   
   const [npcPositions, setNpcPositions] = useState({});
   const nearNPC = useNPCProximity(playerPos, npcPositions);
@@ -126,7 +125,6 @@ export default function World() {
       ? careerData[mode === "career-ending" ? "ending" : "intro"]?.[dialogueIndex]
       : null;
 
-  // Inicializar audio al montar el componente
   useEffect(() => {
     audioRef.current = new Audio(worldMusic);
     audioRef.current.loop = true;
@@ -140,14 +138,11 @@ export default function World() {
     };
   }, []);
 
-  // Actualizar volumen cuando cambie
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
   }, [volume]);
-
-  // Manejar la interacción del usuario
   useEffect(() => {
     const enableAudio = () => {
       setUserInteracted(true);
@@ -167,7 +162,6 @@ export default function World() {
     };
   }, []);
 
-  // Controlar la reproducción del audio
   useEffect(() => {
     if (!audioRef.current) return;
 
@@ -180,7 +174,6 @@ export default function World() {
     }
   }, [scene, soundEnabled, userInteracted]);
 
-  // Guardar configuración cuando cambie
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.SOUND_ENABLED, soundEnabled);
   }, [soundEnabled]);

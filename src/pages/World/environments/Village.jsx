@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useMemo } from "react";
 import { useGLTF } from "@react-three/drei";
 
 const Village = forwardRef(function Village(props, ref) {
-  const { scene } = useGLTF("/assets/models/scenes/world.glb");
+  const { scene } = useGLTF("/assets/models/scenes/village.glb");
 
   const clonedScene = useMemo(() => scene.clone(true), [scene]);
 

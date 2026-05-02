@@ -18,6 +18,7 @@ export default function MantenimientoScene({ mode, dialogueIndex }) {
     <BaseCareerScene
       careerId="mantenimiento"
       currentAnimation={currentDialogue?.animation}
+      npcPosition={[0, 0.5, 0]}
     />
   );
 }
