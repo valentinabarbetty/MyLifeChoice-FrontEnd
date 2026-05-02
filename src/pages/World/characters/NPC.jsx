@@ -32,7 +32,7 @@ export default function NPC({
   const { actions } = useAnimations(animations, ref);
   const currentAction = useRef(null);
   const targetIndex = useRef(0);
-  const speed = 0.4;
+  const speed = 1.4;
   const lastUpdate = useRef(0);
 
   // Inicializar animación

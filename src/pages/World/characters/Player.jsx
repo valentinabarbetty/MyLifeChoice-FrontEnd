@@ -212,9 +212,8 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     
     const p = rb.current.translation();
     
-    // 📍 IMPRIMIR COORDENADAS CADA VEZ QUE CAMBIAN
     if (p.x !== lastPosition.current.x || p.z !== lastPosition.current.z) {
-      console.log(`📍 Posición del jugador - X: ${p.x.toFixed(2)}, Z: ${p.z.toFixed(2)}`);
+      console.log(`📍 Posición del jugador - X: ${p.x.toFixed(2)}, Y: ${p.y.toFixed(2)}, Z: ${p.z.toFixed(2)}`);
       lastPosition.current = { x: p.x, z: p.z };
     }
     

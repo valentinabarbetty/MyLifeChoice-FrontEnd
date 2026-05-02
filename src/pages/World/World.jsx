@@ -28,9 +28,10 @@ const STORAGE_KEYS = {
 const loadSoundSettings = () => {
   const savedSoundEnabled = localStorage.getItem(STORAGE_KEYS.SOUND_ENABLED);
   const savedVolume = localStorage.getItem(STORAGE_KEYS.VOLUME);
-  
+
   return {
-    soundEnabled: savedSoundEnabled !== null ? savedSoundEnabled === "true" : true,
+    soundEnabled:
+      savedSoundEnabled !== null ? savedSoundEnabled === "true" : true,
     volume: savedVolume !== null ? parseFloat(savedVolume) : 0.4,
   };
 };
@@ -48,81 +49,83 @@ export default function World() {
     activeCareer,
     setActiveCareer,
   } = useWorldState();
-  
+
   const [playerPos, setPlayerPos] = useState({ x: 0, y: 0, z: 0 });
   const [userInteracted, setUserInteracted] = useState(false);
   const audioRef = useRef(null);
-  
+
   const savedSettings = useMemo(() => loadSoundSettings(), []);
   const [soundEnabled, setSoundEnabled] = useState(savedSettings.soundEnabled);
   const [volume, setVolume] = useState(savedSettings.volume);
-  
+
   const { visited, markVisited } = useUserProgress();
   const ActiveGame = GAME_COMPONENTS[activeCareer];
   const availableCareers = ALL_CAREERS.filter((c) => {
     const npc = NPCS[c];
     return npc && !visited.includes(npc.id);
   });
-  
+
   const [helpOpen, setHelpOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const visibleCareers = availableCareers.slice(0, 3);
   const allCompleted = availableCareers.length === 0;
-  
+
   useEffect(() => {
     if (allCompleted) {
       setScene("SUMMARY");
     }
   }, [allCompleted, setScene]);
-  
-const ROUTES = [
-  [
-    [-6, -2, -5],
-    [-2, -2, -5],
-    [-2, -2, -20],
-    [-6, -2, -20],
-  ],
-  [
-    [2, -2, -8],
-    [10, -2, -8],
-    [10, -2, -25],
-    [2, -2, -25],
-  ],
-  [
-    [15, -2, -6],
-    [24, -2, -6],
-    [24, -2, -22],
-    [15, -2, -22],
-  ],
-];
 
-const SPAWNS = [
-  [-3, -2, -7],
-  [6, -2, -10],
-  [16, -2, -8],
-];
+  const ROUTES = [
+    [
+      [-13.73, -2.2, -0.92],
+      [9.13, -2.2, -0.92],
+      [9.13, -1.84, -14.64],
+      [-8.57, -2.0, -1.67],
+    ],
+    [
+      [8.91, -2.2, 14.06],
+      [26.17, -2.2, 9.99],
+      [8.61, -1.76, -17.42],
+      [-5.36, -2.16, -5.12],
+      [10.43, -2.2, 13.81],
+    ],
+    [
+      [37.9, -2.2, 6.82],
+      [31.3, -2.2, 11.67],
+      [15.04, -1.95, -7.33],
+      [28.92, -2.03, -9.09],
+    ],
+  ];
 
+  const SPAWNS = [
+    [-3, -2, -7],
+    [6, -2, -10],
+    [16, -2, -8],
+  ];
 
-const worldNPCs = useMemo(() => {
-  const result = {};
-  visibleCareers.forEach((careerId, index) => {
-    result[careerId] = {
-      id: careerId,
-      model: `/assets/models/npc/${careerId}.glb`,
-      route: ROUTES[index % ROUTES.length],
-      position: SPAWNS[index % SPAWNS.length],
-    };
-  });
-  return result;
-}, [visibleCareers.join(',')]); 
-  
+  const worldNPCs = useMemo(() => {
+    const result = {};
+    visibleCareers.forEach((careerId, index) => {
+      result[careerId] = {
+        id: careerId,
+        model: `/assets/models/npc/${careerId}.glb`,
+        route: ROUTES[index % ROUTES.length],
+        position: SPAWNS[index % SPAWNS.length],
+      };
+    });
+    return result;
+  }, [visibleCareers.join(",")]);
+
   const [npcPositions, setNpcPositions] = useState({});
   const nearNPC = useNPCProximity(playerPos, npcPositions);
   const careerData = CAREER_DIALOGUES[activeCareer];
 
   const currentDialogue =
     scene === "CAREER" && activeCareer && careerData && mode !== "career-game"
-      ? careerData[mode === "career-ending" ? "ending" : "intro"]?.[dialogueIndex]
+      ? careerData[mode === "career-ending" ? "ending" : "intro"]?.[
+          dialogueIndex
+        ]
       : null;
 
   useEffect(() => {
@@ -217,7 +220,7 @@ const worldNPCs = useMemo(() => {
       >
         ❓
       </button>
-      
+
       <button
         className="world-settings-btn"
         data-tooltip="Configuración"
@@ -257,7 +260,7 @@ const worldNPCs = useMemo(() => {
           <CameraManager scene={scene} mode={mode} playerPos={playerPos} />
         </Suspense>
       </WorldCanvas>
-      
+
       {scene === "CAREER" && mode === "career-game" && ActiveGame && (
         <ActiveGame
           onComplete={() => {
@@ -266,9 +269,9 @@ const worldNPCs = useMemo(() => {
           }}
         />
       )}
-      
+
       {scene === "SUMMARY" && <CareerSummary />}
-      
+
       <WorldHUD
         scene={scene}
         mode={mode}
@@ -327,9 +330,9 @@ const worldNPCs = useMemo(() => {
         activeCareer={activeCareer}
         activeNPC={activeNPC}
       />
-      
+
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
-      
+
       <Settings
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
