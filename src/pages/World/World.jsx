@@ -19,6 +19,7 @@ import CareerSummary from "../Summary/Summary";
 import worldMusic from "/assets/music/World.mp3";
 import "./World.css";
 import Settings from "./ui/Settings/Settings";
+import { useA11y } from "@react-three/a11y";
 
 const STORAGE_KEYS = {
   SOUND_ENABLED: "mlc_sound_enabled",
@@ -208,6 +209,63 @@ export default function World() {
       audioRef.current.volume = newVolume;
     }
   };
+useEffect(() => {
+  const preventFocusScroll = (e) => {
+    if (
+      e.target.hasAttribute("data-a11y") ||
+      e.target.closest("[data-a11y]") ||
+      e.target.tagName === "CANVAS"
+    ) {
+      const savedX = window.scrollX;
+      const savedY = window.scrollY;
+      
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: savedY, left: savedX, behavior: "instant" });
+      });
+    }
+  };
+
+  const originalScrollIntoView = Element.prototype.scrollIntoView;
+  Element.prototype.scrollIntoView = function(options) {
+    if (this.hasAttribute("data-a11y") || this.closest("canvas")) {
+      return; 
+    }
+    return originalScrollIntoView.call(this, options);
+  };
+
+  document.addEventListener("focus", preventFocusScroll, true);
+
+  return () => {
+    document.removeEventListener("focus", preventFocusScroll, true);
+    Element.prototype.scrollIntoView = originalScrollIntoView;
+  };
+}, []);
+
+  const announce = (message) => {
+    const announcement = document.createElement("div");
+    announcement.setAttribute("aria-live", "polite");
+    announcement.setAttribute("aria-atomic", "true");
+    announcement.style.position = "absolute";
+    announcement.style.left = "-9999px";
+    announcement.style.top = "-9999px";
+    announcement.style.width = "1px";
+    announcement.style.height = "1px";
+    announcement.style.overflow = "hidden";
+    announcement.textContent = message;
+    document.body.appendChild(announcement);
+
+    setTimeout(() => {
+      document.body.removeChild(announcement);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (nearNPC) {
+      const npcInfo = NPCS[nearNPC];
+
+      announce(`${npcInfo?.career_name}. Presiona Enter para interactuar`);
+    }
+  }, [nearNPC]);
 
   return (
     <>
@@ -315,11 +373,13 @@ export default function World() {
         }}
         onReject={() => {
           if (mode === "interact") {
+            markVisited(activeNPC);
             setActiveNPC(null);
             setMode("explore");
             return;
           }
           if (mode === "career-feedback") {
+            markVisited(activeCareer);
             setScene("WORLD");
             setActiveCareer(null);
             setActiveNPC(null);

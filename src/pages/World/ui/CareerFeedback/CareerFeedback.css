@@ -27,3 +27,116 @@
   font-size: 12px;
   color: #555;
 }
+
+.feedback-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 2000;
+}
+
+.feedback-box {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.feedback-question {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.feedback-stars-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.feedback-star-btn {
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #ccc;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.feedback-star-btn.filled {
+  color: #ffd700;
+}
+
+.feedback-star-btn.selected {
+  transform: scale(1.1);
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.feedback-star-btn:focus-visible {
+  outline: 3px solid #ffd700;
+  outline-offset: 4px;
+  transform: scale(1.15);
+}
+
+.feedback-star-btn:hover {
+  transform: scale(1.1);
+  color: #ffd700;
+}
+
+.feedback-progress {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 20px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+@media (max-width: 768px) {
+  .feedback-box {
+    padding: 20px;
+  }
+  
+  .feedback-question {
+    font-size: 1.1rem;
+  }
+  
+  .feedback-star-btn {
+    font-size: 2rem;
+  }
+}

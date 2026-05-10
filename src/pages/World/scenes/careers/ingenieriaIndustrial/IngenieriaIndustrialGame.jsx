@@ -1,24 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./IngenieriaIndustrialGame.css";
 import GameCompleteModal from "../../../ui/GameCompleteModal/GameCompleteModal";
 import ConfettiEffect from "../../../ui/Confetti";
 import Swal from "sweetalert2";
 
-import { DndContext, closestCenter } from "@dnd-kit/core";
-
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
   horizontalListSortingStrategy,
   useSortable,
+  sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-
 import { CSS } from "@dnd-kit/utilities";
-import OptionButtons from "../../../ui/OptionButtons";
 import OptionCard from "../../../ui/OptionCard";
 
 const INITIAL_ORDER = ["Empaque", "Pintura", "Ensamble", "Corte"];
-
 const CORRECT_ORDER = ["Corte", "Ensamble", "Pintura", "Empaque"];
 
 const TIMES = {
@@ -35,13 +32,38 @@ const IMAGES = {
   Corte: "/assets/ui/IngenieriaIndustrial/axe.png",
 };
 
-function SortableItem({ id }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+const PHASE_META = {
+  1: {
+    title: "Organiza la línea de producción",
+    instructions:
+      "Arrastra las tarjetas para ordenar las etapas del proceso. Usa Tab para moverte entre tarjetas, Enter para agarrar y soltar, y las flechas para reposicionar.",
+  },
+  2: {
+    title: "¿Cuál es el cuello de botella?",
+    instructions:
+      "Selecciona la etapa que tarda más tiempo y representa el cuello de botella del proceso.",
+  },
+  3: {
+    title: "¿Cómo optimizamos?",
+    instructions:
+      "Elige la mejor solución para optimizar la etapa con mayor tiempo de proceso.",
+  },
+};
+
+function SortableItem({ id, index, totalItems }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    opacity: isDragging ? 0.5 : 1,
   };
 
   return (
@@ -49,11 +71,18 @@ function SortableItem({ id }) {
       ref={setNodeRef}
       style={style}
       className="card drag"
+      role="button"
+      tabIndex={0}
+      aria-label={`${id}, posición ${index + 1} de ${totalItems}. Presiona Enter para agarrar y usar flechas para mover.`}
+      aria-describedby={`sort-desc-${id}`}
       {...attributes}
       {...listeners}
     >
-      <h3>{id}</h3>
-      <img src={IMAGES[id]} className="card-img" alt={id} />
+      <h3 aria-hidden="true">{id}</h3>
+      <img src={IMAGES[id]} className="card-img" alt="" aria-hidden="true" />
+      <span id={`sort-desc-${id}`} className="sr-only">
+        Puedes arrastrar esta etapa o usar Enter y las flechas para reordenar
+      </span>
     </div>
   );
 }
@@ -65,11 +94,41 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
   const [selectedSolution, setSelectedSolution] = useState(null);
   const [gameFinished, setGameFinished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
 
-  const showError = () => {
+  const titleRef = useRef(null);
+  const announcerRef = useRef(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      titleRef.current?.focus();
+    }, 100);
+    return () => clearTimeout(id);
+  }, [phase]);
+
+  useEffect(() => {
+    if (announcerRef.current && announcement) {
+      announcerRef.current.textContent = "";
+      requestAnimationFrame(() => {
+        if (announcerRef.current) {
+          announcerRef.current.textContent = announcement;
+        }
+      });
+    }
+  }, [announcement]);
+
+  const showError = (msg = "Revisa bien las opciones y vuelve a intentar") => {
+    setAnnouncement(`Respuesta incorrecta. ${msg}`);
     Swal.fire({
       title: "Casi lo logras 😅",
-      text: "Revisa bien las opciones y vuelve a intentar",
+      text: msg,
       icon: "warning",
       confirmButtonText: "Reintentar",
       confirmButtonColor: "#22c55e",
@@ -80,9 +139,9 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
 
   const validatePhase1 = () => {
     const isCorrect = order.every((item, i) => item === CORRECT_ORDER[i]);
-
     if (isCorrect) {
       setSelectedBottleneck(null);
+      setAnnouncement("¡Correcto! Avanzando a la fase 2: identificar el cuello de botella.");
       setPhase(2);
     } else {
       showError();
@@ -92,6 +151,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
   const validatePhase2 = () => {
     if (selectedBottleneck === "Empaque") {
       setSelectedSolution(null);
+      setAnnouncement("¡Correcto! Avanzando a la fase 3: elegir la solución.");
       setPhase(3);
     } else {
       showError();
@@ -100,9 +160,9 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
 
   const validatePhase3 = () => {
     if (selectedSolution === "mejorar") {
+      setAnnouncement("¡Excelente! Optimizaste correctamente el proceso productivo.");
       setGameFinished(true);
       setShowConfetti(true);
-
       setTimeout(() => setShowConfetti(false), 4000);
     } else {
       showError();
@@ -113,7 +173,6 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
     return (
       <div className="overlay">
         {showConfetti && <ConfettiEffect />}
-
         <GameCompleteModal
           title="¡Excelente!"
           message="Optimizaste correctamente el proceso productivo."
@@ -123,41 +182,79 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
     );
   }
 
+  const currentMeta = PHASE_META[phase];
+
   return (
     <div className="overlay">
-      <div className="panel">
+      <div
+        ref={announcerRef}
+        className="sr-only"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      />
+
+      <div
+        className="panel"
+        role="region"
+        aria-labelledby="game-title"
+        aria-describedby="game-instructions"
+      >
+        <h2
+          id="game-title"
+          ref={titleRef}
+          tabIndex={-1}
+          aria-live="polite"
+        >
+          {currentMeta.title}
+        </h2>
+
+        <div id="game-instructions" className="sr-only">
+          {currentMeta.instructions}
+        </div>
         {phase === 1 && (
           <>
-            <h2>Organiza la línea de producción</h2>
-
             <DndContext
+              sensors={sensors}
               collisionDetection={closestCenter}
-              onDragEnd={(event) => {
-                const { active, over } = event;
-
-                if (!over) return;
-
-                if (active.id !== over.id) {
-                  const oldIndex = order.indexOf(active.id);
-                  const newIndex = order.indexOf(over.id);
-
-                  setOrder(arrayMove(order, oldIndex, newIndex));
-                }
+              onDragEnd={({ active, over }) => {
+                if (!over || active.id === over.id) return;
+                const oldIndex = order.indexOf(active.id);
+                const newIndex = order.indexOf(over.id);
+                const newOrder = arrayMove(order, oldIndex, newIndex);
+                setOrder(newOrder);
+                setAnnouncement(
+                  `${active.id} movido a la posición ${newIndex + 1}`
+                );
               }}
             >
               <SortableContext
                 items={order}
                 strategy={horizontalListSortingStrategy}
               >
-                <div className="cards">
-                  {order.map((item) => (
-                    <SortableItem key={item} id={item} />
+                
+                <div
+                  className="cards"
+                  role="list"
+                  aria-label="Etapas de producción para ordenar"
+                >
+                  {order.map((item, idx) => (
+                    <SortableItem
+                      key={item}
+                      id={item}
+                      index={idx}
+                      totalItems={order.length}
+                    />
                   ))}
                 </div>
               </SortableContext>
             </DndContext>
 
-            <button className="ing-btn" onClick={validatePhase1}>
+            <button
+              className="ing-btn"
+              onClick={validatePhase1}
+              aria-label="Confirmar orden de la línea de producción"
+            >
               Continuar
             </button>
           </>
@@ -165,69 +262,106 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
 
         {phase === 2 && (
           <>
-            <h2>¿Cuál es el cuello de botella?</h2>
+            <div
+              role="group"
+              aria-labelledby="bottleneck-group-label"
+            >
+              <p id="bottleneck-group-label" className="sr-only">
+                Selecciona la etapa que representa el cuello de botella
+              </p>
 
-            <div className="cards">
-              {order.map((item) => (
-                <OptionCard
-                  key={item}
-                  title={item}
-                  image={IMAGES[item]}
-                  subtitle={`${TIMES[item]} segundos`}
-                  isActive={selectedBottleneck === item}
-                  onClick={() => setSelectedBottleneck(item)}
-                />
-              ))}
+              <div
+                className="cards"
+                role="list"
+                aria-label="Etapas con tiempos de proceso"
+              >
+                {order.map((item) => (
+                  <OptionCard
+                    key={item}
+                    title={item}
+                    image={IMAGES[item]}
+                    subtitle={`${TIMES[item]} segundos`}
+                    isActive={selectedBottleneck === item}
+                    onClick={() => {
+                      setSelectedBottleneck(item);
+                      setAnnouncement(`${item} seleccionado, ${TIMES[item]} segundos`);
+                    }}
+                    aria-pressed={selectedBottleneck === item}
+                    role="button"
+                    aria-label={`${item}, ${TIMES[item]} segundos${selectedBottleneck === item ? ", seleccionado" : ""}`}
+                  />
+                ))}
+              </div>
             </div>
 
-            <button className="ing-btn" onClick={validatePhase2}>
+            <button
+              className="ing-btn"
+              onClick={validatePhase2}
+              aria-label="Confirmar selección del cuello de botella"
+              aria-disabled={!selectedBottleneck}
+            >
               Continuar
             </button>
           </>
         )}
 
         {phase === 3 && (
-  <>
-    <h2>¿Cómo optimizamos?</h2>
+          <>
+          
+            <div
+              className="selected-station"
+              role="region"
+              aria-label={`Estación seleccionada: ${selectedBottleneck}, ${TIMES[selectedBottleneck]} segundos`}
+            >
+              <h3 aria-hidden="true">{selectedBottleneck}</h3>
+              <img
+                src={IMAGES[selectedBottleneck]}
+                className="selected-img"
+                alt=""
+                aria-hidden="true"
+              />
+              <p aria-hidden="true">{TIMES[selectedBottleneck]} segundos</p>
+            </div>
 
-    <div className="selected-station">
-      <h3>{selectedBottleneck}</h3>
-      <img
-        src={IMAGES[selectedBottleneck]}
-        className="selected-img"
-        alt={selectedBottleneck}
-      />
-      <p>{TIMES[selectedBottleneck]} segundos</p>
-    </div>
+            <div
+              className="options-container"
+              role="radiogroup"
+              aria-labelledby="solution-group-label"
+            >
+              <p id="solution-group-label" className="sr-only">
+                Selecciona una solución para optimizar {selectedBottleneck}
+              </p>
 
-    <div className="options-container">
-      <button
-        className={`option-button ${selectedSolution === "personal" ? "selected" : ""}`}
-        onClick={() => setSelectedSolution("personal")}
-      >
-        📋 Contratar más personal
-      </button>
-      
-      <button
-        className={`option-button ${selectedSolution === "mejorar" ? "selected" : ""}`}
-        onClick={() => setSelectedSolution("mejorar")}
-      >
-        🏭 Comprar máquinas de empaque
-      </button>
-      
-      <button
-        className={`option-button ${selectedSolution === "nada" ? "selected" : ""}`}
-        onClick={() => setSelectedSolution("nada")}
-      >
-        ❌ Nada
-      </button>
-    </div>
+              {[
+                { value: "personal", label: "Contratar más personal", emoji: "📋" },
+                { value: "mejorar", label: "Comprar máquinas de empaque", emoji: "🏭" },
+                { value: "nada",    label: "Nada",                        emoji: "❌" },
+              ].map(({ value, label, emoji }) => (
+                <button
+                  key={value}
+                  className={`option-button ${selectedSolution === value ? "selected" : ""}`}
+                  role="radio"
+                  aria-checked={selectedSolution === value}
+                  onClick={() => {
+                    setSelectedSolution(value);
+                    setAnnouncement(`${label} seleccionado`);
+                  }}
+                >
+                  <span aria-hidden="true">{emoji}</span> {label}
+                </button>
+              ))}
+            </div>
 
-    <button className="ing-btn" onClick={validatePhase3}>
-      Finalizar
-    </button>
-  </>
-)}
+            <button
+              className="ing-btn"
+              onClick={validatePhase3}
+              aria-label="Finalizar y confirmar solución seleccionada"
+              aria-disabled={!selectedSolution}
+            >
+              Finalizar
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

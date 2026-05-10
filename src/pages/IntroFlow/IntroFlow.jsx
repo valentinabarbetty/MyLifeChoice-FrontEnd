@@ -56,7 +56,6 @@ const goToWorld = async () => {
           >
             <SelectGuide
               onSelect={(g) => {
-                // Fade-out con pequeño retraso
                 setTimeout(() => {
                   setGuide(g);
                   nextStep();
@@ -93,7 +92,6 @@ const goToWorld = async () => {
           >
             <SelectPlayer
               onSelect={(g) => {
-                // Fade-out con pequeño retraso
                 setTimeout(() => {
                   setGuide(g);
                   nextStep();

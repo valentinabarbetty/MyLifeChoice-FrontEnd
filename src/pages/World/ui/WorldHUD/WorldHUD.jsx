@@ -11,63 +11,87 @@ export default function WorldHUD({
   onAccept,
   onReject,
   activeCareer,
-  activeNPC, // 🔥 IMPORTANTE
+  activeNPC,
 }) {
 
-  // 🔥 CLAVE: usa el que exista
   const currentKey = activeCareer || activeNPC;
   const npc = currentKey ? NPCS[currentKey] : null;
 
-  // 🎯 FEEDBACK
+
   if (scene === "CAREER" && mode === "career-feedback") {
-    return <CareerFeedback career={activeCareer} onFinish={onAccept} />;
+    return (
+      <div
+        role="region"
+        aria-label="Retroalimentación de carrera"
+        aria-live="polite"
+      >
+        <CareerFeedback career={activeCareer} onFinish={onAccept} />
+      </div>
+    );
   }
 
-  // 🎯 INTRO
   if (mode === "intro" && dialogue) {
     return (
-      <DialogueBox
-        speaker={dialogue.speaker}
-        text={dialogue.text}
-        onNext={onNext}
-        showNext
-      />
+      
+        <DialogueBox
+          speaker={dialogue.speaker}
+          text={dialogue.text}
+          onNext={onNext}
+          showNext
+        />
+   
     );
   }
 
-  // 🎯 INTERACCIÓN NPC
   if (mode === "interact") {
+    const npcName = npc?.name || "Guía";
+    const npcCareer = npc?.career || "";
+    const dialogueText = npc
+      ? `Hola, soy ${npcName}, ${npcCareer}. ¿Quieres conocer mi carrera?`
+      : "¿Deseas iniciar una conversación?";
+
     return (
-      <DialogueBox
-        speaker={npc?.name || "Guía"}
-        text={
-          npc
-            ? `Hola, soy ${npc.name}, ${npc.career}. ¿Quieres conocer mi carrera?`
-            : "¿Deseas iniciar una conversación?"
-        }
-        showNext={false}
-      >
-        <div className="dgl-options">
-          <button onClick={onAccept}>Sí</button>
-          <button onClick={onReject}>No</button>
-        </div>
-      </DialogueBox>
+   
+        <DialogueBox
+          speaker={npcName}
+          text={dialogueText}
+          showNext={false}
+        >
+          <div className="dgl-options" role="group" aria-label="Opciones de respuesta">
+            <button
+              onClick={onAccept}
+              className="option-btn option-yes"
+              aria-label="Sí, quiero conocer esta carrera"
+            >
+              Sí
+            </button>
+            <button
+              onClick={onReject}
+              className="option-btn option-no"
+              aria-label="No, no quiero conocer esta carrera ahora"
+            >
+              No
+            </button>
+          </div>
+        </DialogueBox>
+  
     );
   }
 
-  // 🎯 DIÁLOGOS NORMALES
+ 
   if ((mode === "dialogue" || mode === "career-ending") && dialogue) {
     return (
-      <DialogueBox
-        speaker={dialogue.speaker}
-        text={dialogue.text}
-        onNext={onNext}
-        showNext={true}
-      />
+   
+        <DialogueBox
+          speaker={dialogue.speaker}
+          text={dialogue.text}
+          onNext={onNext}
+          showNext={true}
+        />
+  
     );
   }
 
-  // 🎯 JUEGO
   if (scene === "CAREER" && mode === "career-game") {
     return null;
   }

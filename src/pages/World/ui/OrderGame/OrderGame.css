@@ -229,3 +229,53 @@
     font-size: 10px;
   }
 }
+
+.order-game-card:focus-visible {
+  outline: 3px solid #ffd700 !important;
+  outline-offset: 4px;
+  transform: scale(1.02);
+  z-index: 10;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+.order-game-card::before {
+  content: attr(data-order);
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: #ffd700;
+  color: #000;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.order-game-card {
+  transition: all 0.2s ease;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.order-game-title:focus {
+  outline: none;
+}
+
+.order-game-btn:focus-visible {
+  outline: 3px solid #ffd700;
+  outline-offset: 3px;
+  transform: scale(1.02);
+}

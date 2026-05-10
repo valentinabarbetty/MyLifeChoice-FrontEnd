@@ -55,14 +55,13 @@ export default function DialogueFlow({
       const userEmail = localStorage.getItem("userEmail");
       if (userEmail) {
         updateNickname(userEmail, playerName)
-          .then(() => console.log("✅ Nickname sincronizado con backend"))
+          .then(() => console.log("Nickname sincronizado con backend"))
           .catch((err) =>
-            console.error("❌ Error actualizando nickname:", err),
+            console.error("Error actualizando nickname:", err),
           );
       }
     }
 
-    // Si llega al final de los diálogos, pasa al siguiente paso
     if (dialogueIndex >= dialogues.length - 1) {
       onDialogueEnd?.();
       return;

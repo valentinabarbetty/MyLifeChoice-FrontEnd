@@ -6,7 +6,6 @@ const Cloud = forwardRef(function Cloud(
 ) {
   return (
     <group ref={ref} position={position} scale={scale}>
-      {/* Nube principal - SIN transparencia */}
       <mesh position={[0, 0, 0]} castShadow>
         <sphereGeometry args={[1, 16, 16]} />
         <meshStandardMaterial color="#ffffff" roughness={0.8} />
@@ -21,8 +20,6 @@ const Cloud = forwardRef(function Cloud(
         <sphereGeometry args={[0.9, 16, 16]} />
         <meshStandardMaterial color="#ffffff" roughness={0.8} />
       </mesh>
-
-      {/* Añadir más volumen */}
       <mesh position={[0.5, 0.6, 0.2]} castShadow>
         <sphereGeometry args={[0.6, 16, 16]} />
         <meshStandardMaterial color="#f0f0f0" roughness={0.8} />

@@ -30,8 +30,6 @@ export const agroambientalIntroDialogues = [
     text: "La idea es lograr un equilibrio entre producción y conservación del ambiente. 🌱",
     animation: "idle",
   },
-
-  // Día típico
   {
     speaker: "Liam",
     text: "Un día de trabajo puede ser bastante activo.",

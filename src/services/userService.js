@@ -35,7 +35,7 @@ export const loginUser = async (credentials) => {
     }
 
     const data = await response.json();
-    console.log("🔐 Login exitoso:", data);
+    console.log("Login exitoso:", data);
     return data;
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
@@ -76,7 +76,7 @@ export const addGuide = async (email, guide_id) => {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("✅ Guía asignada exitosamente:", data);
+    console.log("Guía asignada exitosamente:", data);
     return data;
   } catch (error) {
     console.error("Error al asignar guía:", error);
@@ -99,7 +99,7 @@ export const addPlayer = async (email, player_type_id) => {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("✅ Player añadido exitosamente:", data);
+    console.log("Player añadido exitosamente:", data);
     return data;
   } catch (error) {
     console.error("Error al añadir player:", error);
@@ -124,7 +124,7 @@ export const googleLogin = async (email, name) => {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("✅ Login con Google exitoso:", data);
+    console.log("Login con Google exitoso:", data);
     return data;
   } catch (error) {
     console.error("Error al iniciar sesión con Google:", error);
@@ -146,7 +146,7 @@ export const updateNickname = async (email, nickname) => {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("✅ Nickname actualizado correctamente:", data);
+    console.log("Nickname actualizado correctamente:", data);
     return data;
   } catch (error) {
     console.error("Error al actualizar nickname:", error);
@@ -187,11 +187,11 @@ export const saveProgress = async (progressData) => {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("✅ Progreso guardado:", data);
+    console.log("Progreso guardado:", data);
     return data;
 
   } catch (error) {
-    console.error("❌ Error al guardar progreso:", error);
+    console.error("Error al guardar progreso:", error);
     throw error;
   }
 };
@@ -209,7 +209,7 @@ export const checkIntroStatus = async (userId) => {
     }
 
     const data = await response.json();
-    console.log("🧠 Estado de intro:", data);
+    console.log("Estado de intro:", data);
       if (data.has_intro) {
       localStorage.setItem("intro_done", "true");
     } else {
@@ -218,7 +218,7 @@ export const checkIntroStatus = async (userId) => {
     return data;
 
   } catch (error) {
-    console.error("❌ Error al verificar intro:", error);
+    console.error("Error al verificar intro:", error);
     throw error;
   }
 };
@@ -258,11 +258,11 @@ export const getUserFeedback = async (userId) => {
     }
 
     const data = await response.json();
-    console.log("📊 Feedback del usuario:", data);
+    console.log("Feedback del usuario:", data);
     return data;
 
   } catch (error) {
-    console.error("❌ Error al obtener feedback:", error);
+    console.error("Error al obtener feedback:", error);
     throw error;
   }
 };

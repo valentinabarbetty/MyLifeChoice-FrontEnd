@@ -48,7 +48,6 @@
   display: inline-block;
 }
 
-/* Switch */
 .settings-switch {
   position: relative;
   display: inline-block;
@@ -94,7 +93,6 @@
   transform: translateX(24px);
 }
 
-/* Volumen */
 .settings-volume {
   display: flex;
   align-items: center;

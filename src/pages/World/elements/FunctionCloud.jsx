@@ -12,7 +12,6 @@ export default function FloatingCloud({
 
   useFrame(({ clock }) => {
     if (!ref.current) return;
-    // Movimiento simple de izquierda a derecha
     ref.current.position.x = startX + Math.sin(clock.getElapsedTime() * 0.5) * 1.5;
   });
 

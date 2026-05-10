@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useId } from "react";
 import starImg from "/public/assets/ui/Administracion/star.png";
 import dollarImg from "/public/assets/ui/Administracion/dollar.png";
 import groupImg from "/public/assets/ui/Administracion/group.png";
@@ -34,45 +34,42 @@ export default function AdministracionGame({ onComplete }) {
   const [gameFinished, setGameFinished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [reputation, setReputation] = useState(0);
-
   const [budgetLeft, setBudgetLeft] = useState(100);
   const [staffLeft, setStaffLeft] = useState(100);
-
   const [assignments, setAssignments] = useState([
     { money: null, people: null, moneyScore: 0, peopleScore: 0 },
     { money: null, people: null, moneyScore: 0, peopleScore: 0 },
     { money: null, people: null, moneyScore: 0, peopleScore: 0 },
     { money: null, people: null, moneyScore: 0, peopleScore: 0 },
   ]);
-
   const [step, setStep] = useState(0);
+
+  const bubbleTextRef = useRef();
+
+  useEffect(() => {
+    if (bubbleTextRef.current) {
+      bubbleTextRef.current.focus();
+    }
+  }, [step]);
 
   const current = scenarios[step];
   const currentAssignment = assignments[step];
 
   const getMoneyCost = (level) => {
     switch (level) {
-      case "baja":
-        return 10;
-      case "media":
-        return 18;
-      case "alta":
-        return 25;
-      default:
-        return 0;
+      case "baja": return 10;
+      case "media": return 18;
+      case "alta": return 25;
+      default: return 0;
     }
   };
 
   const getPeopleCost = (level) => {
     switch (level) {
-      case "baja":
-        return 8;
-      case "media":
-        return 15;
-      case "alta":
-        return 25;
-      default:
-        return 0;
+      case "baja": return 8;
+      case "media": return 15;
+      case "alta": return 25;
+      default: return 0;
     }
   };
 
@@ -84,8 +81,7 @@ export default function AdministracionGame({ onComplete }) {
       (selected === "media" && correct === "alta") ||
       (selected === "baja" && correct === "media") ||
       (selected === "alta" && correct === "media")
-    )
-      return 8;
+    ) return 8;
     return 3;
   };
 
@@ -97,21 +93,18 @@ export default function AdministracionGame({ onComplete }) {
       (selected === "media" && correct === "alta") ||
       (selected === "baja" && correct === "media") ||
       (selected === "alta" && correct === "media")
-    )
-      return 5;
+    ) return 5;
     return 2;
   };
 
   const handleMoneyChange = (level) => {
-    const oldCost = currentAssignment.money
-      ? getMoneyCost(currentAssignment.money)
-      : 0;
+    const oldCost = currentAssignment.money ? getMoneyCost(currentAssignment.money) : 0;
     const newCost = getMoneyCost(level);
     const newBudgetLeft = budgetLeft + oldCost - newCost;
 
     if (newBudgetLeft < 0) {
       Swal.fire({
-        title: "Presupuesto insuficiente 😅",
+        title: "Presupuesto insuficiente",
         text: `No tienes suficiente presupuesto. Te queda ${budgetLeft}% y necesitas ${newCost}%`,
         icon: "warning",
         confirmButtonColor: "#22c55e",
@@ -131,15 +124,13 @@ export default function AdministracionGame({ onComplete }) {
   };
 
   const handlePeopleChange = (level) => {
-    const oldCost = currentAssignment.people
-      ? getPeopleCost(currentAssignment.people)
-      : 0;
+    const oldCost = currentAssignment.people ? getPeopleCost(currentAssignment.people) : 0;
     const newCost = getPeopleCost(level);
     const newStaffLeft = staffLeft + oldCost - newCost;
 
     if (newStaffLeft < 0) {
       Swal.fire({
-        title: "Personal insuficiente 😅",
+        title: "Personal insuficiente",
         text: `No tienes suficiente personal. Te queda ${staffLeft}% y necesitas ${newCost}%`,
         icon: "warning",
         confirmButtonColor: "#22c55e",
@@ -161,7 +152,7 @@ export default function AdministracionGame({ onComplete }) {
   const handleContinue = () => {
     if (!currentAssignment.money || !currentAssignment.people) {
       Swal.fire({
-        title: "Selecciona ambas opciones 👀",
+        title: "Selecciona ambas opciones",
         text: "Debes asignar tanto presupuesto como personal para esta situación",
         icon: "warning",
         confirmButtonColor: "#22c55e",
@@ -170,8 +161,7 @@ export default function AdministracionGame({ onComplete }) {
       return;
     }
 
-    const newReputation =
-      reputation + currentAssignment.moneyScore + currentAssignment.peopleScore;
+    const newReputation = reputation + currentAssignment.moneyScore + currentAssignment.peopleScore;
     setReputation(Math.min(100, newReputation));
 
     if (step === scenarios.length - 1) {
@@ -191,135 +181,87 @@ export default function AdministracionGame({ onComplete }) {
         <GameCompleteModal
           title="¡Felicidades!"
           message="Has completado el desafío de administración."
-          extra={
-            <p>
-              Reputación final: <strong>{reputation}%</strong>
-            </p>
-          }
+          extra={<p>Reputación final: <strong>{reputation}%</strong></p>}
           onContinue={() => onComplete?.()}
         />
       </>
     );
   }
 
-  const getPreviewScore = () => {
-    let score = 0;
-    if (currentAssignment.money)
-      score += getMoneyScore(currentAssignment.money, current.correct.money);
-    if (currentAssignment.people)
-      score += getPeopleScore(currentAssignment.people, current.correct.people);
-    return score;
-  };
-
   const getCurrentCost = () => {
     let cost = { money: 0, people: 0 };
-    if (currentAssignment.money)
-      cost.money = getMoneyCost(currentAssignment.money);
-    if (currentAssignment.people)
-      cost.people = getPeopleCost(currentAssignment.people);
+    if (currentAssignment.money) cost.money = getMoneyCost(currentAssignment.money);
+    if (currentAssignment.people) cost.people = getPeopleCost(currentAssignment.people);
     return cost;
   };
 
   const currentCost = getCurrentCost();
   const situationsLeft = scenarios.length - step;
   const totalEarned = assignments.reduce(
-    (sum, a) => sum + (a.moneyScore || 0) + (a.peopleScore || 0),
-    0,
+    (sum, a) => sum + (a.moneyScore || 0) + (a.peopleScore || 0), 0
   );
 
   return (
     <div className="adminGameOverlay">
       <div className="adminGamePanel">
-        <div className="adminGameTopBar">
-          <AdminStat
-            img={starImg}
-            label="REPUTACIÓN"
-            value={`${reputation}%`}
-            percent={reputation}
-          />
-          <AdminStat
-            img={dollarImg}
-            label="PRESUPUESTO"
-            value={`${budgetLeft}%`}
-            percent={budgetLeft}
-          />
-          <AdminStat
-            img={groupImg}
-            label="PERSONAL"
-            value={`${staffLeft}%`}
-            percent={staffLeft}
-          />
+
+        <div className="adminGameTopBar" role="region" aria-label="Recursos disponibles">
+          <AdminStat img={starImg}   label="Reputación"  value={`${reputation}%`} percent={reputation} />
+          <AdminStat img={dollarImg} label="Presupuesto" value={`${budgetLeft}%`} percent={budgetLeft} />
+          <AdminStat img={groupImg}  label="Personal"    value={`${staffLeft}%`}  percent={staffLeft} />
         </div>
 
-        <div className="adminGameProgress">
+        <div
+          className="adminGameProgress"
+          tabIndex={0}
+          aria-live="polite"
+          aria-atomic="true"
+          style={{ outline: "none" }}
+        >
           Situación {step + 1} de {scenarios.length}
         </div>
 
-        <div className="adminGameInstruction">
-          🎯 Ayúdame a asignar presupuesto y personal para solucionar la
-          siguiente situación
-        </div>
+        <p className="adminGameInstruction" tabIndex={0} style={{ outline: "none" }}>
+          Ayúdame a asignar presupuesto y personal para solucionar la siguiente situación
+        </p>
 
         <div className="adminGameNpcContainer">
           <img
             src="/assets/ui/Software/personajes/person.png"
             className="adminGameNpcImg"
-            alt="Asesor"
+            alt=""
+            aria-hidden="true"
           />
           <div className="adminGameBubble">
-            <p className="adminGameBubbleText">"{current.text}"</p>
+            <p
+              ref={bubbleTextRef}
+              className="adminGameBubbleText"
+              tabIndex={0}
+              style={{ outline: "none" }}
+            >
+              {current.text}
+            </p>
           </div>
         </div>
 
         <div className="adminGameControls">
           <ResourceSelector
-            title="PRESUPUESTO A ASIGNAR"
+            title="Presupuesto a asignar"
             value={currentAssignment.money}
             options={[
-              {
-                value: "baja",
-                label: "💰 Bajo",
-                cost: "10%",
-                desc: "Inversión mínima",
-              },
-              {
-                value: "media",
-                label: "💰💰 Medio",
-                cost: "18%",
-                desc: "Inversión estándar",
-              },
-              {
-                value: "alta",
-                label: "💰💰💰 Alto",
-                cost: "25%",
-                desc: "Inversión máxima",
-              },
+              { value: "baja",  label: "Bajo",  cost: "10%", desc: "Inversión mínima"  },
+              { value: "media", label: "Medio", cost: "18%", desc: "Inversión estándar" },
+              { value: "alta",  label: "Alto",  cost: "25%", desc: "Inversión máxima"  },
             ]}
             onChange={handleMoneyChange}
           />
-
           <ResourceSelector
-            title="PERSONAL A ASIGNAR"
+            title="Personal a asignar"
             value={currentAssignment.people}
             options={[
-              {
-                value: "baja",
-                label: "👤 Bajo",
-                cost: "8%",
-                desc: "Equipo mínimo",
-              },
-              {
-                value: "media",
-                label: "👤👤 Medio",
-                cost: "15%",
-                desc: "Equipo estándar",
-              },
-              {
-                value: "alta",
-                label: "👤👤👤 Alto",
-                cost: "25%",
-                desc: "Equipo completo",
-              },
+              { value: "baja",  label: "Bajo",  cost: "8%",  desc: "Equipo mínimo"   },
+              { value: "media", label: "Medio", cost: "15%", desc: "Equipo estándar" },
+              { value: "alta",  label: "Alto",  cost: "25%", desc: "Equipo completo" },
             ]}
             onChange={handlePeopleChange}
           />
@@ -328,6 +270,7 @@ export default function AdministracionGame({ onComplete }) {
         <button className="adminGameBtn" onClick={handleContinue}>
           {step === scenarios.length - 1 ? "Finalizar" : "Continuar"}
         </button>
+
       </div>
     </div>
   );
@@ -336,15 +279,21 @@ export default function AdministracionGame({ onComplete }) {
 function AdminStat({ img, label, value, percent }) {
   return (
     <div className="adminGameStat">
-      <img src={img} className="adminGameIconImg" alt={label} />
+      <img src={img} className="adminGameIconImg" alt="" aria-hidden="true" />
       <div className="adminGameStatContent">
-        <div className="adminGameLabel">{label}</div>
-        <div className="adminGameValueSmall">{value}</div>
-        <div className="adminGameProgressBar">
-          <div
-            className="adminGameProgressFill"
-            style={{ width: `${percent}%` }}
-          />
+        <div className="adminGameLabel" aria-hidden="true">{label}</div>
+        <div className="adminGameValueSmall" aria-hidden="true">{value}</div>
+        <div
+          className="adminGameProgressBar"
+          role="progressbar"
+          aria-valuenow={percent}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`${label} ${percent}%`}
+          tabIndex={0}
+          style={{ outline: "none" }}
+        >
+          <div className="adminGameProgressFill" style={{ width: `${percent}%` }} />
         </div>
       </div>
     </div>
@@ -352,19 +301,23 @@ function AdminStat({ img, label, value, percent }) {
 }
 
 function ResourceSelector({ title, value, options, onChange }) {
+  const groupId = useId();
+
   return (
-    <div className="resourceSelector">
-      <h3 className="resourceSelectorTitle">{title}</h3>
+    <div className="resourceSelector" role="group" aria-labelledby={groupId}>
+      <h3 id={groupId} className="resourceSelectorTitle">{title}</h3>
       <div className="resourceOptions">
         {options.map((opt) => (
           <button
             key={opt.value}
             className={`resourceOption ${value === opt.value ? "active" : ""}`}
             onClick={() => onChange(opt.value)}
+            aria-pressed={value === opt.value}
+            aria-label={`${opt.label}, costo ${opt.cost}, ${opt.desc}`}
           >
-            <div className="resourceOptionLabel">{opt.label}</div>
-            <div className="resourceOptionCost">{opt.cost}</div>
-            <div className="resourceOptionDesc">{opt.desc}</div>
+            <div className="resourceOptionLabel" aria-hidden="true">{opt.label}</div>
+            <div className="resourceOptionCost"  aria-hidden="true">{opt.cost}</div>
+            <div className="resourceOptionDesc"  aria-hidden="true">{opt.desc}</div>
           </button>
         ))}
       </div>

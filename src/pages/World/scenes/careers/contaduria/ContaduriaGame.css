@@ -401,3 +401,54 @@
   font-size: 14px;
   color: #22c55e;
 }
+
+.contaduriaImageContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.contaduriaImageOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4), transparent);
+  color: white;
+  padding: 12px;
+  border-radius: 0 0 10px 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.contaduriaImageContainer:hover .contaduriaImageOverlay {
+  opacity: 1;
+}
+
+.factura-info-overlay {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.factura-info-overlay strong {
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+@media (max-width: 768px) {
+  .contaduriaImageOverlay {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.5), transparent);
+    padding: 8px;
+  }
+  
+  .factura-info-overlay {
+    font-size: 10px;
+  }
+  
+  .factura-info-overlay strong {
+    font-size: 12px;
+  }
+}

@@ -15,7 +15,6 @@
   min-width: 250px;
 }
 
-/* Botones flotantes de ayuda y configuración */
 .world-help-btn,
 .world-settings-btn {
   position: absolute;
@@ -63,7 +62,6 @@
   transform: translateY(-1px);
 }
 
-/* Tooltip para los botones */
 .world-help-btn::before,
 .world-settings-btn::before {
   content: attr(data-tooltip);
@@ -91,7 +89,6 @@
   bottom: -45px;
 }
 
-/* Versión móvil - ajustar posición */
 @media (max-width: 768px) {
   .back-btn {
     top: 10px;
@@ -115,4 +112,37 @@
   .world-settings-btn {
     right: 10px;
   }
+}
+html, body, #root {
+  position: fixed !important;
+  inset: 0 !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#root > div[style*="position: fixed"] {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+#root canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+[r3f-a11y="true"] {
+  position: fixed !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  pointer-events: none !important;
+}
+
+[r3f-a11y="true"]:focus {
+  top: -9999px !important;
+  left: -9999px !important;
+  pointer-events: auto !important;
 }

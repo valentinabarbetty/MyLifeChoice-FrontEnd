@@ -1,5 +1,3 @@
-// SceneRegistry.js
-
 import AdministracionScene from "./scenes/careers/administracion/AdministracionScene";
 import ContaduriaScene from "./scenes/careers/contaduria/ContaduriaScene";
 import IngenieriaIndustrialScene from "./scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialScene";

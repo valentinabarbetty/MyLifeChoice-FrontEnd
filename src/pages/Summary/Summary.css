@@ -38,8 +38,6 @@
         transform: translateY(0);
     }
 }
-
-/* ========== TÍTULO - fondo como el ranking ========== */
 .title {
     text-align: center;
     padding: 16px 20px;
@@ -53,7 +51,6 @@
     letter-spacing: 1px;
 }
 
-/* ========== TARJETA DESTACADA - fondo como el ranking ========== */
 .featured-career {
     background: #fef3c7;
     color: #1e293b;
@@ -130,7 +127,6 @@
     color: #d97706;
 }
 
-/* Loading spinner */
 .loading-spinner {
     text-align: center;
     padding: 60px 20px;
@@ -157,7 +153,6 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Content - Área de scroll */
 .content {
     flex: 1;
     padding: 20px 25px;
@@ -194,7 +189,6 @@
     font-weight: 600;
 }
 
-/* Ranking - fondo BLANCO */
 .list {
     display: flex;
     flex-direction: column;
@@ -283,7 +277,6 @@
     background: #fde68a;
 }
 
-/* Recomendación */
 .recommendation {
     background: #fef3c7;
     padding: 15px;
@@ -315,7 +308,6 @@
     border-top: 1px solid #fde68a;
 }
 
-/* Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -429,7 +421,6 @@
     margin: 0;
 }
 
-/* NPC info */
 .npc-info {
     background: #fef3c7;
     padding: 12px;
@@ -447,7 +438,6 @@
     color: #f59e0b;
 }
 
-/* Skills tags */
 .skills-list {
     display: flex;
     flex-wrap: wrap;
@@ -463,7 +453,6 @@
     font-weight: 500;
 }
 
-/* Modal links */
 .modal-links {
     margin: 18px 0;
 }
@@ -507,7 +496,6 @@
     box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .overlay {
         padding: 10px;

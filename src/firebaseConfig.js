@@ -1,8 +1,6 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCuRQsMXxuNgeLY6wZa-xnXyGcwjj5Egz4",
   authDomain: "mylifechoice-a3144.firebaseapp.com",
@@ -13,14 +11,10 @@ const firebaseConfig = {
   measurementId: "G-LSP359Z10G",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// ✅ Inicializa el servicio de autenticación
 const auth = getAuth(app);
 
-// ✅ Crea el proveedor de Google
 const provider = new GoogleAuthProvider();
 
-// Exporta para usar en tu componente
 export { auth, provider };

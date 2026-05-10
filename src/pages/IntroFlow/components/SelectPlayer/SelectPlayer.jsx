@@ -13,19 +13,17 @@ export default function SelectPlayer({ onSelect }) {
     const userEmail = localStorage.getItem("userEmail");
 
     if (!userEmail) {
-      // Si no hay sesión todavía → guarda localmente
       localStorage.setItem("selectedPlayer", player.id);
-      console.log("💾 Player guardado localmente:", player.name);
+      console.log("Player guardado localmente:", player.name);
       onSelect?.(player);
       return;
     }
 
     try {
-      // Usuario logueado → guarda en backend
       localStorage.setItem("selectedPlayer", player.id);
 
       const response = await addPlayer(userEmail, player.id);
-      console.log("✅ Player asignado con éxito:", response);
+      console.log("Player asignado con éxito:", response);
       onSelect?.(player);
     } catch (error) {
       console.error("Error al asignar el Player:", error);

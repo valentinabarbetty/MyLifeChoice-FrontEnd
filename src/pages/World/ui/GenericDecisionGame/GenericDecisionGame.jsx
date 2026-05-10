@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
 import OptionCard from "../OptionCard";
 import ConfettiEffect from "../Confetti";
@@ -19,12 +19,21 @@ export default function GenericDecisionGame({
   const [gameFinished, setGameFinished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
+  const bubbleRef = useRef(null);
+
+  // Al cambiar caso, foco al texto del personaje — VoiceOver lo lee automáticamente
+  useEffect(() => {
+    if (bubbleRef.current) {
+      bubbleRef.current.focus();
+    }
+  }, [index]);
+
   const current = cases[index];
 
   const handleContinue = () => {
     if (!selected) {
       return Swal.fire({
-        title: "Selecciona una opción 👀",
+        title: "Selecciona una opción",
         text: "Debes elegir una respuesta",
         icon: "warning",
         confirmButtonColor: "#22c55e",
@@ -34,7 +43,7 @@ export default function GenericDecisionGame({
 
     if (selected !== current.correct) {
       return Swal.fire({
-        title: "No es correcto 😅",
+        title: "No es correcto",
         text: "Intenta nuevamente",
         icon: "warning",
         confirmButtonColor: "#22c55e",
@@ -68,26 +77,50 @@ export default function GenericDecisionGame({
 
   return (
     <div className="generic-game-overlay">
-      <div className="generic-game-panel">
-
-        <div className="generic-game-intro">{introText}</div>
-
+      <div
+        className="generic-game-panel"
+        role="main"
+        aria-label="Juego de decisiones"
+      >
+        <p
+          className="generic-game-intro"
+          tabIndex={0}
+          style={{ outline: "none" }}
+        >
+          {introText}
+        </p>
 
         <div className="generic-game-npc-container">
-          <img 
-            src={current.image} 
-            className="generic-game-npc-img" 
-            alt="Personaje" 
+          <img
+            src={current.image}
+            className="generic-game-npc-img"
+            alt=""
+            aria-hidden="true"
           />
           <div className="generic-game-bubble">
-            <p className="generic-game-bubble-text">"{current.text}"</p>
+            <p
+              ref={bubbleRef}
+              className="generic-game-bubble-text"
+              tabIndex={0}
+              style={{ outline: "none" }}
+            >
+              {current.text}
+            </p>
           </div>
         </div>
+        <p
+          className="generic-game-instruction"
+          tabIndex={0}
+          style={{ outline: "none" }}
+        >
+          {instructionText}
+        </p>
 
-        <div className="generic-game-instruction">{instructionText}</div>
-
-       
-        <div className="generic-game-options">
+        <div
+          className="generic-game-options"
+          role="group"
+          aria-label="Opciones de respuesta"
+        >
           {options.map((opt) => (
             <OptionCard
               key={opt.value}

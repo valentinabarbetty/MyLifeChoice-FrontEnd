@@ -56,8 +56,6 @@
   min-width: 40px;
 }
 
-
-/* Modal base styles - compartido entre HelpModal y SettingsModal */
 .modal-overlay {
   position: fixed;
   inset: 0;

@@ -6,6 +6,7 @@ import NPCGroup from "./NPCGroup";
 import { useRef } from "react";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import Floor from "../environments/Floor";
+import Houses from "../Houses";
 
 export default function WorldScene({
   worldNPCs,
@@ -18,11 +19,17 @@ export default function WorldScene({
   setMode,
 }) {
   const villageRef = useRef();
-  const radianes = (grados) => (grados * Math.PI) / 180;
+
+  const handleHouseInteract = (career) => {
+    setActiveNPC(career);
+    setMode("interact");
+  };
+
   return (
     <>
       <Village ref={villageRef} />
-      <Floor scale={1.4} position={[3, -4, -20]} />
+      <Houses onInteract={handleHouseInteract} />
+
       <RigidBody type="fixed" colliders={false}>
         <CuboidCollider args={[60, 0.5, 60]} position={[0, -3.5, 0]} />
         <RigidBody type="fixed" colliders="trimesh">
@@ -100,6 +107,7 @@ export default function WorldScene({
 
         <CuboidCollider args={[3, 3, 3]} position={[-19.88, -1, -12.05]} />
       </RigidBody>
+
       <NPCGroup
         npcs={worldNPCs}
         playerPos={playerPos}
@@ -113,7 +121,7 @@ export default function WorldScene({
 
       <Player
         mode={mode}
-        spawnPosition={[-0.9, -2, -8]}
+        spawnPosition={[-3, -2, -8]}
         onMove={(pos) => setPlayerPos(pos)}
         scene="WORLD"
       />

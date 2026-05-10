@@ -10,7 +10,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
   const direction = useRef(0);
   const wasMoving = useRef(false);
   const footstepsRef = useRef(null);
-  const lastPosition = useRef({ x: 0, z: 0 }); // Guarda la última posición para detectar cambios
+  const lastPosition = useRef({ x: 0, z: 0 }); 
 
   const [isMoving, setIsMoving] = useState(false);
   const currentAction = useRef(null);
@@ -20,7 +20,12 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     ArrowDown: false,
     ArrowLeft: false,
     ArrowRight: false,
+    KeyW: false,
+    KeyS: false,
+    KeyA: false,
+    KeyD: false,
   });
+  
   const rb = useRef();
   const selectedPlayer = localStorage.getItem("selectedPlayer");
 
@@ -39,6 +44,13 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
 
   const { scene: sceneModel, animations } = useGLTF(modelPath);
   const { actions } = useAnimations(animations, playerRef);
+
+  const isMovementKey = (key) => {
+    return keys.current.ArrowUp || keys.current.ArrowDown || 
+           keys.current.ArrowLeft || keys.current.ArrowRight ||
+           keys.current.KeyW || keys.current.KeyS || 
+           keys.current.KeyA || keys.current.KeyD;
+  };
 
   useEffect(() => {
     if (!actions) return;
@@ -61,15 +73,21 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     );
 
     onMove?.(playerRef.current.position.clone());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const down = (e) => {
-      if (e.key in keys.current) keys.current[e.key] = true;
+      if (e.code in keys.current) {
+        e.preventDefault();
+        keys.current[e.code] = true;
+      }
     };
+    
     const up = (e) => {
-      if (e.key in keys.current) keys.current[e.key] = false;
+      if (e.code in keys.current) {
+        e.preventDefault();
+        keys.current[e.code] = false;
+      }
     };
 
     window.addEventListener("keydown", down);
@@ -103,20 +121,19 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
 
       const speed = 0.05;
       let moving = false;
-
-      if (keys.current.ArrowUp) {
+      if (keys.current.ArrowUp || keys.current.KeyW) {
         direction.current = Math.PI;
         moving = true;
       }
-      if (keys.current.ArrowDown) {
+      if (keys.current.ArrowDown || keys.current.KeyS) {
         direction.current = 0;
         moving = true;
       }
-      if (keys.current.ArrowLeft) {
+      if (keys.current.ArrowLeft || keys.current.KeyA) {
         direction.current = -Math.PI / 2;
         moving = true;
       }
-      if (keys.current.ArrowRight) {
+      if (keys.current.ArrowRight || keys.current.KeyD) {
         direction.current = Math.PI / 2;
         moving = true;
       }
@@ -146,22 +163,24 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     let dirZ = 0;
     let moving = false;
 
-    if (keys.current.ArrowUp) {
+    
+    if (keys.current.KeyW) {
       direction.current = Math.PI;
       dirZ = -1;
       moving = true;
     }
-    if (keys.current.ArrowDown) {
+    if (keys.current.KeyS) {
       direction.current = 0;
       dirZ = 1;
       moving = true;
     }
-    if (keys.current.ArrowLeft) {
+    
+    if (keys.current.KeyA) {
       direction.current = -Math.PI / 2;
       dirX = -1;
       moving = true;
     }
-    if (keys.current.ArrowRight) {
+    if (keys.current.KeyD) {
       direction.current = Math.PI / 2;
       dirX = 1;
       moving = true;
@@ -198,7 +217,6 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     if (wasMoving.current && !moving) setIsMoving(false);
     wasMoving.current = moving;
     
-    // 🎧 FOOTSTEPS
     if (moving) {
       if (footstepsRef.current && footstepsRef.current.paused) {
         footstepsRef.current.play().catch(() => {});
@@ -213,7 +231,6 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     const p = rb.current.translation();
     
     if (p.x !== lastPosition.current.x || p.z !== lastPosition.current.z) {
-      console.log(`📍 Posición del jugador - X: ${p.x.toFixed(2)}, Y: ${p.y.toFixed(2)}, Z: ${p.z.toFixed(2)}`);
       lastPosition.current = { x: p.x, z: p.z };
     }
     

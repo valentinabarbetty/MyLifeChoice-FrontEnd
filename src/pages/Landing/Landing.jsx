@@ -23,13 +23,11 @@ export default function Landing() {
   const audioRef = useRef(null);
   const userId = localStorage.getItem("userId");
 
-  // Inicializar audio
   useEffect(() => {
     audioRef.current = new Audio(landingMusic);
     audioRef.current.loop = true;
     audioRef.current.volume = volume;
 
-    // Intentar reproducir después de interacción del usuario
     const enableAudio = () => {
       if (audioRef.current && soundEnabled) {
         audioRef.current.play().catch(() => console.log("Error al reproducir"));
@@ -51,7 +49,6 @@ export default function Landing() {
     };
   }, []);
 
-  // Controlar reproducción según estado
   useEffect(() => {
     if (!audioRef.current) return;
     
@@ -63,7 +60,6 @@ export default function Landing() {
     }
   }, [soundEnabled, volume]);
 
-  // Verificar progreso del usuario
   useEffect(() => {
     if (userId) {
       checkIntroStatus(userId)
@@ -79,7 +75,7 @@ export default function Landing() {
   };
 
   const handleLoginSuccess = async (userData) => {
-    console.log("✅ Login exitoso:", userData);
+    console.log("Login exitoso:", userData);
     if (userData?.nickname) {
       localStorage.setItem("playerName", userData.nickname);
     } else if (userData?.email) {
@@ -114,7 +110,6 @@ export default function Landing() {
 
   return (
     <div className="landing-container">
-      {/* Video de fondo */}
       <video
         className="landing-video"
         src={vid}
@@ -124,12 +119,9 @@ export default function Landing() {
         playsInline
       />
       
-      {/* Overlay con gradiente */}
       <div className="overlay"></div>
       
-      {/* Contenedor de botones superiores */}
       <div className="top-buttons">
-        {/* Botón de Ayuda */}
         <button 
           className="top-btn help-btn"
           onClick={() => setShowHelpModal(true)}
@@ -139,7 +131,6 @@ export default function Landing() {
           <span className="btn-text">Ayuda</span>
         </button>
 
-        {/* Botón de Configuración */}
         <button 
           className="top-btn settings-btn"
           onClick={() => setShowSettingsModal(true)}
@@ -148,8 +139,6 @@ export default function Landing() {
           <span className="btn-icon">⚙️</span>
           <span className="btn-text">Configuración</span>
         </button>
-
-        {/* Botón de Login/Logout */}
         {localStorage.getItem("logged") === "logged" ? (
           <button className="top-btn logout-btn" onClick={logout}>
             <span className="btn-icon">🚪</span>
@@ -163,7 +152,6 @@ export default function Landing() {
         )}
       </div>
 
-      {/* Logo principal */}
       <motion.img
         src={logo}
         alt="My Life Choice Logo"
@@ -173,7 +161,6 @@ export default function Landing() {
         transition={{ duration: 1.2, ease: "easeOut" }}
       />
 
-      {/* Botones principales */}
       <motion.div
         className="landing-buttons"
         initial={{ opacity: 0, y: 40 }}
