@@ -223,19 +223,6 @@ export default function Settings({ open, onClose, soundEnabled, onSoundToggle, o
               </div>
             </div>
           )}
-
-          <div
-            className="settings-option"
-            aria-label="Versión de la aplicación: 2.0.0"
-          >
-            <div className="settings-option-info" aria-hidden="true">
-              <span className="settings-option-icon">📦</span>
-              <span className="settings-option-label">Versión</span>
-            </div>
-            <div className="settings-controls-info" aria-hidden="true">
-              <span>v2.0.0</span>
-            </div>
-          </div>
         </div>
 
         <div className="settings-modal-footer">

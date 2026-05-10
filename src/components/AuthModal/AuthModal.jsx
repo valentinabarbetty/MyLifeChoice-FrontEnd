@@ -64,7 +64,6 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     });
   };
 
- 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
       announce("Error: por favor completa todos los campos antes de continuar.");
@@ -149,13 +148,24 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     }
   };
 
-  const handleSwitchToRegister = () => {
-    setIsRegistering(true);
-  };
-
-  const handleSwitchToLogin = () => {
-    setIsRegistering(false);
-  };
+  // ── Si está en modo registro, renderiza RegisterModal directamente
+  // (sin el wrapper auth-modal-overlay ni auth-modal-card del AuthModal)
+  if (isRegistering) {
+    return (
+      <RegisterModal
+        onClose={() => setIsRegistering(false)}
+        onSuccess={(data) => {
+          onLoginSuccess?.(data);
+          setIsRegistering(false);
+          onClose();
+        }}
+        onLoginSuccess={(data) => {
+          onLoginSuccess?.(data);
+          onClose();
+        }}
+      />
+    );
+  }
 
   return (
     <div
@@ -173,108 +183,96 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       />
 
       <div className="auth-modal-card" id="auth-modal-card">
-        {isRegistering ? (
-          <RegisterModal
-            onClose={handleSwitchToLogin}
-            onSuccess={(data) => {
-              onLoginSuccess?.(data);
-              setIsRegistering(false);
-              onClose();
-            }}
+        <h2
+          id="auth-modal-title"
+          className="auth-title"
+          ref={titleRef}
+          tabIndex={-1}
+        >
+          Iniciar sesión
+        </h2>
+
+        <form
+          role="form"
+          aria-label="Formulario de inicio de sesión"
+          onSubmit={(e) => { e.preventDefault(); handleLogin(); }}
+        >
+          <label htmlFor="auth-email" className="sr-only">
+            Correo electrónico
+          </label>
+          <input
+            id="auth-email"
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="auth-input"
+            autoComplete="email"
+            aria-required="true"
+            aria-label="Correo electrónico"
           />
-        ) : (
-          <>
-            <h2
-              id="auth-modal-title"
-              className="auth-title"
-              ref={titleRef}
-              tabIndex={-1}
-            >
-              Iniciar sesión
-            </h2>
-            <form
-              role="form"
-              aria-label="Formulario de inicio de sesión"
-              onSubmit={(e) => { e.preventDefault(); handleLogin(); }}
-            >
-              <label htmlFor="auth-email" className="sr-only">
-                Correo electrónico
-              </label>
-              <input
-                id="auth-email"
-                type="email"
-                placeholder="Correo electrónico"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="auth-input"
-                autoComplete="email"
-                aria-required="true"
-                aria-label="Correo electrónico"
-              />
 
-              <label htmlFor="auth-password" className="sr-only">
-                Contraseña
-              </label>
-              <input
-                id="auth-password"
-                type="password"
-                placeholder="Contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="auth-input"
-                autoComplete="current-password"
-                aria-required="true"
-                aria-label="Contraseña"
-              />
+          <label htmlFor="auth-password" className="sr-only">
+            Contraseña
+          </label>
+          <input
+            id="auth-password"
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="auth-input"
+            autoComplete="current-password"
+            aria-required="true"
+            aria-label="Contraseña"
+          />
 
-              <button
-                type="submit"
-                className="auth-btn"
-                disabled={loading}
-                aria-label={loading ? "Iniciando sesión, por favor espera" : "Iniciar sesión"}
-                aria-busy={loading}
-              >
-                {loading ? "Ingresando..." : "Iniciar sesión"}
-              </button>
-            </form>
+          <button
+            type="submit"
+            className="auth-btn"
+            disabled={loading}
+            aria-label={loading ? "Iniciando sesión, por favor espera" : "Iniciar sesión"}
+            aria-busy={loading}
+          >
+            {loading ? "Ingresando..." : "Iniciar sesión"}
+          </button>
+        </form>
 
-            <div className="auth-divider" aria-hidden="true">o</div>
+        <div className="auth-divider" aria-hidden="true">o</div>
 
-            <button
-              onClick={handleGoogleLogin}
-              className="google-btn"
-              aria-label="Iniciar sesión con Google"
-            >
-              <img
-                src="https://developers.google.com/identity/images/g-logo.png"
-                alt=""
-                aria-hidden="true"
-                width={20}
-                style={{ marginRight: "8px" }}
-              />
-              Iniciar sesión con Google
-            </button>
+        <button
+          onClick={handleGoogleLogin}
+          className="google-btn"
+          aria-label="Iniciar sesión con Google"
+        >
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt=""
+            aria-hidden="true"
+            width={20}
+            style={{ marginRight: "8px" }}
+          />
+          Iniciar sesión con Google
+        </button>
 
-            <p className="auth-footer">
-              ¿No tienes cuenta?{" "}
-              <button
-                className="auth-link"
-                onClick={handleSwitchToRegister}
-                aria-label="Ir al formulario de registro"
-              >
-                Regístrate
-              </button>
-            </p>
+        <p className="auth-footer">
+          ¿No tienes cuenta?{" "}
+          <button
+            className="auth-link"
+            onClick={() => setIsRegistering(true)}
+            aria-label="Ir al formulario de registro"
+          >
+            Regístrate
+          </button>
+        </p>
 
-            <button
-              className="auth-close"
-              onClick={onClose}
-              aria-label="Cerrar formulario de inicio de sesión"
-            >
-              Cerrar
-            </button>
-          </>
-        )}
+        <button
+          className="auth-close"
+          onClick={onClose}
+          aria-label="Cerrar formulario de inicio de sesión"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   );

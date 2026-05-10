@@ -68,7 +68,7 @@ button:focus-visible {
 }
 
 html, body {
-  overflow-x: hidden; 
+  overflow-x: hidden; /* 🚫 evita scroll horizontal */
   width: 100%;
   max-width: 100vw;
 }
