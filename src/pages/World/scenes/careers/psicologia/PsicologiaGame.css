@@ -1,5 +1,3 @@
-/* 🌍 OVERLAY */
-
 .overlay {
   position: fixed;
   inset: 0;
@@ -10,7 +8,6 @@
   align-items: center;
 }
 
-/* 📦 PANEL */
 
 .panel {
   width: 1000px;
@@ -21,7 +18,6 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-/* 🧍 NPC + BURBUJA */
 
 .npc-container {
   display: flex;
@@ -35,7 +31,6 @@
   height: auto;
 }
 
-/* 💬 BURBUJA */
 
 .bubble {
   background: #ffffff;
@@ -50,14 +45,13 @@
   position: relative;
 }
 
-/* 🧠 TEXTO */
 
 .question {
   font-size: 18px;
   margin: 20px 0;
 }
 
-/* 🎯 OPCIONES */
+
 
 .options {
   display: flex;
@@ -65,7 +59,7 @@
   justify-content: space-between;
 }
 
-/* 🟩 BOTÓN */
+
 
 .btn {
   margin-top: 25px;

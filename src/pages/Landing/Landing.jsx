@@ -1,30 +1,81 @@
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import "./Landing.css";
 import vid from "/assets/gameplay.mp4";
 import logo from "/assets/logo.PNG";
 import AuthModal from "../../components/AuthModal/AuthModal";
-import { useEffect, useState } from "react";
-import { checkUserProgress } from "../../services/userService";
+
+import { checkIntroStatus } from "../../services/userService";
+import landingMusic from "/assets/music/Landing.mp3";
+import { useEffect, useRef, useState } from "react";
+import Settings from "../World/ui/Settings/Settings";
+import HelpModal from "../World/ui/HelpModal/HelpModal";
+
 export default function Landing() {
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [hasProgress, setHasProgress] = useState(false);
-  const handleLoginClick = () => {
-    setShowLoginModal(true);
-  };
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [volume, setVolume] = useState(0.4);
+  
+  const audioRef = useRef(null);
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (userId) {
-      checkUserProgress(userId)
-        .then((res) => setHasProgress(res.has_progress))
-        .catch((err) => console.error("Error checking user progress:", err));
-    }
-    console.log(localStorage.getItem('logged'))
+    audioRef.current = new Audio(landingMusic);
+    audioRef.current.loop = true;
+    audioRef.current.volume = volume;
+
+    const enableAudio = () => {
+      if (audioRef.current && soundEnabled) {
+        audioRef.current.play().catch(() => console.log("Error al reproducir"));
+      }
+      window.removeEventListener("click", enableAudio);
+      window.removeEventListener("keydown", enableAudio);
+    };
+
+    window.addEventListener("click", enableAudio);
+    window.addEventListener("keydown", enableAudio);
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      window.removeEventListener("click", enableAudio);
+      window.removeEventListener("keydown", enableAudio);
+    };
   }, []);
-  const handleLoginSuccess = (userData) => {
-    console.log("✅ Login exitoso:", userData);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    
+    if (soundEnabled) {
+      audioRef.current.volume = volume;
+      audioRef.current.play().catch(() => {});
+    } else {
+      audioRef.current.pause();
+    }
+  }, [soundEnabled, volume]);
+
+  useEffect(() => {
+    if (userId) {
+      checkIntroStatus(userId)
+        .then((res) => setHasProgress(res.has_intro))
+        .catch((err) => console.error("Error checking intro:", err));
+    }
+  }, [userId]);
+
+  const stopMusic = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  };
+
+  const handleLoginSuccess = async (userData) => {
+    console.log("Login exitoso:", userData);
     if (userData?.nickname) {
       localStorage.setItem("playerName", userData.nickname);
     } else if (userData?.email) {
@@ -34,10 +85,29 @@ export default function Landing() {
 
     localStorage.setItem("sessionType", "auth");
     localStorage.setItem("logged", "logged");
-    setShowLoginModal(false);
     
-    // setIsAuthenticated(true);
+    try {
+      const res = await checkIntroStatus(userId);
+      setHasProgress(res.has_intro);
+    } catch (err) {
+      console.error("Error checking intro:", err);
+    }
+
+    setShowLoginModal(false);
   };
+
+  const logout = () => {
+    stopMusic();
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("playerName");
+    localStorage.removeItem("logged");
+    localStorage.removeItem("selectedGuide");
+    localStorage.removeItem("mlc_progress");
+    localStorage.removeItem("sessionType");
+    window.location.href = "/";
+  };
+
   return (
     <div className="landing-container">
       <video
@@ -48,14 +118,40 @@ export default function Landing() {
         loop
         playsInline
       />
+      
       <div className="overlay"></div>
-      {localStorage.getItem("logged") !== "logged" && (
-        <div className="login-container">
-          <button className="btn-login" onClick={() => setShowLoginModal(true)}>
-            Iniciar Sesión
+      
+      <div className="top-buttons">
+        <button 
+          className="top-btn help-btn"
+          onClick={() => setShowHelpModal(true)}
+          aria-label="Ayuda"
+        >
+          <span className="btn-icon">❓</span>
+          <span className="btn-text">Ayuda</span>
+        </button>
+
+        <button 
+          className="top-btn settings-btn"
+          onClick={() => setShowSettingsModal(true)}
+          aria-label="Configuración"
+        >
+          <span className="btn-icon">⚙️</span>
+          <span className="btn-text">Configuración</span>
+        </button>
+        {localStorage.getItem("logged") === "logged" ? (
+          <button className="top-btn logout-btn" onClick={logout}>
+            <span className="btn-icon">🚪</span>
+            <span className="btn-text">Cerrar Sesión</span>
           </button>
-        </div>
-      )}
+        ) : (
+          <button className="top-btn login-btn" onClick={() => setShowLoginModal(true)}>
+            <span className="btn-icon">🔓</span>
+            <span className="btn-text">Iniciar Sesión</span>
+          </button>
+        )}
+      </div>
+
       <motion.img
         src={logo}
         alt="My Life Choice Logo"
@@ -71,21 +167,56 @@ export default function Landing() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 1 }}
       >
-        <button className="btn-primary" onClick={() => navigate("/intro")}>
-          Empezar Nueva Aventura
-        </button>
-        {hasProgress && (
-          <button className="btn-primary" onClick={() => navigate("/intro")}>
+        {!hasProgress ? (
+          <motion.button
+            className="btn-primary"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              stopMusic();
+              navigate("/intro");
+            }}
+          >
+            Empezar Nueva Aventura
+          </motion.button>
+        ) : (
+          <motion.button
+            className="btn-primary"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              stopMusic();
+              navigate("/world");
+            }}
+          >
             Continuar Partida
-          </button>
+          </motion.button>
         )}
+      </motion.div>
+
+      <AnimatePresence>
         {showLoginModal && (
           <AuthModal
             onClose={() => setShowLoginModal(false)}
             onLoginSuccess={handleLoginSuccess}
           />
         )}
-      </motion.div>
+        
+        {showHelpModal && (
+          <HelpModal open={showHelpModal} onClose={() => setShowHelpModal(false)} />
+        )}
+        
+        {showSettingsModal && (
+          <Settings
+            open={showSettingsModal}
+            onClose={() => setShowSettingsModal(false)}
+            soundEnabled={soundEnabled}
+            onSoundToggle={(enabled) => setSoundEnabled(enabled)}
+            volume={volume}
+            onVolumeChange={(newVolume) => setVolume(newVolume)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

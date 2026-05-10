@@ -5,7 +5,12 @@ import { useMemo } from "react";
 
 export default function BaseCareerScene({
   careerId,
-  children
+  currentAnimation,
+  children,
+  npcPosition = [-0.3, 0.2, 0],
+  playerPosition = [-0.3, 0.2, 2],
+  playerScale = 1,
+  npcScale = 1
 }) {
   const { scene } = useGLTF(
     `/assets/models/scenes/careers/${careerId}.glb`
@@ -22,20 +27,20 @@ export default function BaseCareerScene({
       <primitive object={clonedScene} scale={0.5} frustumCulled={false}/>
 
       <group
-        position={[-0.3, 0, 2]}
-        rotation={[0, Math.PI + 0.22, 0]}
+        position={playerPosition}
+        rotation={[0, Math.PI + 0.3, 0]}
       >
-        <Player mode="dialogue" spawnPosition={[0, 0, 0]} />
+        <Player mode="dialogue" spawnPosition={[0, 0, 0]} scene="CAREER" scale={playerScale}/>
       </group>
 
       <group
-        position={[-0.3, 0, 0]}
-        rotation={[0, Math.PI / 2 - 2, 0]}
+        position={npcPosition}  
+        rotation={[0, Math.PI / 2 - 1.5, 0]}
       >
         <NPC
           modelPath={`/assets/models/npc/${careerId}.glb`}
-          animationState="talking"
-          scale={4}
+          animationState={currentAnimation || "idle"}
+          scale={npcScale}
         />
       </group>
       {children}

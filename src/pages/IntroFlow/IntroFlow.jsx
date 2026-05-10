@@ -4,6 +4,7 @@ import SelectGuide from "./components/SelectGuide/SelectGuide";
 import DialogueFlow from "./components/DialogueFlow/DialogueFlow";
 import SelectPlayer from "./components/SelectPlayer/SelectPlayer";
 import { useNavigate } from "react-router-dom";
+import { completeIntro } from "../../services/userService";
 
 
 export default function IntroFlow() {
@@ -20,13 +21,17 @@ export default function IntroFlow() {
   const nextStep = () => setStep((prev) => prev + 1);
   const navigate = useNavigate();
 
-  const goToWorld = () => {
-  
-    localStorage.setItem("intro_done", "true");
+const goToWorld = async () => {
+  const userId = localStorage.getItem("userId");
+  const guideId = localStorage.getItem("selectedGuide"); 
 
-    localStorage.removeItem("career");
-    navigate("/world");
+  if (userId && guideId) {
+    await completeIntro(userId, guideId);
   }
+
+  localStorage.setItem("intro_done", "true");
+  navigate("/world");
+};
 
   return (
     <div
@@ -51,7 +56,6 @@ export default function IntroFlow() {
           >
             <SelectGuide
               onSelect={(g) => {
-                // Fade-out con pequeño retraso
                 setTimeout(() => {
                   setGuide(g);
                   nextStep();
@@ -88,7 +92,6 @@ export default function IntroFlow() {
           >
             <SelectPlayer
               onSelect={(g) => {
-                // Fade-out con pequeño retraso
                 setTimeout(() => {
                   setGuide(g);
                   nextStep();

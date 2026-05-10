@@ -1,4 +1,6 @@
 import AdministracionGame from "./scenes/careers/administracion/AdministracionGame";
+import AgroambientalGame from "./scenes/careers/agroambiental/AgroambientalGame";
+import AgroforestalGame from "./scenes/careers/agroforestal/AgroforestalGame";
 import AlimentosGame from "./scenes/careers/alimentos/AlimentosGame";
 import ContaduriaGame from "./scenes/careers/contaduria/ContaduriaGame";
 import EducacionFisicaGame from "./scenes/careers/educacionFisica/EducacionFisicaGame";
@@ -23,5 +25,7 @@ export const GAME_COMPONENTS = {
   alimentos: AlimentosGame,
   logistica: LogisticaGame,
   mantenimiento: MantenimientoGame,
-  electronica: ElectronicaGame
+  electronica: ElectronicaGame,
+  agroambiental: AgroambientalGame,
+  agroforestal: AgroforestalGame
 };

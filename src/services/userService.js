@@ -35,7 +35,7 @@ export const loginUser = async (credentials) => {
     }
 
     const data = await response.json();
-    console.log("🔐 Login exitoso:", data);
+    console.log("Login exitoso:", data);
     return data;
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
@@ -76,7 +76,7 @@ export const addGuide = async (email, guide_id) => {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("✅ Guía asignada exitosamente:", data);
+    console.log("Guía asignada exitosamente:", data);
     return data;
   } catch (error) {
     console.error("Error al asignar guía:", error);
@@ -99,7 +99,7 @@ export const addPlayer = async (email, player_type_id) => {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("✅ Player añadido exitosamente:", data);
+    console.log("Player añadido exitosamente:", data);
     return data;
   } catch (error) {
     console.error("Error al añadir player:", error);
@@ -124,7 +124,7 @@ export const googleLogin = async (email, name) => {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("✅ Login con Google exitoso:", data);
+    console.log("Login con Google exitoso:", data);
     return data;
   } catch (error) {
     console.error("Error al iniciar sesión con Google:", error);
@@ -146,10 +146,123 @@ export const updateNickname = async (email, nickname) => {
       throw new Error(JSON.stringify(data));
     }
 
-    console.log("✅ Nickname actualizado correctamente:", data);
+    console.log("Nickname actualizado correctamente:", data);
     return data;
   } catch (error) {
     console.error("Error al actualizar nickname:", error);
+    throw error;
+  }
+};
+
+export const getUserProgress = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/exploration/progress/${userId}/`);
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error al obtener progreso:", error);
+    throw error;
+  }
+};
+
+export const saveProgress = async (progressData) => {
+  try {
+    const response = await fetch(`${API_URL}/exploration/progress/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(progressData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    console.log("Progreso guardado:", data);
+    return data;
+
+  } catch (error) {
+    console.error("Error al guardar progreso:", error);
+    throw error;
+  }
+};
+
+export const checkIntroStatus = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/users/check-intro/${userId}/`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
+    }
+
+    const data = await response.json();
+    console.log("Estado de intro:", data);
+      if (data.has_intro) {
+      localStorage.setItem("intro_done", "true");
+    } else {
+      localStorage.removeItem("intro_done");
+    }
+    return data;
+
+  } catch (error) {
+    console.error("Error al verificar intro:", error);
+    throw error;
+  }
+};
+
+export const completeIntro = async (userId, guideId) => {
+  try {
+    const response = await fetch(`${API_URL}/users/complete-intro/${userId}/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ guide_id: guideId }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    return data;
+
+  } catch (error) {
+    console.error("Error al completar intro:", error);
+    throw error;
+  }
+};
+
+export const getUserFeedback = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/exploration/feedback/${userId}/`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
+    }
+
+    const data = await response.json();
+    console.log("Feedback del usuario:", data);
+    return data;
+
+  } catch (error) {
+    console.error("Error al obtener feedback:", error);
     throw error;
   }
 };

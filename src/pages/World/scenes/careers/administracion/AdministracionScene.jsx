@@ -1,17 +1,17 @@
 import BaseCareerScene from "../BaseCareerScene";
-import AdministracionGame from "./AdministracionGame";
+import { administracionIntroDialogues } from "./AdministracionDialogues";
 
-export default function AdministracionScene({ mode, setMode, setDialogueIndex }) {
+export default function AdministracionScene({ mode, setMode, dialogueIndex }) {
+  const safeIndex = dialogueIndex ?? 0;
+
+  const currentDialogue =
+    administracionIntroDialogues[safeIndex] || administracionIntroDialogues[0];
+
   return (
-    <BaseCareerScene careerId="administracion">
-      {/* {mode === "career-game" && (
-        <AdministracionGame
-          onComplete={() => {
-            setDialogueIndex(0);
-            setMode("career-ending");
-          }}
-        />
-      )} */}
-    </BaseCareerScene>
+    <BaseCareerScene
+      careerId="administracion"
+      currentAnimation={currentDialogue?.animation}
+      npcPosition={[0, 0.5, 0]}
+    />
   );
 }

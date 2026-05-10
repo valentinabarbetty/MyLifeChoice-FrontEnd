@@ -1,0 +1,12 @@
+.hud {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: #042956;
+  color: #fff;
+
+  padding: 10px 20px;
+  border-radius: 10px;
+}

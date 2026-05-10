@@ -23,13 +23,11 @@ export default function SelectGuide({ onSelect }) {
 
     try {
       if (userEmail) {
-        // Si ya hay sesión, guarda en backend
         const response = await addGuide(userEmail, guide.id);
-        console.log("✅ Guía asignada con éxito:", response);
+        console.log("Guía asignada con éxito:", response);
       } else {
-        // Si no hay sesión, guarda localmente
         localStorage.setItem("selectedGuide", guide.id);
-        console.log("💾 Guía guardada localmente (sin usuario logueado)");
+        console.log("Guía guardada localmente (sin usuario logueado)");
       }
 
       onSelect?.(guide);
@@ -39,17 +37,16 @@ export default function SelectGuide({ onSelect }) {
     }
   };
 
-  // 🔁 Efecto: si el usuario inicia sesión luego y había guía pendiente, se sincroniza con backend
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     const pendingGuideId = localStorage.getItem("selectedGuide");
 
     if (userId && pendingGuideId) {
-      console.log("🔄 Sincronizando guía pendiente con backend...");
+      console.log("Sincronizando guía pendiente con backend...");
 
       addGuide(userId, pendingGuideId)
         .then((res) => {
-          console.log("✅ Guía sincronizada correctamente:", res);
+          console.log("Guía sincronizada correctamente:", res);
           localStorage.removeItem("selectedGuide");
         })
         .catch((err) => console.error("Error sincronizando guía:", err));

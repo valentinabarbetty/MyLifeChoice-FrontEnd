@@ -5,12 +5,12 @@ export default function Sea({
   return (
     <mesh
       position={position}
-      rotation={[-Math.PI / 2, 0, 0]} // plano horizontal
+      rotation={[-Math.PI / 2, 0, 0]} 
       receiveShadow={false}
     >
       <planeGeometry args={[size, size]} />
       <meshStandardMaterial
-        color="#4fa3c7"   // azul mar cozy
+        color="#4fa3c7" 
         roughness={0.4}
         metalness={0.1}
       />

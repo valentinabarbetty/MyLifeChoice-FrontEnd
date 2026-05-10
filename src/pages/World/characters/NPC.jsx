@@ -2,6 +2,7 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 
 export default function NPC({
   modelPath,
@@ -11,77 +12,120 @@ export default function NPC({
   animationState,
   onInteract,
   onMove,
+  scale = 1,
 }) {
   const ref = useRef();
+  const rb = useRef();
+
+  const animationMap = {
+    talking: "talking",
+    walking: "walk",
+    walk: "walk",
+    idle: "idle",
+    explain: "talking",
+    soft: "idle",
+    thinking: "idle",
+  };
 
   const { scene, animations } = useGLTF(modelPath);
   const hasRoute = Array.isArray(route) && route.length > 0;
-
   const { actions } = useAnimations(animations, ref);
+  const currentAction = useRef(null);
+  const targetIndex = useRef(0);
+  const speed = 1;
+  const lastUpdate = useRef(0);
+
   useEffect(() => {
     if (!actions) return;
-
-    const start = actions[animationState] || Object.values(actions)[0];
-    start.reset().fadeIn(0.3).play();
-    currentAction.current = animationState;
+    const first =
+      actions["idle"] || actions["walk"] || Object.values(actions)[0];
+    if (!first) return;
+    first.reset().fadeIn(0.3).play();
+    currentAction.current = first;
   }, [actions]);
 
-  const currentAction = useRef(null);
-
-  const targetIndex = useRef(0);
-  const speed = 0.015;
-
   useEffect(() => {
-    if (!ref.current) return;
-
-    if (hasRoute) {
-      ref.current.position.set(route[0][0], route[0][1], route[0][2]);
-      onMove?.(ref.current.position.clone());
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!actions || !animationState) return;
-
-    if (currentAction.current === animationState) return;
-
-    actions[currentAction.current]?.fadeOut(0.2);
-    const next = actions[animationState] || Object.values(actions)[0];
-    next?.reset().fadeIn(0.2).play();
-    currentAction.current = animationState;
+    if (!actions) return;
+    const keys = Object.keys(actions);
+    const mapped = animationMap[animationState] || animationState;
+    const match = keys.find((k) => k.toLowerCase() === mapped?.toLowerCase());
+    const next = match
+      ? actions[match]
+      : actions["idle"] || Object.values(actions)[0];
+    if (!next || currentAction.current === next) return;
+    if (currentAction.current) currentAction.current.fadeOut(0.2);
+    next.reset().fadeIn(0.2).play();
+    currentAction.current = next;
   }, [animationState, actions]);
 
-  useFrame(() => {
-    if (!ref.current || !hasRoute) return;
+  useEffect(() => {
+    if (!rb.current || !hasRoute) return;
+    const start = route[0];
+    console.log(`NPC ${modelPath} spawn en:`, start);
+    rb.current.setTranslation(
+      {
+        x: start[0],
+        y: start[1],
+        z: start[2],
+      },
+      true,
+    );
+  }, [hasRoute, route, modelPath]);
 
-    if (isNear) {
-      if (lookAt) {
-        ref.current.lookAt(lookAt.x, ref.current.position.y, lookAt.z);
-      }
+  useFrame((_, delta) => {
+    if (!rb.current || !ref.current || !hasRoute) return;
+
+    if (isNear && lookAt) {
+      const pos = rb.current.translation();
+
+      const dx = lookAt.x - pos.x;
+      const dz = lookAt.z - pos.z;
+
+      const angle = Math.atan2(dx, dz);
+
+      ref.current.rotation.y = angle;
       return;
     }
 
     const target = route[targetIndex.current];
     const targetVec = new THREE.Vector3(target[0], target[1], target[2]);
-    const pos = ref.current.position;
+    const currentPos = rb.current.translation();
+    const pos = new THREE.Vector3(currentPos.x, currentPos.y, currentPos.z);
 
     const dir = targetVec.clone().sub(pos);
     const dist = dir.length();
 
-    if (dist < 0.05) {
+    if (dist < 0.3) {
       targetIndex.current = (targetIndex.current + 1) % route.length;
       return;
     }
 
     dir.normalize();
-    pos.add(dir.multiplyScalar(speed));
-    ref.current.lookAt(targetVec.x, pos.y, targetVec.z);
-    onMove?.(ref.current.position.clone());
+    const newPos = pos.clone().add(dir.multiplyScalar(speed * delta));
+    newPos.y = target[1];
+
+    rb.current.setTranslation(newPos, true);
+
+    const angle = Math.atan2(dir.x, dir.z);
+    ref.current.rotation.y = angle;
+
+    const now = Date.now();
+    if (now - lastUpdate.current > 200) {
+      onMove?.(newPos.clone());
+      lastUpdate.current = now;
+    }
   });
 
   return (
-    <group ref={ref} onClick={onInteract}>
-      <primitive object={scene} />
-    </group>
+    <RigidBody
+      ref={rb}
+      type="kinematicPosition"
+      colliders="cuboid"
+      enabledRotations={[false, false, false]}
+    >
+      <group ref={ref} onClick={onInteract} position={[0, -0.5, 0]}>
+        <primitive object={scene} scale={[scale, scale, scale]} />
+      </group>
+    </RigidBody>
   );
 }

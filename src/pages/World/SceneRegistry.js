@@ -1,5 +1,3 @@
-// SceneRegistry.js
-
 import AdministracionScene from "./scenes/careers/administracion/AdministracionScene";
 import ContaduriaScene from "./scenes/careers/contaduria/ContaduriaScene";
 import IngenieriaIndustrialScene from "./scenes/careers/ingenieriaIndustrial/IngenieriaIndustrialScene";
@@ -11,6 +9,8 @@ import AlimentosScene from "./scenes/careers/alimentos/AlimentosScene";
 import LogisticaScene from "./scenes/careers/logistica/LogisticaScene";
 import MantenimientoScene from "./scenes/careers/mantenimiento/MantenimientoScene";
 import ElectronicaScene from "./scenes/careers/electronica/ElectronicaScene";
+import AgroambientalScene from "./scenes/careers/agroambiental/AgroambientalScene";
+import AgroforestalScene from "./scenes/careers/agroforestal/AgroforestalScene";
 
 
 
@@ -25,5 +25,7 @@ export const SCENE_COMPONENTS = {
   alimentos: AlimentosScene,
   logistica: LogisticaScene,
   mantenimiento: MantenimientoScene,
-  electronica: ElectronicaScene
+  electronica: ElectronicaScene,
+  agroambiental: AgroambientalScene,
+  agroforestal: AgroforestalScene
 };

@@ -1,0 +1,270 @@
+
+.generic-game-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #b8f5fb 0%, #f4f4f4 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.generic-game-panel {
+  width: 850px;
+  max-width: 95%;
+  background: linear-gradient(135deg, #fef7e7 0%, #fff9f0 100%);
+  border-radius: 28px;
+  padding: 25px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: genericGameSlideIn 0.3s ease-out;
+}
+
+@keyframes genericGameSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.generic-game-intro {
+  font-size: 14px;
+  color: #1e293b;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 10px 15px;
+  background: #fef3c7;
+  border-radius: 30px;
+  font-weight: 600;
+  display: inline-block;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.generic-game-npc-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.generic-game-npc-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #fbbf24;
+  background: white;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+.generic-game-bubble {
+  background: white;
+  border-radius: 30px;
+  padding: 20px 25px;
+  flex: 1;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  position: relative;
+  border: 2px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+
+.generic-game-bubble::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 35px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-left: 2px solid #e2e8f0;
+  border-bottom: 2px solid #e2e8f0;
+  transform: rotate(45deg);
+  border-radius: 4px;
+}
+
+
+.generic-game-bubble::after {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 35px;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  z-index: -1;
+}
+
+
+.generic-game-bubble:hover {
+  transform: translateX(5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.generic-game-bubble-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1e293b;
+  margin: 0;
+  font-weight: 500;
+}
+
+
+.generic-game-bubble-text::before {
+  content: '"';
+  font-size: 40px;
+  color: #22c55e;
+  opacity: 0.3;
+  position: absolute;
+  left: 10px;
+  top: -5px;
+}
+
+.generic-game-bubble-text::after {
+  content: '"';
+  font-size: 40px;
+  color: #22c55e;
+  opacity: 0.3;
+  position: absolute;
+  right: 15px;
+  bottom: -15px;
+}
+
+
+.generic-game-instruction {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 15px;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
+
+
+.generic-game-options {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+
+.generic-game-options .card {
+  flex: 1;
+  background: white;
+  border-radius: 16px;
+  padding: 15px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.generic-game-options .card:hover {
+  transform: translateY(-3px);
+  border-color: #22c55e;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.15);
+}
+
+.generic-game-options .card.active {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border-color: #22c55e;
+  border-width: 2px;
+}
+
+.generic-game-options .card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #1e293b;
+}
+
+.generic-game-options .card p {
+  font-size: 2rem;
+  margin: 0;
+  transition: transform 0.2s ease;
+}
+
+.generic-game-options .card.active p {
+  transform: scale(1.1);
+}
+
+
+.generic-game-btn {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-left: auto;
+  width: auto;
+  min-width: 130px;
+}
+
+.generic-game-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+}
+
+.generic-game-btn:active {
+  transform: translateY(0);
+}
+
+
+@media (max-width: 700px) {
+  .generic-game-panel {
+    padding: 20px;
+  }
+  
+  .generic-game-npc-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .generic-game-bubble::before {
+    display: none;
+  }
+  
+  .generic-game-options {
+    flex-direction: column;
+  }
+  
+  .generic-game-btn {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .generic-game-npc-img {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .generic-game-bubble-text {
+    font-size: 14px;
+  }
+  
+  .generic-game-intro {
+    font-size: 13px;
+  }
+}

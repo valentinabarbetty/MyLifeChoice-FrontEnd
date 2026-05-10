@@ -2,7 +2,7 @@ export const softwareIntroDialogues = [
   {
     speaker: "Brayan",
     text: "¡Hola! 👋 Bienvenido. Soy Brayan, desarrollador de software.",
-    animation: "wave",
+    animation: "talking",
   },
   {
     speaker: "Brayan",
@@ -17,13 +17,13 @@ export const softwareIntroDialogues = [
   {
     speaker: "Brayan",
     text: "Si te gusta la tecnología y crear cosas con una computadora… esta carrera podría interesarte mucho.",
-    animation: "smile",
+    animation: "talking",
   },
 
   {
     speaker: "Brayan",
     text: "La Tecnología en Desarrollo de Software se trata de diseñar y construir programas informáticos. 💻",
-    animation: "explain",
+    animation: "talking",
   },
   {
     speaker: "Brayan",
@@ -38,8 +38,9 @@ export const softwareIntroDialogues = [
   {
     speaker: "Brayan",
     text: "En pocas palabras… convertimos ideas en programas que funcionan.",
-    animation: "soft",
+    animation: "idle",
   },
+
   {
     speaker: "Brayan",
     text: "Un día como desarrollador suele verse así.",
@@ -48,44 +49,44 @@ export const softwareIntroDialogues = [
   {
     speaker: "Brayan",
     text: "Primero reviso las tareas del proyecto y luego empiezo a escribir código.",
-    animation: "typing",
+    animation: "talking2",
   },
   {
     speaker: "Brayan",
     text: "El código son instrucciones para que el programa funcione.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Brayan",
     text: "También corrijo errores, pruebo que todo funcione y mejoro sistemas existentes.",
-    animation: "thinking",
+    animation: "talking",
   },
   {
     speaker: "Brayan",
     text: "Y muchas veces trabajo con otros desarrolladores para construir proyectos más grandes.",
-    animation: "talking",
+    animation: "talking2",
   },
 
   {
     speaker: "Brayan",
     text: "Una gran ventaja de esta carrera es que puedes trabajar en muchas áreas.",
-    animation: "explain",
+    animation: "talking2",
   },
   {
     speaker: "Brayan",
     text: "🌐 Desarrollo web, 📱 apps móviles, 🖥 software empresarial, 🎮 videojuegos y ☁️ sistemas en la nube.",
-    animation: "talking",
+    animation: "talking2",
   },
   {
     speaker: "Brayan",
     text: "Hoy en día, casi todas las empresas necesitan software.",
-    animation: "soft",
+    animation: "talking2",
   },
 
   {
     speaker: "Brayan",
     text: "Para aprender desarrollo de software, hay habilidades muy importantes.",
-    animation: "explain",
+    animation: "idle",
   },
   {
     speaker: "Brayan",
@@ -101,12 +102,12 @@ export const softwareIntroDialogues = [
   {
     speaker: "Brayan",
     text: "Muchos disfrutan esta carrera porque pueden crear cosas desde cero y resolver problemas de forma creativa.",
-    animation: "smile",
+    animation: "talking",
   },
   {
     speaker: "Brayan",
     text: "Además, hay muchas oportunidades laborales y puedes crear tus propios proyectos.",
-    animation: "soft",
+    animation: "talking",
   },
 ];
 
@@ -124,16 +125,16 @@ export const softwareEndingDialogues = [
   {
     speaker: "Brayan",
     text: "Si te gusta la tecnología, resolver problemas y construir cosas digitales…",
-    animation: "soft",
+    animation: "talking",
   },
   {
     speaker: "Brayan",
     text: "quizás Tecnología en Desarrollo de Software sea tu camino. 💻🚀",
-    animation: "smile",
+    animation: "talking",
   },
   {
     speaker: "Brayan",
     text: "Nos vemos en tu próxima aventura profesional.",
-    animation: "wave",
+    animation: "clap",
   },
 ];

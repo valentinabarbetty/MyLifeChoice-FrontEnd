@@ -12,13 +12,13 @@ export default function SessionStep({ guide, playerName, onNext }) {
   const dialogues = useMemo(() => dialoguesIntro(playerName), [playerName]);
 
   const handleSelectSession = (type) => {
-    console.log("🟢 handleSelectSession ejecutado con tipo:", type);
+    console.log("handleSelectSession ejecutado con tipo:", type);
     setSessionType(type);
     localStorage.setItem("sessionType", type);
 
     if (type === "guest") {
       console.log("Continuando como invitado...");
-      onNext(); // pasa directamente
+      onNext();
     } else if (type === "auth") {
       console.log("Mostrando modal de autenticación...");
       setShowAuthModal(true);
@@ -26,7 +26,7 @@ export default function SessionStep({ guide, playerName, onNext }) {
   };
 
   const handleLoginSuccess = (userData) => {
-    console.log("✅ Login exitoso:", userData);
+    console.log("Login exitoso:", userData);
     if (userData?.nickname) {
       localStorage.setItem("playerName", userData.nickname);
     } else if (userData?.email) {
@@ -40,12 +40,12 @@ export default function SessionStep({ guide, playerName, onNext }) {
   };
 
   useEffect(() => {
-    console.log("🔄 isAuthenticated cambió:");
+    console.log("isAuthenticated cambió:");
     if (isAuthenticated) {
-      console.log("👋 Cerrando modal tras autenticación...");
+      console.log("Cerrando modal tras autenticación...");
       setTimeout(() => {
         setShowAuthModal(false);
-        onNext(); // continuar el flujo
+        onNext();
       }, 300);
     }
   }, [isAuthenticated]);
@@ -54,7 +54,6 @@ export default function SessionStep({ guide, playerName, onNext }) {
     <div className="choose-guide-container">
 
       <div className="dialogue-container">
-        {/* Botones */}
         <div className="input-wrapper">
           <div className="session-choice-container">
             <h3 className="session-title">¿Cómo quieres continuar?</h3>
@@ -76,11 +75,8 @@ export default function SessionStep({ guide, playerName, onNext }) {
             </div>
           </div>
         </div>
-
     
       </div>
-
-
       {showAuthModal && (
         <RegisterModal
           onClose={() => setShowAuthModal(false)}
