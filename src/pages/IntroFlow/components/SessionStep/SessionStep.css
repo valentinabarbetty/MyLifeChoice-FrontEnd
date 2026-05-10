@@ -1,44 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --cream:        #fffef7;
+  --cream-soft:   #fffcf2;
+  --cream-border: #e3d7b8;
+  --gold:         #f4c24c;
+  --gold-glow:    rgba(244, 194, 76, 0.35);
+  --gold-light:   rgba(244, 194, 76, 0.12);
+  --taupe:        #7f7359;
+  --taupe-mid:    #b8a876;
+  --taupe-light:  #d4c9a8;
+  --shadow:       rgba(127, 115, 89, 0.18);
+}
+
 .session-choice-container {
   position: absolute;
-  bottom: 180px; 
-  left: 0%;
-  transform: translateX(-50%);
+  top: -400px;
+  right: 40px;
+  left: auto;
+  transform: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 1rem;
-  z-index: 20; 
+  z-index: 20;
+
+  background: var(--cream);
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(244, 194, 76, 0.09) 0%, transparent 65%),
+    radial-gradient(ellipse at 80% 100%, rgba(244, 194, 76, 0.06) 0%, transparent 65%);
+  border: 1px solid rgba(244, 194, 76, 0.2);
+  border-radius: 22px;
+  padding: 28px 32px 24px;
+  box-shadow:
+    0 2px 0 var(--cream-border),
+    0 10px 32px var(--shadow),
+    0 0 0 1px rgba(244, 194, 76, 0.12);
+
+  position: absolute;
+  overflow: hidden;
+  animation: cardIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.session-choice-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  border-radius: 22px 22px 0 0;
 }
 
 .session-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #7f7359;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--taupe);
+  margin: 0 0 4px;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
 }
 
 .session-buttons {
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
-.session-buttons button {
-  background: #f4c24c;
-  color: #7f7359;
-  border: none;
-  padding: 10px 22px;
-  border-radius: 20px;
+.session-btn {
+  font-family: 'DM Sans', sans-serif;
   font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  padding: 11px 24px;
+  border-radius: 14px;
+  border: none;
   cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.session-buttons button:hover {
-  transform: scale(1.05);
-  background: #ffd966;
+.session-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.session-btn.guest {
+  background: var(--cream-soft);
+  color: var(--taupe);
+  border: 1.5px solid var(--cream-border);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.session-btn.guest:hover {
+  border-color: var(--gold);
+  background: var(--gold-light);
+  box-shadow: 0 4px 14px var(--shadow);
+  transform: translateY(-2px);
+}
+
+.session-btn.auth {
+  background: var(--gold);
+  color: var(--taupe);
+  box-shadow: 0 4px 14px rgba(244, 194, 76, 0.45);
+}
+
+.session-btn.auth:hover {
+  background: #f7cc5f;
+  box-shadow: 0 7px 20px rgba(244, 194, 76, 0.55);
+  transform: translateY(-2px);
+}
+
+.session-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }

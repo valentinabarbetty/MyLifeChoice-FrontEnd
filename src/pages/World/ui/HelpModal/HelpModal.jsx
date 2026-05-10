@@ -70,7 +70,7 @@ export default function HelpModal({ open, onClose }) {
 
   return (
     <div
-      className="modal-overlay"
+      className="help-overlay"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
@@ -84,15 +84,15 @@ export default function HelpModal({ open, onClose }) {
         aria-atomic="true"
       />
 
-      <div className="modal-container help-modal-container" ref={modalRef}>
-        <div className="modal-header">
-          <h2 id="help-modal-title">
+      <div className="help-card" ref={modalRef}>
+        <div className="help-header">
+          <h2 id="help-modal-title" className="help-title">
             <span aria-hidden="true">🎮 </span>
             ¿Cómo jugar?
           </h2>
           <button
             ref={closeBtnRef}
-            className="modal-close-btn"
+            className="help-close-btn"
             onClick={onClose}
             aria-label="Cerrar modal de ayuda"
           >
@@ -100,13 +100,9 @@ export default function HelpModal({ open, onClose }) {
           </button>
         </div>
 
-        <div className="modal-body" role="list" aria-label="Instrucciones del juego">
+        <div className="help-body" role="list" aria-label="Instrucciones del juego">
 
-          <div
-            className="help-section"
-            role="listitem"
-            aria-label="Objetivo: Explora el mundo y completa todas las carreras profesionales"
-          >
+          <div className="help-section" role="listitem" aria-label="Objetivo: Explora el mundo y completa todas las carreras profesionales">
             <div className="help-icon" aria-hidden="true">🎯</div>
             <div className="help-content" aria-hidden="true">
               <h4>Objetivo</h4>
@@ -114,29 +110,21 @@ export default function HelpModal({ open, onClose }) {
             </div>
           </div>
 
-          <div
-            className="help-section"
-            role="listitem"
-            aria-label="Movimiento: usa las teclas de flecha arriba, abajo, izquierda y derecha para moverte"
-          >
-            <div className="help-icon" aria-hidden="true">🎮</div>
+          <div className="help-section" role="listitem" aria-label="Movimiento: usa las teclas de flecha arriba, abajo, izquierda y derecha para moverte">
+            <div className="help-icon" aria-hidden="true">🕹️</div>
             <div className="help-content" aria-hidden="true">
               <h4>Movimiento</h4>
               <div className="help-keys">
-                <span className="key">↑</span>
-                <span className="key">↓</span>
-                <span className="key">←</span>
-                <span className="key">→</span>
+                <span className="help-key">W</span>
+                <span className="help-key">S</span>
+                <span className="help-key">A</span>
+                <span className="help-key">D</span>
               </div>
               <p>Usa las flechas del teclado para moverte</p>
             </div>
           </div>
 
-          <div
-            className="help-section"
-            role="listitem"
-            aria-label="Interacción: acércate a los personajes y haz clic en ellos para hablar"
-          >
+          <div className="help-section" role="listitem" aria-label="Interacción: acércate a los personajes y haz clic en ellos para hablar">
             <div className="help-icon" aria-hidden="true">💬</div>
             <div className="help-content" aria-hidden="true">
               <h4>Interacción</h4>
@@ -144,11 +132,7 @@ export default function HelpModal({ open, onClose }) {
             </div>
           </div>
 
-          <div
-            className="help-section"
-            role="listitem"
-            aria-label="Diálogos: usa el botón siguiente para avanzar en la conversación"
-          >
+          <div className="help-section" role="listitem" aria-label="Diálogos: usa el botón siguiente para avanzar en la conversación">
             <div className="help-icon" aria-hidden="true">📖</div>
             <div className="help-content" aria-hidden="true">
               <h4>Diálogos</h4>
@@ -156,11 +140,7 @@ export default function HelpModal({ open, onClose }) {
             </div>
           </div>
 
-          <div
-            className="help-section"
-            role="listitem"
-            aria-label="Progreso: completa cada carrera para desbloquear la siguiente"
-          >
+          <div className="help-section" role="listitem" aria-label="Progreso: completa cada carrera para desbloquear la siguiente">
             <div className="help-icon" aria-hidden="true">🏆</div>
             <div className="help-content" aria-hidden="true">
               <h4>Progreso</h4>
@@ -169,9 +149,9 @@ export default function HelpModal({ open, onClose }) {
           </div>
         </div>
 
-        <div className="modal-footer">
+        <div className="help-footer">
           <button
-            className="modal-btn modal-btn-primary"
+            className="help-btn-primary"
             onClick={onClose}
             aria-label="Entendido, cerrar instrucciones"
           >
