@@ -1,5 +1,5 @@
 export const ALL_CAREERS = [
-   "administracion",
+//    "administracion",
 //   "psicologia",
 //   "software",
 //   "logistica",
