@@ -23,6 +23,7 @@
     "@react-three/rapier": "^2.2.0",
     "firebase": "^12.8.0",
     "framer-motion": "^12.23.24",
+    "jspdf": "^4.2.1",
     "lucide-react": "^0.577.0",
     "rapier": "^1.0.5",
     "react": "^19.1.1",
