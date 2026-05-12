@@ -290,7 +290,7 @@ useEffect(() => {
       <WorldCanvas>
         <Suspense fallback={<Loader />}>
           {scene === "WORLD" && (
-            <Physics gravity={[0, -9.8, 0]} debug>
+            <Physics gravity={[0, -9.8, 0]} debug={false}>
               <WorldScene
                 worldNPCs={worldNPCs}
                 mode={mode}
