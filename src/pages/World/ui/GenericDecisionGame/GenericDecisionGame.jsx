@@ -20,8 +20,54 @@ export default function GenericDecisionGame({
   const [showConfetti, setShowConfetti] = useState(false);
 
   const bubbleRef = useRef(null);
+  const showAccessibleAlert = async ({
+    icon,
+    title,
+    text,
+    showConfirmButton = true,
+  }) => {
+    const previouslyFocused = document.activeElement;
 
-  // Al cambiar caso, foco al texto del personaje — VoiceOver lo lee automáticamente
+    const swalConfig = {
+      title,
+      text,
+      icon,
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "#f59e0b",
+      background: "#fef7e7",
+      backdrop: "rgba(0,0,0,0.4)",
+      allowOutsideClick: false,
+      allowEscapeKey: true,
+      showConfirmButton,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton();
+        if (confirmButton) {
+          confirmButton.focus();
+          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+        }
+
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.setAttribute("role", "alertdialog");
+          popup.setAttribute("aria-modal", "true");
+          popup.setAttribute("aria-label", title);
+          popup.style.borderRadius = "20px";
+        }
+
+        const content = Swal.getHtmlContainer();
+        if (content) {
+          content.setAttribute("aria-live", "polite");
+        }
+      },
+      willClose: () => {
+        if (previouslyFocused && previouslyFocused.focus) {
+          previouslyFocused.focus();
+        }
+      },
+    };
+
+    return Swal.fire(swalConfig);
+  };
   useEffect(() => {
     if (bubbleRef.current) {
       bubbleRef.current.focus();
@@ -30,25 +76,24 @@ export default function GenericDecisionGame({
 
   const current = cases[index];
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!selected) {
-      return Swal.fire({
+      await showAccessibleAlert({
+        icon: "warning",
         title: "Selecciona una opción",
-        text: "Debes elegir una respuesta",
-        icon: "warning",
-        confirmButtonColor: "#22c55e",
-        background: "#fef7e7",
+        text: "Debes elegir una respuesta antes de continuar.",
+        showConfirmButton: true,
       });
+      return;
     }
-
     if (selected !== current.correct) {
-      return Swal.fire({
-        title: "No es correcto",
-        text: "Intenta nuevamente",
+      await showAccessibleAlert({
         icon: "warning",
-        confirmButtonColor: "#22c55e",
-        background: "#fef7e7",
+        title: "No es correcto",
+        text: "Intenta nuevamente con otra opción.",
+        showConfirmButton: true,
       });
+      return;
     }
 
     if (index === cases.length - 1) {

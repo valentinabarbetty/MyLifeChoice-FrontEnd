@@ -16,8 +16,6 @@ function GuideModel({ guideId, showArrows, animationState }) {
   const baseY = -3;
   const currentAction = useRef(null);
 
-
-  //Controlar animaciones
   useEffect(() => {
     if (!actions) return;
 

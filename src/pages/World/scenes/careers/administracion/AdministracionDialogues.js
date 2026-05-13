@@ -1,135 +1,134 @@
 export const administracionIntroDialogues = [
-  {
-    speaker: "Raquelle",
-    text: "¡Hola! 👋 Bienvenido. Soy Raquelle, administradora de empresas.",
-    animation: "talking",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Trabajo ayudando a que las empresas funcionen bien, crezcan y tomen buenas decisiones.",
-    animation: "talking",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Si te interesa el mundo de los negocios, la organización y liderar proyectos… esta carrera podría llamarte la atención.",
-    animation: "talking",
-  },
+{
+  "speaker": "Raquelle",
+  "text": "¡Hola! 👋 Bienvenido. Soy Raquelle, administradora de empresas.",
+  "animation": "talking"
+},
 
-  {
-    speaker: "Raquelle",
-    text: "La Administración de Empresas se trata de organizar, planear y dirigir negocios o proyectos.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Básicamente, ayudamos a responder preguntas como: ¿Cómo puede crecer una empresa? ¿Cómo usamos bien el dinero? ¿Cómo trabajamos mejor como equipo?",
-    animation: "talking2",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Un administrador conecta muchas áreas: finanzas, marketing, recursos humanos y logística. Somos como los estrategas del negocio.",
-    animation: "talking2",
-  },
+{
+  "speaker": "Raquelle",
+  "text": "Esta carrera se enfoca en organizar, mejorar y hacer crecer proyectos, equipos y empresas.",
+  "animation": "talking"
+},
 
-  {
-    speaker: "Raquelle",
-    text: "Te cuento cómo puede ser un día típico mío.",
-    animation: "idle",
-  },
-  {
-    speaker: "Raquelle",
-    text: "En la mañana reviso reportes: ventas, gastos y resultados del equipo.",
-    animation: "idle",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Luego tengo reuniones para ver cómo van los proyectos.",
-    animation: "talking",
-  },
-  {
-    speaker: "Raquelle",
-    text: "A veces analizo datos para decidir cosas como lanzar un nuevo producto, mejorar procesos o reducir costos.",
-    animation: "talking",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Y también coordino equipos, porque una empresa no funciona sola… funciona gracias a las personas.",
-    animation: "talking",
-  },
+{
+  "speaker": "Raquelle",
+  "text": "Para lograrlo, la Administración de Empresas se encarga de planear, dirigir y coordinar los recursos de una organización.",
+  "animation": "talking"
+},
 
-  {
-    speaker: "Raquelle",
-    text: "Algo muy interesante de esta carrera es que puedes trabajar en muchos sectores.",
-    animation: "talking",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Podrías trabajar en gestión empresarial, finanzas, marketing, recursos humanos, emprendimiento o consultoría.",
-    animation: "talking2",
-  },
+{
+  "speaker": "Raquelle",
+  "text": "El objetivo es que una empresa o proyecto pueda alcanzar sus metas de manera eficiente.",
+  "animation": "talking"
+},
 
-  {
-    speaker: "Raquelle",
-    text: "Si te gusta esta carrera, hay habilidades clave que te ayudarán mucho.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Pensamiento estratégico, análisis de datos, comunicación, trabajo en equipo y toma de decisiones.",
-    animation: "talking",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Porque muchas veces tendrás que decidir qué camino debe seguir una empresa.",
-    animation: "talking",
-  },
+{
+  "speaker": "Raquelle",
+  "text": "Un profesional en esta área analiza constantemente el entorno para identificar oportunidades.",
+  "animation": "talking"
+},
 
-  {
-    speaker: "Raquelle",
-    text: "Hay cosas que suelen gustarle mucho a quienes estudian administración.",
-    animation: "talking",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Como liderar proyectos, entender cómo funcionan los negocios, trabajar en diferentes sectores o incluso crear tu propia empresa.",
-    animation: "talking",
-  },
+{
+  "speaker": "Raquelle",
+  "text": "También diseñamos estrategias que ayuden a las organizaciones a crecer y mejorar.",
+  "animation": "talking"
+},
 
-  {
-    speaker: "Raquelle",
-    text: "Ahora vas a tomar el rol de administrador de una empresa. 💼",
-    animation: "talking",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Te enfrentarás a diferentes situaciones que pueden afectar el funcionamiento del negocio.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Tu tarea será asignar correctamente recursos como presupuesto y personal.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Cada decisión impactará la estabilidad y reputación de la empresa.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Raquelle",
-    text: "No existe una única respuesta perfecta… pero sí decisiones más estratégicas que otras.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Analiza bien cada situación y asigna los recursos de forma inteligente.",
-    animation: "talking",
-  },
-  {
-    speaker: "Raquelle",
-    text: "Cuando estés listo, continúa y demuestra tus habilidades.",
-    animation: "idle",
-  },
+{
+  "speaker": "Raquelle",
+  "text": "En un día normal podemos liderar proyectos, gestionar equipos o tomar decisiones importantes.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Es una carrera muy dinámica porque combina análisis, organización y trabajo con personas.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Desarrollamos habilidades como liderazgo, comunicación efectiva y trabajo en equipo.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "También fortalecemos el pensamiento analítico para resolver problemas y tomar decisiones.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "La creatividad también es importante para proponer nuevas ideas y mejorar procesos.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Ayudamos a que las organizaciones sean más eficientes y organizadas.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Por ejemplo, podemos optimizar procesos, mejorar estrategias o ayudar a que un negocio crezca.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Además, buscamos que las empresas puedan adaptarse a un entorno que cambia constantemente.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "La carrera también permite especializarse en diferentes áreas.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Algunas personas se enfocan en finanzas, mercadeo o gestión humana.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Otras prefieren áreas como negocios internacionales, innovación o emprendimiento.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Al final, nuestro trabajo busca generar impacto dentro de las organizaciones y en la sociedad.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "La idea es construir empresas más innovadoras, sostenibles y capaces de aportar valor a las personas.",
+  "animation": "talking"
+},
+{
+  "speaker": "Raquelle",
+  "text": "A continuación verás un juego donde deberás tomar decisiones importantes según diferentes situaciones.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Tendrás que administrar recursos, asignar presupuesto y organizar personal de la mejor manera posible.",
+  "animation": "talking"
+},
+
+{
+  "speaker": "Raquelle",
+  "text": "Cada decisión puede afectar el resultado, así que analiza bien cada escenario. ¡Manos a la obra!",
+  "animation": "talking"
+},
 ];
 
 export const administracionEndingDialogues = [

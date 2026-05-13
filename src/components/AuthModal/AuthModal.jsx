@@ -15,6 +15,63 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
   const titleRef     = useRef(null);
   const announcerRef = useRef(null);
 
+  const showAccessibleAlert = async ({
+    icon,
+    title,
+    text,
+    timer = null,
+    showConfirmButton = true,
+  }) => {
+    const previouslyFocused = document.activeElement;
+
+    const swalConfig = {
+      icon,
+      title,
+      text,
+      showConfirmButton,
+      confirmButtonText: showConfirmButton ? "Aceptar" : undefined,
+      confirmButtonColor: "#f59e0b",
+      backdrop: true,
+      allowOutsideClick: false,
+      allowEscapeKey: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton();
+        if (confirmButton) {
+          confirmButton.focus();
+          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+        }
+
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.setAttribute("role", "alertdialog");
+          popup.setAttribute("aria-modal", "true");
+          popup.setAttribute("aria-label", title || text);
+        }
+      },
+      willClose: () => {
+        if (previouslyFocused && previouslyFocused.focus) {
+          previouslyFocused.focus();
+        } else {
+          titleRef.current?.focus();
+        }
+      },
+    };
+
+    if (timer) {
+      swalConfig.timer = timer;
+      swalConfig.timerProgressBar = true;
+      swalConfig.showConfirmButton = false;
+
+      setTimeout(() => {
+        announce(
+          `Alerta: ${text}. Se cerrará automáticamente en ${timer / 1000} segundos.`
+        );
+      }, 100);
+    }
+
+    return Swal.fire(swalConfig);
+  };
+
   useEffect(() => {
     const focusId    = setTimeout(() => titleRef.current?.focus(), 100);
     const announceId = setTimeout(() => {
@@ -24,7 +81,10 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
           : "Formulario de inicio de sesión. Ingresa tu correo y contraseña, o usa Google."
       );
     }, 300);
-    return () => { clearTimeout(focusId); clearTimeout(announceId); };
+    return () => {
+      clearTimeout(focusId);
+      clearTimeout(announceId);
+    };
   }, [isRegistering]);
 
   useEffect(() => {
@@ -36,10 +96,13 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
   useEffect(() => {
     const card = document.getElementById("auth-modal-card");
     if (!card) return;
+
     const getFocusable = () =>
-      Array.from(card.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      )).filter((el) => !el.disabled);
+      Array.from(
+        card.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((el) => !el.disabled);
 
     const trap = (e) => {
       if (e.key !== "Tab") return;
@@ -52,6 +115,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
         if (document.activeElement === last)  { e.preventDefault(); first?.focus(); }
       }
     };
+
     document.addEventListener("keydown", trap);
     return () => document.removeEventListener("keydown", trap);
   }, [isRegistering]);
@@ -67,7 +131,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
       announce("Error: por favor completa todos los campos antes de continuar.");
-      Swal.fire({
+      await showAccessibleAlert({
         icon: "warning",
         title: "Campos incompletos",
         text: "Por favor completa todos los campos",
@@ -77,6 +141,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
 
     setLoading(true);
     announce("Iniciando sesión, por favor espera.");
+
     try {
       const response = await loginUser({ email, password });
 
@@ -86,8 +151,10 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       localStorage.setItem("playerName",  response.nickname || response.email.split("@")[0]);
       localStorage.setItem("sessionType", "auth");
 
-      announce(`Bienvenido, ${response.nickname || response.email}. Sesión iniciada correctamente.`);
-      Swal.fire({
+      announce(
+        `Bienvenido, ${response.nickname || response.email}. Sesión iniciada correctamente.`
+      );
+      await showAccessibleAlert({
         icon: "success",
         title: "Bienvenido",
         text: response.nickname || response.email,
@@ -100,7 +167,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     } catch (error) {
       console.error("Error en login:", error);
       announce("Error al iniciar sesión. Credenciales incorrectas o usuario no encontrado.");
-      Swal.fire({
+      await showAccessibleAlert({
         icon: "error",
         title: "Error al iniciar sesión",
         text: "Credenciales incorrectas o usuario no encontrado",
@@ -127,7 +194,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       localStorage.setItem("sessionType", "google");
 
       announce(`Bienvenido, ${data.nickname}. Sesión iniciada con Google.`);
-      Swal.fire({
+      await showAccessibleAlert({
         icon: "success",
         title: "Bienvenido",
         text: data.nickname,
@@ -140,7 +207,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     } catch (error) {
       console.error("Error en login con Google:", error);
       announce("Error al autenticar con Google. Intenta de nuevo.");
-      Swal.fire({
+      await showAccessibleAlert({
         icon: "error",
         title: "Error con Google",
         text: "No se pudo autenticar con Google",
@@ -148,8 +215,6 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     }
   };
 
-  // ── Si está en modo registro, renderiza RegisterModal directamente
-  // (sin el wrapper auth-modal-overlay ni auth-modal-card del AuthModal)
   if (isRegistering) {
     return (
       <RegisterModal

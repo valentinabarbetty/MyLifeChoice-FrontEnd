@@ -4,7 +4,14 @@ import GameCompleteModal from "../../../ui/GameCompleteModal/GameCompleteModal";
 import ConfettiEffect from "../../../ui/Confetti";
 import Swal from "sweetalert2";
 
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
@@ -98,12 +105,59 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
 
   const titleRef = useRef(null);
   const announcerRef = useRef(null);
+  const showAccessibleAlert = async ({
+    icon,
+    title,
+    text,
+    confirmButtonText = "Reintentar",
+  }) => {
+    const previouslyFocused = document.activeElement;
 
+    const swalConfig = {
+      title,
+      text,
+      icon,
+      confirmButtonText,
+      confirmButtonColor: "#f59e0b",
+      background: "#fef7e7",
+      backdrop: "rgba(0,0,0,0.4)",
+      allowOutsideClick: false,
+      allowEscapeKey: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton();
+        if (confirmButton) {
+          confirmButton.focus();
+          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+        }
+
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.setAttribute("role", "alertdialog");
+          popup.setAttribute("aria-modal", "true");
+          popup.setAttribute("aria-label", title);
+
+          popup.style.borderRadius = "20px";
+        }
+
+        const content = Swal.getHtmlContainer();
+        if (content) {
+          content.setAttribute("aria-live", "polite");
+        }
+      },
+      willClose: () => {
+        if (previouslyFocused && previouslyFocused.focus) {
+          previouslyFocused.focus();
+        }
+      },
+    };
+
+    return Swal.fire(swalConfig);
+  };
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -124,48 +178,52 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
     }
   }, [announcement]);
 
-  const showError = (msg = "Revisa bien las opciones y vuelve a intentar") => {
+  const showError = async (
+    msg = "Revisa bien las opciones y vuelve a intentar",
+  ) => {
     setAnnouncement(`Respuesta incorrecta. ${msg}`);
-    Swal.fire({
+    await showAccessibleAlert({
+      icon: "warning",
       title: "Casi lo logras 😅",
       text: msg,
-      icon: "warning",
       confirmButtonText: "Reintentar",
-      confirmButtonColor: "#22c55e",
-      background: "#fef7e7",
-      backdrop: `rgba(0,0,0,0.4)`,
     });
   };
 
-  const validatePhase1 = () => {
+  const validatePhase1 = async () => {
     const isCorrect = order.every((item, i) => item === CORRECT_ORDER[i]);
     if (isCorrect) {
       setSelectedBottleneck(null);
-      setAnnouncement("¡Correcto! Avanzando a la fase 2: identificar el cuello de botella.");
+      setAnnouncement(
+        "¡Correcto! Avanzando a la fase 2: identificar el cuello de botella.",
+      );
       setPhase(2);
     } else {
-      showError();
+      await showError();
     }
   };
-
-  const validatePhase2 = () => {
+  const validatePhase2 = async () => {
     if (selectedBottleneck === "Empaque") {
       setSelectedSolution(null);
       setAnnouncement("¡Correcto! Avanzando a la fase 3: elegir la solución.");
       setPhase(3);
     } else {
-      showError();
+      await showError();
     }
   };
 
-  const validatePhase3 = () => {
+  const validatePhase3 = async () => {
     if (selectedSolution === "mejorar") {
-      setAnnouncement("¡Excelente! Optimizaste correctamente el proceso productivo.");
+      setAnnouncement(
+        "¡Excelente! Optimizaste correctamente el proceso productivo.",
+      );
       setGameFinished(true);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 4000);
     } else {
-      showError();
+      await showError(
+        "La solución óptima es mejorar la etapa con mayor tiempo de proceso.",
+      );
     }
   };
 
@@ -200,12 +258,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
         aria-labelledby="game-title"
         aria-describedby="game-instructions"
       >
-        <h2
-          id="game-title"
-          ref={titleRef}
-          tabIndex={-1}
-          aria-live="polite"
-        >
+        <h2 id="game-title" ref={titleRef} tabIndex={-1} aria-live="polite">
           {currentMeta.title}
         </h2>
 
@@ -224,7 +277,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
                 const newOrder = arrayMove(order, oldIndex, newIndex);
                 setOrder(newOrder);
                 setAnnouncement(
-                  `${active.id} movido a la posición ${newIndex + 1}`
+                  `${active.id} movido a la posición ${newIndex + 1}`,
                 );
               }}
             >
@@ -232,7 +285,6 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
                 items={order}
                 strategy={horizontalListSortingStrategy}
               >
-                
                 <div
                   className="cards"
                   role="list"
@@ -262,10 +314,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
 
         {phase === 2 && (
           <>
-            <div
-              role="group"
-              aria-labelledby="bottleneck-group-label"
-            >
+            <div role="group" aria-labelledby="bottleneck-group-label">
               <p id="bottleneck-group-label" className="sr-only">
                 Selecciona la etapa que representa el cuello de botella
               </p>
@@ -284,7 +333,9 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
                     isActive={selectedBottleneck === item}
                     onClick={() => {
                       setSelectedBottleneck(item);
-                      setAnnouncement(`${item} seleccionado, ${TIMES[item]} segundos`);
+                      setAnnouncement(
+                        `${item} seleccionado, ${TIMES[item]} segundos`,
+                      );
                     }}
                     aria-pressed={selectedBottleneck === item}
                     role="button"
@@ -307,7 +358,6 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
 
         {phase === 3 && (
           <>
-          
             <div
               className="selected-station"
               role="region"
@@ -333,9 +383,17 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
               </p>
 
               {[
-                { value: "personal", label: "Contratar más personal", emoji: "📋" },
-                { value: "mejorar", label: "Comprar máquinas de empaque", emoji: "🏭" },
-                { value: "nada",    label: "Nada",                        emoji: "❌" },
+                {
+                  value: "personal",
+                  label: "Contratar más personal",
+                  emoji: "📋",
+                },
+                {
+                  value: "mejorar",
+                  label: "Comprar máquinas de empaque",
+                  emoji: "🏭",
+                },
+                { value: "nada", label: "Nada", emoji: "❌" },
               ].map(({ value, label, emoji }) => (
                 <button
                   key={value}

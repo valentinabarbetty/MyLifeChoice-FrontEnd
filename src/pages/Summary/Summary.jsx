@@ -139,7 +139,6 @@ function generatePDFReport(allProcessed, playerName) {
         fs(7);
         fn("normal");
         st(C.amberBorder);
-        // doc.text(starsStr, M + 17, y + ROW_H / 2 + 7);
       }
 
       if (c.npc?.link) {
