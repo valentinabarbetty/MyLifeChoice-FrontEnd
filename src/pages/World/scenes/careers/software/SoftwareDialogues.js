@@ -1,140 +1,85 @@
 export const softwareIntroDialogues = [
   {
-    speaker: "Brayan",
-    text: "¡Hola! 👋 Bienvenido. Soy Brayan, desarrollador de software.",
+    speaker: "Dustin",
+    text: "¡Hola! Qué bueno saludarte. Soy Dustin, y me dedico al fascinante mundo del desarrollo de software.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "Mi trabajo es crear programas, aplicaciones y sistemas que usamos todos los días.",
+    speaker: "Dustin",
+    text: "Básicamente, mi carrera consiste en utilizar herramientas tecnológicas para crear soluciones digitales que resuelven problemas del mundo real.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "Desde una app de celular… hasta sistemas empresariales o videojuegos.",
+    speaker: "Dustin",
+    text: "No solo escribo código en una computadora; mi labor principal es analizar necesidades y diseñar programas o aplicaciones que faciliten las tareas de las personas.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "Si te gusta la tecnología y crear cosas con una computadora… esta carrera podría interesarte mucho.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Brayan",
-    text: "La Tecnología en Desarrollo de Software se trata de diseñar y construir programas informáticos. 💻",
+    speaker: "Dustin",
+    text: "En mi día a día, trabajo mucho en equipo y paso tiempo pensando en cómo hacer que una aplicación sea fácil, útil y agradable de usar para cualquier usuario.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "Creamos soluciones digitales para problemas reales.",
+    speaker: "Dustin",
+    text: "También me encargo de realizar pruebas para asegurar que el software funcione perfectamente y de administrar bases de datos para que la información esté siempre disponible y segura.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "Como aplicaciones móviles, páginas web, sistemas empresariales, videojuegos o plataformas digitales.",
+    speaker: "Dustin",
+    text: "Para lograr esto, desarrollo habilidades como la creatividad y una gran capacidad de aprender por mi cuenta, ya que en esta profesión siempre surgen nuevas tecnologías.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "En pocas palabras… convertimos ideas en programas que funcionan.",
-    animation: "idle",
-  },
-
-  {
-    speaker: "Brayan",
-    text: "Un día como desarrollador suele verse así.",
-    animation: "idle",
-  },
-  {
-    speaker: "Brayan",
-    text: "Primero reviso las tareas del proyecto y luego empiezo a escribir código.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Brayan",
-    text: "El código son instrucciones para que el programa funcione.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Brayan",
-    text: "También corrijo errores, pruebo que todo funcione y mejoro sistemas existentes.",
+    speaker: "Dustin",
+    text: "Lo genial es que puedes especializarte en lo que más te guste, ya sea diseñando la apariencia visual de las apps, creando sistemas de información complejos o gestionando infraestructura tecnológica.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "Y muchas veces trabajo con otros desarrolladores para construir proyectos más grandes.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Brayan",
-    text: "Una gran ventaja de esta carrera es que puedes trabajar en muchas áreas.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Brayan",
-    text: "🌐 Desarrollo web, 📱 apps móviles, 🖥 software empresarial, 🎮 videojuegos y ☁️ sistemas en la nube.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Brayan",
-    text: "Hoy en día, casi todas las empresas necesitan software.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Brayan",
-    text: "Para aprender desarrollo de software, hay habilidades muy importantes.",
-    animation: "idle",
-  },
-  {
-    speaker: "Brayan",
-    text: "🧠 Pensamiento lógico, 🔍 resolución de problemas y 💻 gusto por la tecnología.",
+    speaker: "Dustin",
+    text: "Nuestro trabajo tiene un impacto global, pues ayudamos a las empresas a mejorar sus procesos y permitimos que la tecnología mejore la vida cotidiana de las personas en cualquier lugar del mundo.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "También aprender constantemente y trabajar en equipo. 🤝",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Brayan",
-    text: "Muchos disfrutan esta carrera porque pueden crear cosas desde cero y resolver problemas de forma creativa.",
+    speaker: "Dustin",
+    text: "Al final, ser un profesional en esta área significa ser un creador que usa el ingenio y la ciencia para transformar positivamente nuestro entorno social y económico.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "Además, hay muchas oportunidades laborales y puedes crear tus propios proyectos.",
+    speaker: "Dustin",
+    text: "Ahora tendrás un reto en el que deberás analizar diferentes situaciones relacionadas con el desarrollo de una aplicación.",
+    animation: "talking",
+  },
+  {
+    speaker: "Dustin",
+    text: "Lee cada caso, selecciona la fase del desarrollo que corresponde y presiona Continuar para avanzar al siguiente desafío.",
     animation: "talking",
   },
 ];
 
 export const softwareEndingDialogues = [
   {
-    speaker: "Brayan",
-    text: "Ahora piensa esto…",
+    speaker: "Dustin",
+    text: "Antes de despedirnos, quiero preguntarte algo.",
     animation: "idle",
   },
   {
-    speaker: "Brayan",
-    text: "¿Te gustaría crear aplicaciones, sistemas o incluso videojuegos?",
+    speaker: "Dustin",
+    text: "¿Te imaginas creando aplicaciones, sistemas o videojuegos que puedan ayudar y entretener a miles de personas?",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "Si te gusta la tecnología, resolver problemas y construir cosas digitales…",
+    speaker: "Dustin",
+    text: "Si disfrutas la tecnología, resolver problemas y construir soluciones digitales innovadoras,",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "quizás Tecnología en Desarrollo de Software sea tu camino. 💻🚀",
+    speaker: "Dustin",
+    text: "la Tecnología en Desarrollo de Software puede ser el camino perfecto para ti.",
     animation: "talking",
   },
   {
-    speaker: "Brayan",
-    text: "Nos vemos en tu próxima aventura profesional.",
+    speaker: "Dustin",
+    text: "¡Nos vemos en tu próxima gran aventura en el mundo de la tecnología!",
     animation: "clap",
   },
 ];

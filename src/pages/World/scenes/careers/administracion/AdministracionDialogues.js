@@ -1,7 +1,7 @@
 export const administracionIntroDialogues = [
 {
   "speaker": "Raquelle",
-  "text": "¡Hola! 👋 Bienvenido. Soy Raquelle, administradora de empresas.",
+  "text": "¡Hola! Bienvenido. Soy Raquelle, administradora de empresas.",
   "animation": "talking"
 },
 
