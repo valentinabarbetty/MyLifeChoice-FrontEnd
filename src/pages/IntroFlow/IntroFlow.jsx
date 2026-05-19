@@ -92,10 +92,10 @@ const goToWorld = async () => {
           >
             <SelectPlayer
               onSelect={(g) => {
-                setTimeout(() => {
+                setTimeout(async () => {
                   setGuide(g);
                   nextStep();
-                  goToWorld();
+                  await goToWorld();
                 }, 300);
               }}
             />
