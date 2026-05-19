@@ -143,6 +143,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
       localStorage.setItem("playerName",  data.nickname);
       localStorage.setItem("sessionType", "google");
 
+
       announce(`Bienvenido, ${data.nickname}. Sesión iniciada con Google.`);
       await showAccessibleAlert({
         icon: "success",
@@ -191,6 +192,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
       localStorage.setItem("userEmail",   response.email);
       localStorage.setItem("sessionType", "auth");
       localStorage.setItem("logged",      "logged");
+      localStorage.setItem("userId",      response.user_id);
 
       announce(
         `Registro exitoso. Bienvenido/a, ${response.nickname || nickname}.`

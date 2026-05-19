@@ -19,9 +19,9 @@ export default function Landing() {
   const [hasProgress, setHasProgress] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [volume, setVolume] = useState(0.4);
-  
+
   const audioRef = useRef(null);
-  const userId = localStorage.getItem("userId");
+  const [userId, setUserId] = useState(localStorage.getItem("userId"));
 
   useEffect(() => {
     audioRef.current = new Audio(landingMusic);
@@ -51,7 +51,7 @@ export default function Landing() {
 
   useEffect(() => {
     if (!audioRef.current) return;
-    
+
     if (soundEnabled) {
       audioRef.current.volume = volume;
       audioRef.current.play().catch(() => {});
@@ -60,13 +60,18 @@ export default function Landing() {
     }
   }, [soundEnabled, volume]);
 
-  useEffect(() => {
-    if (userId) {
-      checkIntroStatus(userId)
-        .then((res) => setHasProgress(res.has_intro))
-        .catch((err) => console.error("Error checking intro:", err));
-    }
-  }, [userId]);
+ useEffect(() => {
+  const isLogged = localStorage.getItem("logged") === "logged";
+  const introDoneLocal = localStorage.getItem("intro_done") === "true";
+
+  if (introDoneLocal && isLogged) {
+    setHasProgress(true);
+  } else if (userId) {
+    checkIntroStatus(userId)
+      .then((res) => setHasProgress(res.has_intro))
+      .catch((err) => console.error("Error checking intro:", err));
+  }
+}, [userId]);
 
   const stopMusic = () => {
     if (audioRef.current) {
@@ -76,6 +81,13 @@ export default function Landing() {
 
   const handleLoginSuccess = async (userData) => {
     console.log("Login exitoso:", userData);
+
+    const newUserId = userData?.user_id;
+    if (newUserId) {
+      localStorage.setItem("userId", newUserId);
+      setUserId(newUserId);
+    }
+
     if (userData?.nickname) {
       localStorage.setItem("playerName", userData.nickname);
     } else if (userData?.email) {
@@ -85,9 +97,9 @@ export default function Landing() {
 
     localStorage.setItem("sessionType", "auth");
     localStorage.setItem("logged", "logged");
-    
+
     try {
-      const res = await checkIntroStatus(userId);
+      const res = await checkIntroStatus(newUserId || userId);
       setHasProgress(res.has_intro);
     } catch (err) {
       console.error("Error checking intro:", err);
@@ -118,11 +130,11 @@ export default function Landing() {
         loop
         playsInline
       />
-      
+
       <div className="overlay"></div>
-      
+
       <div className="top-buttons">
-        <button 
+        <button
           className="top-btn help-btn"
           onClick={() => setShowHelpModal(true)}
           aria-label="Ayuda"
@@ -131,7 +143,7 @@ export default function Landing() {
           <span className="btn-text">Ayuda</span>
         </button>
 
-        <button 
+        <button
           className="top-btn settings-btn"
           onClick={() => setShowSettingsModal(true)}
           aria-label="Configuración"
@@ -145,7 +157,10 @@ export default function Landing() {
             <span className="btn-text">Cerrar Sesión</span>
           </button>
         ) : (
-          <button className="top-btn login-btn" onClick={() => setShowLoginModal(true)}>
+          <button
+            className="top-btn login-btn"
+            onClick={() => setShowLoginModal(true)}
+          >
             <span className="btn-icon">🔓</span>
             <span className="btn-text">Iniciar Sesión</span>
           </button>
@@ -201,11 +216,14 @@ export default function Landing() {
             onLoginSuccess={handleLoginSuccess}
           />
         )}
-        
+
         {showHelpModal && (
-          <HelpModal open={showHelpModal} onClose={() => setShowHelpModal(false)} />
+          <HelpModal
+            open={showHelpModal}
+            onClose={() => setShowHelpModal(false)}
+          />
         )}
-        
+
         {showSettingsModal && (
           <Settings
             open={showSettingsModal}
