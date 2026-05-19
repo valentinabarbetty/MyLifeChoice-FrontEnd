@@ -125,14 +125,14 @@ export default function WorldScene({
         onMove={(pos) => setPlayerPos(pos)}
         scene="WORLD"
       />
-
+{/* 
       <Guide
         position={[0, -3, -7]}
         onInteract={() => {
           setActiveNPC("guide");
           setMode("guide");
         }}
-      />
+      /> */}
 
       <CameraManager
         scene="WORLD"

@@ -19,7 +19,7 @@ import CareerSummary from "../Summary/Summary";
 import worldMusic from "/assets/music/World.mp3";
 import "./World.css";
 import Settings from "./ui/Settings/Settings";
-import { useA11y } from "@react-three/a11y";
+import A11yCareerPanel from "./A11yCareerPanel";
 
 const STORAGE_KEYS = {
   SOUND_ENABLED: "mlc_sound_enabled",
@@ -202,6 +202,8 @@ export default function World() {
       }
     }
   };
+  const [highlightedCareer, setHighlightedCareer] = useState(null);
+
 
   const handleVolumeChange = (newVolume) => {
     setVolume(newVolume);
@@ -209,37 +211,37 @@ export default function World() {
       audioRef.current.volume = newVolume;
     }
   };
-useEffect(() => {
-  const preventFocusScroll = (e) => {
-    if (
-      e.target.hasAttribute("data-a11y") ||
-      e.target.closest("[data-a11y]") ||
-      e.target.tagName === "CANVAS"
-    ) {
-      const savedX = window.scrollX;
-      const savedY = window.scrollY;
-      
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: savedY, left: savedX, behavior: "instant" });
-      });
-    }
-  };
+  useEffect(() => {
+    const preventFocusScroll = (e) => {
+      if (
+        e.target.hasAttribute("data-a11y") ||
+        e.target.closest("[data-a11y]") ||
+        e.target.tagName === "CANVAS"
+      ) {
+        const savedX = window.scrollX;
+        const savedY = window.scrollY;
 
-  const originalScrollIntoView = Element.prototype.scrollIntoView;
-  Element.prototype.scrollIntoView = function(options) {
-    if (this.hasAttribute("data-a11y") || this.closest("canvas")) {
-      return; 
-    }
-    return originalScrollIntoView.call(this, options);
-  };
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: savedY, left: savedX, behavior: "instant" });
+        });
+      }
+    };
 
-  document.addEventListener("focus", preventFocusScroll, true);
+    const originalScrollIntoView = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = function (options) {
+      if (this.hasAttribute("data-a11y") || this.closest("canvas")) {
+        return;
+      }
+      return originalScrollIntoView.call(this, options);
+    };
 
-  return () => {
-    document.removeEventListener("focus", preventFocusScroll, true);
-    Element.prototype.scrollIntoView = originalScrollIntoView;
-  };
-}, []);
+    document.addEventListener("focus", preventFocusScroll, true);
+
+    return () => {
+      document.removeEventListener("focus", preventFocusScroll, true);
+      Element.prototype.scrollIntoView = originalScrollIntoView;
+    };
+  }, []);
 
   const announce = (message) => {
     const announcement = document.createElement("div");
@@ -286,7 +288,13 @@ useEffect(() => {
       >
         ⚙️
       </button>
-
+      <A11yCareerPanel
+  onInteract={(career) => {
+    setActiveNPC(career);
+    setMode("interact");
+  }}
+  onHighlight={setHighlightedCareer}
+/>
       <WorldCanvas>
         <Suspense fallback={<Loader />}>
           {scene === "WORLD" && (

@@ -6,19 +6,12 @@ export default function DialogueBox({ text, speaker = "", onNext, showNext = tru
   const textRef = useRef();
   const speakerId = useId();
   const textId = useId();
-
+  const hintId = useId(); 
   useEffect(() => {
     if (textRef.current) {
       textRef.current.focus();
     }
   }, [text]);
-
-  const handleKeyDown = (e) => {
-    if ((e.key === "Enter" || e.key === " ") && showNext && onNext) {
-      e.preventDefault();
-      onNext();
-    }
-  };
 
   return (
     <div
@@ -27,7 +20,6 @@ export default function DialogueBox({ text, speaker = "", onNext, showNext = tru
       aria-modal="true"
       aria-labelledby={speaker ? speakerId : textId}
       aria-describedby={speaker ? textId : undefined}
-      onKeyDown={handleKeyDown}
     >
       {speaker && (
         <div className="dlg-tag">
@@ -36,17 +28,35 @@ export default function DialogueBox({ text, speaker = "", onNext, showNext = tru
       )}
 
       <div className="dlg-box">
-       
         <p
           id={textId}
           ref={textRef}
           className="dlg-text"
           tabIndex={-1}
-         
+          aria-describedby={showNext ? hintId : undefined} 
           style={{ outline: "none" }}
         >
           {text}
         </p>
+
+        {showNext && (
+          <span
+            id={hintId}
+            style={{
+              position: "absolute",
+              width: "1px",
+              height: "1px",
+              padding: 0,
+              margin: "-1px",
+              overflow: "hidden",
+              clip: "rect(0,0,0,0)",
+              whiteSpace: "nowrap",
+              border: 0,
+            }}
+          >
+            Para ir al siguiente mensaje, usa Tab y luego Enter.
+          </span>
+        )}
 
         {children && (
           <div className="dialogue-children" role="group" aria-label="Opciones">
@@ -58,6 +68,12 @@ export default function DialogueBox({ text, speaker = "", onNext, showNext = tru
           <button
             className="dlg-arrow-btn"
             onClick={onNext}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onNext();
+              }
+            }}
             aria-label="Siguiente mensaje"
             type="button"
           >

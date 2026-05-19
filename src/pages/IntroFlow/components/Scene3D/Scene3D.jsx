@@ -5,7 +5,7 @@ import { Html, useGLTF, useAnimations } from "@react-three/drei";
 const GUIDE_MODELS = {
   1: "/assets/models/guides/girl_guide_animated.glb",
   2: "/assets/models/guides/guy_guide_animated.glb",
-  3: "/assets/models/guides/nb_guide_animated.fbx",
+  3: "/assets/models/guides/nb_guide_animated.glb",
 };
 
 function GuideModel({ guideId, showArrows, animationState }) {
