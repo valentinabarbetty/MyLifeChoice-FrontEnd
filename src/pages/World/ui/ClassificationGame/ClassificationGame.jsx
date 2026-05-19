@@ -14,25 +14,81 @@ export default function ClassificationGame({
   onComplete,
   errorMessage = "Revisa bien e intenta de nuevo",
 }) {
-  const [items, setItems]               = useState(itemsData);
-  const [zones, setZones]               = useState(
-    Object.fromEntries(categories.map((c) => [c.id, []]))
+  const [items, setItems] = useState(itemsData);
+  const [zones, setZones] = useState(
+    Object.fromEntries(categories.map((c) => [c.id, []])),
   );
   const [gameFinished, setGameFinished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [announcement, setAnnouncement] = useState("");
 
-  const titleRef          = useRef(null);
+  const titleRef = useRef(null);
   const itemsContainerRef = useRef(null);
-  const categoriesRef     = useRef({});
-  const announcerRef      = useRef(null);
+  const categoriesRef = useRef({});
+  const announcerRef = useRef(null);
 
   useEffect(() => {
     const id = setTimeout(() => titleRef.current?.focus(), 100);
     return () => clearTimeout(id);
   }, []);
+  const showAccessibleAlert = async ({
+    icon,
+    title,
+    text,
+    showConfirmButton = true,
+    timer = null,
+  }) => {
+    const previouslyFocused = document.activeElement;
 
+    const swalConfig = {
+      title,
+      text,
+      icon,
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "#f59e0b",
+      background: "#fef7e7",
+      backdrop: "rgba(0,0,0,0.4)",
+      allowOutsideClick: false,
+      allowEscapeKey: true,
+      showConfirmButton,
+      ...(timer && { timer, timerProgressBar: true }),
+      didOpen: () => {
+        if (timer && !showConfirmButton) {
+          const announcer = announcerRef.current;
+          if (announcer) {
+            announcer.textContent = `${title}. ${text}. Esta alerta se cerrará automáticamente en ${timer / 1000} segundos.`;
+          }
+        }
+
+        const confirmButton = Swal.getConfirmButton();
+        if (confirmButton) {
+          confirmButton.focus();
+          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+        }
+
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.setAttribute("role", "alertdialog");
+          popup.setAttribute("aria-modal", "true");
+          popup.setAttribute("aria-label", title);
+          popup.style.borderRadius = "20px";
+        }
+
+        const content = Swal.getHtmlContainer();
+        if (content) {
+          content.setAttribute("aria-live", "polite");
+        }
+      },
+      willClose: () => {
+        if (previouslyFocused && previouslyFocused.focus) {
+          previouslyFocused.focus();
+        }
+      },
+    };
+
+    return Swal.fire(swalConfig);
+  };
   useEffect(() => {
     if (!announcerRef.current || !announcement) return;
     announcerRef.current.textContent = "";
@@ -40,9 +96,16 @@ export default function ClassificationGame({
       if (announcerRef.current) announcerRef.current.textContent = announcement;
     });
   }, [announcement]);
-  const handleDragOver  = (e) => { e.preventDefault(); e.currentTarget.classList.add("drag-over"); };
-  const handleDragLeave = (e) => { e.currentTarget.classList.remove("drag-over"); };
-  const handleDragStart = (e, item) => { e.dataTransfer.setData("item", JSON.stringify(item)); };
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.add("drag-over");
+  };
+  const handleDragLeave = (e) => {
+    e.currentTarget.classList.remove("drag-over");
+  };
+  const handleDragStart = (e, item) => {
+    e.dataTransfer.setData("item", JSON.stringify(item));
+  };
   const handleDrop = (e, zone) => {
     e.preventDefault();
     e.currentTarget.classList.remove("drag-over");
@@ -63,10 +126,13 @@ export default function ClassificationGame({
 
     newZones[zone] = [...newZones[zone], item];
     setZones(newZones);
-    if (movedFromItems) setItems((prev) => prev.filter((i) => i.id !== item.id));
+    if (movedFromItems)
+      setItems((prev) => prev.filter((i) => i.id !== item.id));
 
     const category = categories.find((c) => c.id === zone);
-    setAnnouncement(`${getItemLabel(item)} movido a ${category?.label || zone}`);
+    setAnnouncement(
+      `${getItemLabel(item)} movido a ${category?.label || zone}`,
+    );
     setSelectedItem(null);
     setTimeout(() => categoriesRef.current[zone]?.focus(), 100);
   };
@@ -78,7 +144,9 @@ export default function ClassificationGame({
     });
     setZones(newZones);
     setItems((prev) => [...prev, item]);
-    setAnnouncement(`${getItemLabel(item)} devuelto a la bandeja de elementos.`);
+    setAnnouncement(
+      `${getItemLabel(item)} devuelto a la bandeja de elementos.`,
+    );
     setSelectedItem(null);
     setTimeout(() => itemsContainerRef.current?.focus(), 100);
   };
@@ -90,7 +158,7 @@ export default function ClassificationGame({
       setAnnouncement(
         isSelected
           ? `${getItemLabel(item)} deseleccionado.`
-          : `${getItemLabel(item)} seleccionado. Navega a una categoría y presiona Enter para asignarlo.`
+          : `${getItemLabel(item)} seleccionado. Navega a una categoría y presiona Enter para asignarlo.`,
       );
     }
     if (e.key === "ArrowRight" || e.key === "ArrowDown") {
@@ -128,35 +196,36 @@ export default function ClassificationGame({
       moveItemBack(item);
     }
   };
-  const handleValidate = () => {
+  const handleValidate = async () => {
     if (items.length > 0) {
       setAnnouncement(`Faltan ${items.length} elementos por clasificar.`);
-      Swal.fire({
-        title: "Te faltan elementos",
-        text: "Debes clasificar todos antes de continuar",
+      await showAccessibleAlert({
         icon: "info",
-        confirmButtonColor: "#22c55e",
+        title: "Te faltan elementos",
+        text: `Debes clasificar todos antes de continuar. Faltan ${items.length} elementos.`,
+        showConfirmButton: true,
       });
       return;
     }
 
     const correct = Object.keys(zones).every((zone) =>
-      zones[zone].every((item) => item.correct === zone)
+      zones[zone].every((item) => item.correct === zone),
     );
 
     if (!correct) {
       setAnnouncement("Clasificación incorrecta. " + errorMessage);
-      Swal.fire({
+      await showAccessibleAlert({
+        icon: "warning",
         title: "Casi lo logras",
         text: errorMessage,
-        icon: "warning",
-        confirmButtonColor: "#22c55e",
-        background: "#fef7e7",
+        showConfirmButton: true,
       });
       return;
     }
 
-    setAnnouncement("¡Excelente! Clasificaste correctamente todos los elementos.");
+    setAnnouncement(
+      "¡Excelente! Clasificaste correctamente todos los elementos.",
+    );
     setGameFinished(true);
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 4000);
@@ -201,17 +270,18 @@ export default function ClassificationGame({
           {title}
         </h2>
 
-        <p id="classification-subtitle" className="game-subtitle">{subtitle}</p>
+        <p id="classification-subtitle" className="game-subtitle">
+          {subtitle}
+        </p>
 
         <div id="classification-instructions" className="sr-only">
-          Arrastra cada elemento a su categoría o usa Tab para navegar,
-          Enter para seleccionar un elemento y luego Enter en una categoría
-          para asignarlo. Presiona Enter sobre un elemento ya clasificado
-          para devolverlo a la bandeja.
+          Arrastra cada elemento a su categoría o usa Tab para navegar, Enter
+          para seleccionar un elemento y luego Enter en una categoría para
+          asignarlo. Presiona Enter sobre un elemento ya clasificado para
+          devolverlo a la bandeja.
         </div>
 
         <div className="classification-game-layout">
-
           <div
             ref={itemsContainerRef}
             className="classification-game-items"
@@ -240,9 +310,7 @@ export default function ClassificationGame({
                 }
                 aria-pressed={selectedItem?.id === item.id}
               >
-                <div aria-hidden="true">
-                  {renderItem(item)}
-                </div>
+                <div aria-hidden="true">{renderItem(item)}</div>
               </div>
             ))}
 
@@ -281,7 +349,9 @@ export default function ClassificationGame({
                 }`}
               >
                 <div aria-hidden="true">
-                  <h3>{cat.emoji} {cat.label}</h3>
+                  <h3>
+                    {cat.emoji} {cat.label}
+                  </h3>
                 </div>
 
                 <div
@@ -300,9 +370,7 @@ export default function ClassificationGame({
                       onKeyDown={(e) => handlePlacedItemKeyDown(e, item)}
                       aria-label={`${getItemLabel(item)} en ${cat.label}. Presiona Enter para devolver a la bandeja.`}
                     >
-                      <div aria-hidden="true">
-                        {renderItem(item)}
-                      </div>
+                      <div aria-hidden="true">{renderItem(item)}</div>
                     </div>
                   ))}
                 </div>

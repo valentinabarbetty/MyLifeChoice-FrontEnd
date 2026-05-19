@@ -21,8 +21,8 @@ const dialogues_intro = (playerName) => {
 
   baseDialogues.push(
     
-    "Para moverte, usa las flechas ← ↑ ↓ → o las teclas W A S D.",
-    "Presiona ENTER para interactuar con personajes u objetos.",
+    "Para moverte, usa las teclas W A S D.",
+    "Da click personajes o casas para interactuar.",
     "Da clic en la flecha para comenzar tu aventura"
   );
 

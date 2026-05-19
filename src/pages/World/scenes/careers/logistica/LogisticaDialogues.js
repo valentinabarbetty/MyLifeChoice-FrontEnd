@@ -1,7 +1,7 @@
 export const logisticaIntroDialogues = [
   {
     speaker: "Michael",
-    text: "¡Hola! 👋 Bienvenido.",
+    text: "¡Hola! Bienvenido.",
     animation: "talking",
   },
   {
@@ -11,126 +11,75 @@ export const logisticaIntroDialogues = [
   },
   {
     speaker: "Michael",
-    text: "Mi trabajo consiste en organizar cómo se mueven los productos desde donde se producen hasta donde las personas los necesitan.",
+    text: "¿Alguna vez te has preguntado cómo llega un producto desde una fábrica lejana hasta la puerta de tu casa?",
     animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "Si te gusta organizar, planificar y entender cómo funcionan las cadenas de distribución… esta carrera puede interesarte.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Michael",
-    text: "La Tecnología en Gestión Logística se enfoca en planificar, coordinar y controlar el transporte, almacenamiento y distribución de productos.",
+    text: "De eso se trata mi carrera: es el arte de organizar y conectar todos los pasos necesarios para que las cosas fluyan sin detenerse.",
     animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "En pocas palabras, responde preguntas como: ¿Dónde se guardan los productos?, ¿Cómo se transportan?, ¿Cómo llegan a tiempo?",
+    text: "En lugar de ver tareas sueltas, nosotros vemos procesos completos, desde que se consiguen los materiales hasta que el cliente recibe su pedido.",
     animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "Una buena logística permite que todo funcione de forma organizada y eficiente.",
-    animation: "idle",
-  },
-
-  {
-    speaker: "Michael",
-    text: "Un día en logística suele ser bastante activo.",
-    animation: "idle",
+    text: "Como profesional en esta área, me encargo de analizar, guiar y definir cómo se moverán los productos en empresas industriales o de servicios.",
+    animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "En la mañana reviso inventarios o pedidos que deben enviarse.",
-    animation: "talking2",
+    text: "Mi día a día es muy dinámico; puedo estar supervisando un almacén, coordinando el transporte o gestionando la llegada de mercancía del exterior.",
+    animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "Luego organizo rutas de transporte o distribución.",
-    animation: "talking2",
+    text: "También usamos mucha tecnología y sistemas de información para que la distribución sea rápida, flexible y muy competitiva.",
+    animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "También coordino con equipos de almacén, transporte o proveedores.",
-    animation: "talking2",
+    text: "Para esto, desarrollamos habilidades como el liderazgo y el trabajo en equipo, porque siempre estamos conectando a diferentes personas.",
+    animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "Y analizo datos para mejorar tiempos de entrega o reducir costos.",
-    animation: "talking2",
+    text: "Nuestra gran misión es solucionar problemas y proponer alternativas para que los costos no suban y el cliente siempre esté satisfecho.",
+    animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "Porque en logística el objetivo es claro: que todo llegue al lugar correcto, en el momento correcto.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Michael",
-    text: "Esta carrera tiene muchas oportunidades laborales.",
-    animation: "talking2",
+    text: "Podemos especializarnos en muchas áreas, como jefe de operaciones, supervisor de distribución, experto en comercio internacional o incluso crear nuestra propia empresa.",
+    animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "Puedes trabajar en gestión de almacenes, transporte, inventarios, cadena de suministro o logística empresarial.",
-    animation: "talking2",
+    text: "Al final, nuestro trabajo impacta directamente en que las empresas funcionen bien y que los servicios que todos usamos nunca fallen.",
+    animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "Hoy en día casi todas las empresas necesitan profesionales en logística.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Michael",
-    text: "Algunas habilidades importantes son la organización, el análisis de información y la resolución de problemas.",
-    animation: "idle",
+    text: "Es una carrera fundamental para que el mundo moderno siga moviéndose de forma eficiente.",
+    animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "También la comunicación y la toma de decisiones rápidas.",
-    animation: "talking2",
+    text: "Ahora tendrás un reto en el que deberás analizar diferentes situaciones de transporte y relacionarlas con el medio más adecuado.",
+    animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "Porque muchas veces tendrás que resolver situaciones en poco tiempo.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Michael",
-    text: "Muchas personas disfrutan esta carrera porque ven resultados reales en cómo funcionan las empresas.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Michael",
-    text: "Participan en procesos clave y ayudan a que todo fluya correctamente.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Michael",
-    text: "Ahora quiero que pongas a prueba tus habilidades en logística 📦",
-    animation: "talking2",
-  },
-  {
-    speaker: "Michael",
-    text: "Vas a clasificar diferentes situaciones según el medio de transporte más adecuado.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Michael",
-    text: "¡Vamos a ver cómo tomarías decisiones en el mundo real! 🚚",
-    animation: "talking2",
+    text: "Arrastra cada caso al avión, barco, camión o tren según corresponda y luego presiona Continuar para revisar tus respuestas.",
+    animation: "talking",
   },
 ];
 
 export const logisticaEndingDialogues = [
   {
     speaker: "Michael",
-    text: "¡Muy bien! 🎉",
+    text: "¡Muy bien!",
     animation: "clap",
   },
   {
@@ -150,7 +99,7 @@ export const logisticaEndingDialogues = [
   },
   {
     speaker: "Michael",
-    text: "Ahora dime…",
+    text: "Ahora dime",
     animation: "idle",
   },
   {
@@ -160,12 +109,12 @@ export const logisticaEndingDialogues = [
   },
   {
     speaker: "Michael",
-    text: "Si te gusta la organización, el transporte y la gestión de procesos… esta carrera podría ser para ti.",
+    text: "Si te gusta la organización, el transporte y la gestión de procesos, esta carrera podría ser para ti.",
     animation: "talking",
   },
   {
     speaker: "Michael",
-    text: "Espero verte en el mundo de la logística. 📦🚚",
+    text: "Espero verte en el mundo de la logística.",
     animation: "clap",
   },
 ];

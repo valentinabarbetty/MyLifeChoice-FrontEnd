@@ -1,121 +1,137 @@
 export const contaduriaIntroDialogues = [
   {
     speaker: "Isabella",
-    text: "¡Hola! 👋 Bienvenido. Soy Isabella, contadora pública.",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "Mi trabajo es ayudar a las empresas a entender su dinero, registrarlo y asegurar que todo esté correcto.",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "Puede que suene serio… pero detrás de los números hay muchas historias interesantes.",
+    text: "¡Hola! Mucho gusto, soy Isabella.",
     animation: "talking",
   },
 
   {
     speaker: "Isabella",
-    text: "La Contaduría Pública se encarga de registrar, analizar y explicar la información financiera de una empresa.",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "Respondemos preguntas como: ¿Cuánto dinero gana una empresa? ¿En qué se gasta? ¿Cumple con impuestos y leyes?",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "También ayudamos a tomar decisiones basadas en números reales, porque los números cuentan la verdad de lo que pasa.",
+    text: "Hoy quiero contarte de qué trata realmente el mundo de la Contaduría Pública.",
     animation: "talking",
   },
 
   {
     speaker: "Isabella",
-    text: "Déjame contarte cómo es un día típico.",
-    animation: "idle",
-  },
-  {
-    speaker: "Isabella",
-    text: "En la mañana reviso facturas, pagos, ingresos y gastos.",
+    text: "A veces la gente piensa que solo sumamos números",
     animation: "talking",
   },
-  {
+    {
     speaker: "Isabella",
-    text: "Luego organizo esa información en reportes contables.",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "También reviso impuestos, estados financieros y auditorías.",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "Y muchas veces ayudo a personas o empresas a entender cómo manejar mejor su dinero.",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "Una gran ventaja es que puedes trabajar en muchos campos.",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "Contabilidad empresarial, auditoría, consultoría financiera, sector público o impuestos.",
-    animation: "idle",
-  },
-  {
-    speaker: "Isabella",
-    text: "También puedes especializarte en análisis financiero.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Isabella",
-    text: "Para ser buen contador necesitas atención al detalle.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Isabella",
-    text: "También análisis, pensamiento lógico y conocimiento de normas contables.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Isabella",
-    text: "Y hoy en día, saber usar herramientas digitales es clave.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Isabella",
-    text: "Porque en esta profesión… la precisión lo es todo.",
-    animation: "idle",
-  },
-
-  {
-    speaker: "Isabella",
-    text: "Muchas personas disfrutan esta carrera por su estabilidad laboral.",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "Siempre se necesitan contadores, puedes trabajar en empresas o de forma independiente.",
-    animation: "talking",
-  },
-  {
-    speaker: "Isabella",
-    text: "Y entenderás muy bien cómo funciona el dinero.",
+    text: "Pero en realidad somos los encargados de gestionar y analizar la información financiera y social de las organizaciones.",
     animation: "talking",
   },
 
   {
     speaker: "Isabella",
-    text: "Ahora vas a asumir el rol de un contador. 📊",
+    text: "En mi día a día, ayudo a las empresas a entender su realidad económica.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Esto les permite tomar mejores decisiones y crecer de forma organizada.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Lo que más me gusta es que nuestro trabajo genera confianza.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Al presentar informes claros y reales, le damos seguridad a la sociedad y al Estado sobre cómo se manejan los recursos.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Para ser un buen contador, necesitas ser muy analítico.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "También necesitas tener un espíritu investigador para encontrar siempre la mejor solución a los problemas financieros.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Pero no todo es técnica; la ética y la responsabilidad social son el corazón de nuestra profesión.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Esto asegura que todo sea justo y transparente.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Como profesionales, podemos trabajar en muchísimas áreas.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Desde ser auditores que revisan que todo esté en orden, hasta asesores de impuestos o consultores financieros.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Incluso podemos ser líderes dentro de grandes empresas o participar en proyectos de inversión.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "También es posible crear nuestro propio negocio.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Ayudamos a resolver problemas en entornos que cambian todo el tiempo.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Nos adaptamos a nuevas reglas y tecnologías para que las empresas no se queden atrás.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Al final del día, nuestro impacto es enorme porque transformamos datos en información valiosa.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Esto ayuda a construir organizaciones más sólidas y responsables.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Es una carrera dinámica, llena de retos y con un propósito social muy bonito.",
+    animation: "talking",
+  },
+
+  {
+    speaker: "Isabella",
+    text: "Ahora vas a asumir el rol de un contador.",
     animation: "talking",
   },
   {
     speaker: "Isabella",
-    text: "Tenemos un libro de gastos con algunos errores… y varias facturas como referencia.",
+    text: "Tenemos un libro de gastos con algunos errores y varias facturas como referencia.",
     animation: "idle",
   },
   {
@@ -125,12 +141,12 @@ export const contaduriaIntroDialogues = [
   },
   {
     speaker: "Isabella",
-    text: "Observa bien los detalles… en contaduría, un pequeño error puede cambiar todo.",
+    text: "Observa bien los detalles, en contaduría, un pequeño error puede cambiar todo.",
     animation: "talking2",
   },
   {
     speaker: "Isabella",
-    text: "Cuando creas que todo está correcto, presiona VALIDAR. ¡Buena suerte! 🧾✨",
+    text: "Cuando creas que todo está correcto, presiona Continuar. ¡Buena suerte!",
     animation: "talking2",
   },
 ];
@@ -139,12 +155,12 @@ export const contaduriaEndingDialogues = [
   {
     speaker: "Isabella",
     text: "Excelente trabajo. Has corregido correctamente los registros financieros.",
-    animation: "talking"
+    animation: "clap",
   },
   {
     speaker: "Isabella",
     text: "La contaduría requiere precisión, análisis y atención al detalle.",
-    animation: "talking"
+    animation: "talking",
   },
   {
     speaker: "Isabella",
@@ -153,7 +169,7 @@ export const contaduriaEndingDialogues = [
   },
   {
     speaker: "Isabella",
-    text: "¡Felicidades! Has completado la experiencia de Contaduría Pública. 📊",
-    animation: "clap"
+    text: "¡Felicidades! Has completado la experiencia de Contaduría Pública.",
+    animation: "clap",
   },
 ];

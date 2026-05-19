@@ -1,7 +1,7 @@
 export const electronicaIndustrialIntroDialogues = [
   {
     speaker: "Sabrina",
-    text: "¡Hola! ⚡ Bienvenido.",
+    text: "¡Hola! Bienvenido.",
     animation: "talking",
   },
   {
@@ -11,106 +11,70 @@ export const electronicaIndustrialIntroDialogues = [
   },
   {
     speaker: "Sabrina",
-    text: "Mi trabajo consiste en instalar, programar y mantener sistemas electrónicos que controlan máquinas y procesos industriales.",
+    text: "A grandes rasgos, mi profesión consiste en crear soluciones tecnológicas que permiten que las máquinas y los procesos en las fábricas funcionen por sí solos.",
     animation: "talking",
   },
   {
     speaker: "Sabrina",
-    text: "Si te gustan la tecnología, los circuitos y entender cómo funcionan las máquinas… esta carrera puede ser muy interesante para ti.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Sabrina",
-    text: "La Tecnología en Electrónica Industrial se enfoca en los sistemas electrónicos que controlan equipos y procesos en la industria.",
+    text: "Lo que hacemos es diseñar, construir y analizar sistemas que mezclan circuitos digitales y análogos para controlar equipos industriales de forma inteligente.",
     animation: "talking",
   },
   {
     speaker: "Sabrina",
-    text: "Estos sistemas permiten que máquinas y fábricas funcionen de forma automática.",
+    text: "En mi día a día, puedo estar diseñando una tarjeta de circuito impreso, montando componentes o configurando redes de comunicación para que las máquinas hablen entre sí.",
     animation: "talking",
   },
   {
     speaker: "Sabrina",
-    text: "Por ejemplo: sistemas de control, sensores industriales, robots y paneles electrónicos.",
+    text: "También nos encargamos del mantenimiento; si un sistema de control falla, nosotros somos quienes ajustamos y reparamos los equipos para que la producción no se detenga.",
     animation: "talking",
   },
   {
     speaker: "Sabrina",
-    text: "En pocas palabras… hacemos que las máquinas funcionen de forma inteligente.",
-    animation: "idle",
-  },
-
-  {
-    speaker: "Sabrina",
-    text: "Un día de trabajo puede ser muy dinámico.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Sabrina",
-    text: "A veces reviso equipos electrónicos o sensores en una planta.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Sabrina",
-    text: "También programo sistemas que controlan máquinas.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Sabrina",
-    text: "Si ocurre una falla, analizo el problema y lo reparo para que la producción no se detenga.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Sabrina",
-    text: "Gran parte del trabajo es diagnosticar problemas y encontrar soluciones técnicas.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Sabrina",
-    text: "Esta carrera tiene varias áreas laborales.",
-    animation: "idle",
-  },
-  {
-    speaker: "Sabrina",
-    text: "🏭 Industria manufacturera ⚙️ Automatización industrial 🔧 Mantenimiento electrónico 🤖 Robótica ⚡ Instalación de sistemas 📡 Instrumentación",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Sabrina",
-    text: "Algunas habilidades importantes son:",
+    text: "Para ser un buen tecnólogo, desarrollamos un pensamiento muy crítico y creativo para resolver problemas técnicos de manera innovadora.",
     animation: "talking",
   },
   {
     speaker: "Sabrina",
-    text: "🧠 Pensamiento lógico 🔧 Interés por circuitos 🔍 Diagnóstico de fallas ⚡ Resolución de problemas 🤝 Trabajo en equipo",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Sabrina",
-    text: "Muchas personas disfrutan esta carrera porque:",
+    text: "Además, aprendemos a trabajar en equipo y a comunicarnos bien, porque en la industria siempre colaboramos con otros expertos para lograr metas comunes.",
     animation: "talking",
   },
   {
     speaker: "Sabrina",
-    text: "Trabajan con tecnología real, entienden sistemas complejos y resuelven problemas técnicos en entornos industriales.",
+    text: "Ayudamos a resolver retos importantes, como hacer que la transformación de materias primas sea más eficiente, segura y amigable con el medio ambiente.",
     animation: "talking",
   },
-
   {
     speaker: "Sabrina",
-    text: "Ahora vamos a ver cómo fluye la energía en un sistema electrónico ⚡",
-    animation: "idle",
+    text: "Podemos trabajar en muchísimas áreas, desde la robótica y la automatización hasta el manejo de sistemas de instrumentación y procesamiento digital.",
+    animation: "talking",
+  },
+  {
+    speaker: "Sabrina",
+    text: "Nuestro trabajo impacta directamente en cómo se fabrican las cosas hoy en día, permitiendo que la tecnología sea el motor de la industria moderna.",
+    animation: "talking",
+  },
+  {
+    speaker: "Sabrina",
+    text: "En resumen, somos quienes hacemos posible que la automatización y la electrónica se unan para mejorar el mundo productivo.",
+    animation: "talking",
+  },
+  {
+    speaker: "Sabrina",
+    text: "Ahora tendrás un reto en el que deberás organizar los componentes de un circuito eléctrico en el orden correcto para que funcione adecuadamente.",
+    animation: "talking",
+  },
+  {
+    speaker: "Sabrina",
+    text: "Observa elementos como el enchufe, los cables, la batería y el bombillo, arrástralos a su posición correcta y luego presiona Continuar para comprobar tus respuestas.",
+    animation: "talking",
   },
 ];
 
 export const electronicaIndustrialEndingDialogues = [
   {
     speaker: "Sabrina",
-    text: "¡Muy bien! 🎉",
+    text: "¡Muy bien!",
     animation: "clap",
   },
   {
@@ -128,12 +92,6 @@ export const electronicaIndustrialEndingDialogues = [
     text: "Este flujo es la base de muchos sistemas industriales que usamos todos los días.",
     animation: "talking",
   },
-
-  {
-    speaker: "Sabrina",
-    text: "Ahora piensa esto…",
-    animation: "idle",
-  },
   {
     speaker: "Sabrina",
     text: "¿Te gustaría aprender cómo funcionan los sistemas electrónicos que controlan la industria?",
@@ -141,12 +99,12 @@ export const electronicaIndustrialEndingDialogues = [
   },
   {
     speaker: "Sabrina",
-    text: "Si te interesa la electrónica, la automatización y la tecnología… esta carrera puede ser tu camino ⚡🤖",
+    text: "Si te interesa la electrónica, la automatización y la tecnología, esta carrera puede ser tu camino.",
     animation: "talking2",
   },
   {
     speaker: "Sabrina",
-    text: "Nos vemos en tu próxima decisión profesional 💡",
+    text: "¡Nos vemos!",
     animation: "clap",
   },
 ];

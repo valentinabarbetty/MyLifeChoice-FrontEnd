@@ -1,108 +1,63 @@
 export const educacionFisicaIntroDialogues = [
   {
     speaker: "Samuel",
-    text: "¡Hola! 👋 ¿Listo para moverte un poco? Soy Samuel, profesor de educación física.",
+    text: "¡Hola! ¿Listo para moverte un poco? Soy Samuel, y hoy te voy a contar de qué trata realmente la carrera de Educación Física.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "Mi trabajo es enseñar a las personas a moverse, cuidar su cuerpo y disfrutar el deporte.",
+    text: "Mucha gente piensa que solo se trata de jugar, pero en realidad es una disciplina que busca formar a las personas de manera integral usando el movimiento como herramienta.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "Si te gusta la actividad física, el deporte y trabajar con personas… esta carrera podría ser muy interesante para ti.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Samuel",
-    text: "La Licenciatura en Educación Física se enfoca en enseñar actividad física, deporte y hábitos de vida saludables. 🏃",
+    text: "Como profesionales, nuestro trabajo es ser educadores que enseñan a cuidar el cuerpo y a entender la importancia de la cultura física en la vida diaria.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "Ayudamos a que las personas mejoren su condición física, aprendan deportes y desarrollen habilidades motoras.",
-    animation: "idle",
-  },
-  {
-    speaker: "Samuel",
-    text: "También promovemos hábitos saludables para el bienestar.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Samuel",
-    text: "No se trata solo de hacer ejercicio… también se trata de educar sobre el cuerpo y el movimiento.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Samuel",
-    text: "Un día como profesor de educación física es bastante activo.",
-    animation: "idle",
-  },
-  {
-    speaker: "Samuel",
-    text: "Primero preparo las actividades o ejercicios que vamos a realizar.",
+    text: "En el día a día, nos encargamos de planear y dirigir actividades pedagógicas, ya sea en una escuela o en espacios de preparación deportiva.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "Luego guío a los estudiantes en juegos, ejercicios físicos y entrenamiento básico.",
+    text: "Para hacer esto bien, desarrollamos habilidades sociales, de comunicación y un fuerte sentido de responsabilidad para guiar a los demás con calidad e idoneidad.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "También observo su desempeño para ayudarles a mejorar su técnica.",
+    text: "No solo usamos el silbato; también nos apoyamos en la investigación científica para entender cómo mejorar el rendimiento y la salud de las personas.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "Cada clase tiene un objetivo importante… aprender mientras nos movemos.",
-    animation: "idle",
-  },
-
-  {
-    speaker: "Samuel",
-    text: "Esta carrera tiene muchas áreas donde puedes trabajar.",
+    text: "Ayudamos a resolver problemas muy importantes, como la prevención de enfermedades y la promoción de un estilo de vida saludable a través del ejercicio sistemático.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "🏫 Docencia, 🏋️ entrenamiento deportivo, 🧑‍🤝‍🧑 recreación comunitaria, 🏥 salud y ⚽ clubes deportivos.",
+    text: "Incluso nuestro trabajo tiene un impacto social enorme, porque el deporte es una herramienta clave para alejar a las personas de riesgos como la drogadicción.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "También puedes promover hábitos saludables en diferentes contextos.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Samuel",
-    text: "Para esta profesión, hay habilidades muy importantes.",
+    text: "Puedes desempeñarte en muchos campos: desde enseñar en colegios hasta trabajar en la promoción de la salud o entrenando deportistas de alto nivel.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "💪 Interés por el deporte, 🗣 capacidad de enseñar, 🤝 trabajo en equipo y ⚡ actitud positiva.",
+    text: "Al final, lo que buscamos es que cada persona encuentre bienestar y se desarrolle plenamente gracias a una buena educación corporal y motriz.",
     animation: "talking",
   },
   {
     speaker: "Samuel",
-    text: "Además, necesitas entender el cuerpo humano y cómo se mueve.",
+    text: "Ahora tendrás un reto en el que deberás observar varios ejercicios y relacionarlos con el músculo o la parte del cuerpo que trabajan.",
     animation: "talking",
   },
-
   {
     speaker: "Samuel",
-    text: "Muchos aman esta carrera porque trabajan en movimiento y ayudan a otros a mejorar su salud.",
-    animation: "idle",
-  },
-  {
-    speaker: "Samuel",
-    text: "Es una profesión dinámica, activa y llena de energía.",
-    animation: "talking2",
+    text: "Arrastra cada ejercicio a la categoría correcta y, cuando termines, presiona Continuar para comprobar tus respuestas.",
+    animation: "talking",
   },
 ];
 export const educacionFisicaEndingDialogues = [
@@ -123,7 +78,7 @@ export const educacionFisicaEndingDialogues = [
   },
   {
     speaker: "Samuel",
-    text: "quizás Licenciatura en Educación Física sea tu camino. ⚽🏃‍♂️",
+    text: "quizás Licenciatura en Educación Física sea tu camino.",
     animation: "talking",
   },
   {

@@ -1,120 +1,95 @@
 export const psicologiaIntroDialogues = [
   {
     speaker: "Mia",
-    text: "Hola… 👋 me alegra que estés aquí. Soy Mariana, psicóloga.",
+    text: "Hola, me alegra que estés aquí. Soy Mia, psicóloga.",
     animation: "talking",
   },
   {
     speaker: "Mia",
-    text: "Mi trabajo es entender cómo pensamos, sentimos y actuamos las personas… y ayudar cuando alguien está pasando por momentos difíciles.",
+    text: "Mi trabajo es entender cómo pensamos, sentimos y actuamos las personas y ayudar cuando alguien está pasando por momentos difíciles.",
     animation: "talking2",
   },
   {
     speaker: "Mia",
-    text: "Si te interesa la mente humana, las emociones y el comportamiento… quizás esta carrera pueda llamarte la atención.",
+    text: "En realidad, la psicología es una ciencia que busca comprender por qué nos comportamos de cierta manera y cómo esas acciones nos afectan a nosotros y a los demás.",
     animation: "talking",
   },
-
   {
     speaker: "Mia",
-    text: "La Psicología es la ciencia que estudia la mente y el comportamiento humano. 🧠",
+    text: "Un profesional en esta área no solo escucha; nosotros analizamos situaciones, investigamos y proponemos soluciones para que las personas vivan mejor.",
     animation: "talking2",
   },
   {
     speaker: "Mia",
-    text: "Buscamos comprender por qué sentimos ciertas emociones, cómo tomamos decisiones, cómo aprendemos y cómo nos relacionamos.",
+    text: "Mi día a día puede ser muy variado.",
+    animation: "talking",
+  },
+  {
+    speaker: "Mia",
+    text: "A veces estoy diseñando programas para prevenir problemas de salud mental o evaluando cómo ayudar a un grupo de personas a trabajar mejor en equipo.",
+    animation: "talking",
+  },
+  {
+    speaker: "Mia",
+    text: "Para hacer esto bien, desarrollamos habilidades como el pensamiento crítico, la capacidad de analizar problemas complejos y, sobre todo, un sentido de la ética muy fuerte.",
     animation: "talking2",
   },
   {
     speaker: "Mia",
-    text: "Y lo más importante… cómo ayudar a mejorar el bienestar de las personas.",
+    text: "Ayudamos a resolver conflictos en las familias, problemas de aprendizaje en colegios o incluso retos dentro de grandes empresas y comunidades.",
     animation: "talking",
   },
-
   {
     speaker: "Mia",
-    text: "Cada día puede ser diferente.",
-    animation: "idle",
-  },
-  {
-    speaker: "Mia",
-    text: "A veces tengo sesiones donde escucho a personas hablar sobre estrés, ansiedad, relaciones o decisiones importantes.",
+    text: "Lo genial es que puedes elegir muchos caminos: desde la psicología clínica para tratar pacientes, hasta la social, la educativa o la organizacional en oficinas.",
     animation: "talking2",
   },
   {
     speaker: "Mia",
-    text: "También analizo comportamientos, preparo actividades terapéuticas o realizo evaluaciones psicológicas.",
+    text: "Al final del día, nuestro impacto está en el bienestar de la gente. Buscamos que cada persona encuentre un sentido a sus acciones y pueda desarrollarse plenamente en su entorno.",
     animation: "talking",
   },
   {
     speaker: "Mia",
-    text: "En otras ocasiones trabajo con empresas o colegios para mejorar el bienestar.",
-    animation: "talking",
-  },
-  {
-    speaker: "Mia",
-    text: "Gran parte del trabajo consiste en algo muy poderoso… escuchar y comprender. 👂",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Mia",
-    text: "La psicología tiene muchos caminos profesionales.",
+    text: "Es una labor con mucha responsabilidad social, donde usamos el conocimiento para transformar vidas de forma positiva.",
     animation: "talking2",
   },
   {
     speaker: "Mia",
-    text: "🧠 Clínica, 🏫 educativa, 🏢 organizacional, ⚖️ forense, 👨‍👩‍👧 social y 🔬 investigación.",
+    text: "Ahora tendrás un reto en el que deberás leer diferentes situaciones e identificar la emoción que mejor representa cómo se siente cada persona.",
+    animation: "talking",
+  },
+  {
+    speaker: "Mia",
+    text: "Selecciona la emoción correcta y presiona Continuar para pasar al siguiente caso.",
     animation: "talking2",
-  },
-
-  {
-    speaker: "Mia",
-    text: "Para ser buen psicólogo necesitas habilidades clave.",
-    animation: "talking",
-  },
-  {
-    speaker: "Mia",
-    text: "👂 Escucha activa, ❤️ empatía, 🧠 análisis y 🗣 buena comunicación.",
-    animation: "talking",
-  },
-  {
-    speaker: "Mia",
-    text: "Comprender a las personas requiere paciencia, sensibilidad y observación.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Mia",
-    text: "Es una carrera donde puedes ayudar a otros, entender la mente humana y generar cambios reales en la vida de las personas.",
-    animation: "talking",
   },
 ];
 
 export const psicologiaEndingDialogues = [
   {
     speaker: "Mia",
-    text: "Ahora te dejo una pregunta…",
+    text: "Antes de despedirnos, quiero dejarte una pregunta para reflexionar.",
     animation: "idle",
   },
   {
     speaker: "Mia",
-    text: "¿Te interesa comprender a las personas, sus emociones y su comportamiento?",
+    text: "¿Te gustaría comprender mejor las emociones, los pensamientos y el comportamiento de las personas?",
     animation: "talking",
   },
   {
     speaker: "Mia",
-    text: "Si disfrutas escuchar, analizar y ayudar a otros a crecer…",
+    text: "Si disfrutas escuchar, analizar y acompañar a otros en su proceso de crecimiento personal,",
     animation: "talking",
   },
   {
     speaker: "Mia",
-    text: "quizás Psicología sea tu camino. 🧠✨",
+    text: "la Psicología puede ser el camino ideal para transformar vidas de manera positiva.",
     animation: "talking",
   },
   {
     speaker: "Mia",
-    text: "Nos vemos en tu próxima decisión profesional.",
+    text: "¡Nos vemos en tu próxima gran decisión profesional!",
     animation: "clap",
   },
 ];

@@ -5,6 +5,8 @@ export const NPCS = {
     career: "administradora de empresas",
     career_name: "Administración de Empresas",
     link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/administracion-de-empresas",
+    position: [8.08, -1, -38.01],
+    signPosition: [10.58, -1, -36.51],   // +2.5x, +1.5z
   },
 
   contaduriaPublica: {
@@ -13,6 +15,8 @@ export const NPCS = {
     career: "contadora pública",
     career_name: "Contaduría Pública",
     link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/contaduria-publica",
+    position: [16.33, -2.17, -16.61],
+    signPosition: [18.83, -2.17, -15.11],
   },
 
   ingenieriaIndustrial: {
@@ -21,6 +25,8 @@ export const NPCS = {
     career: "ingeniera industrial",
     career_name: "Ingeniería Industrial",
     link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/ingenieria-industrial",
+    position: [-5.96, -1, -18.18],
+    signPosition: [-3.46, -1, -16.68],
   },
 
   educacionFisica: {
@@ -29,6 +35,8 @@ export const NPCS = {
     career: "licenciado en educación física",
     career_name: "Licenciatura en Educación Física",
     link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/licenciatura-en-fisica-deportes",
+    position: [31.87, -2.20, 5.94],
+    signPosition: [34.37, -2.20, 7.44],
   },
 
   literatura: {
@@ -37,6 +45,8 @@ export const NPCS = {
     career: "licenciada en literatura",
     career_name: "Licenciatura en Literatura",
     link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/licenciatura-literatura",
+    position: [-0.51, -1, 7.01],
+    signPosition: [1.99, -1, 8.51],
   },
 
   psicologia: {
@@ -45,6 +55,8 @@ export const NPCS = {
     career: "psicóloga",
     career_name: "Psicología",
     link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/psicologia",
+    position: [-10.85, -1, 4.15],
+    signPosition: [-8.35, -1, 5.65],
   },
 
   agroambiental: {
@@ -53,6 +65,8 @@ export const NPCS = {
     career: "tecnólogo agroambiental",
     career_name: "Tecnología Agroambiental",
     link: "http://palmira.univalle.edu.co/tecnologia-agroambiental",
+    position: [-19.24, -1.91, -12.75],
+    signPosition: [-16.74, -1.91, -11.25],
   },
 
   alimentos: {
@@ -61,14 +75,18 @@ export const NPCS = {
     career: "tecnóloga en procesamiento de alimentos",
     career_name: "Tecnología en Procesamiento de Alimentos",
     link: "http://palmira.univalle.edu.co/tecnologia-en-alimentos",
+    position: [29.10, -2.20, -15.10],
+    signPosition: [31.60, -2.20, -13.60],
   },
 
   software: {
     id: 9,
-    name: "Brayan Julio",
+    name: " Dustin",
     career: "tecnólogo en desarrollo de software",
     career_name: "Tecnología en Desarrollo de Software",
     link: "http://palmira.univalle.edu.co/tecnologia-en-desarrollo-desoftware",
+    position: [4.69, -1, -7.3],
+    signPosition: [7.19, -1, -5.80],
   },
 
   electronica: {
@@ -77,6 +95,8 @@ export const NPCS = {
     career: "tecnóloga en electrónica industrial",
     career_name: "Tecnología en Electrónica Industrial",
     link: "http://palmira.univalle.edu.co/tecnologia-electronica-industrial",
+    position: [22.88, -2.14, -2.37],
+    signPosition: [25.38, -2.14, -0.87],
   },
 
   logistica: {
@@ -85,6 +105,8 @@ export const NPCS = {
     career: "tecnólogo en gestión logística",
     career_name: "Tecnología en Gestión Logística",
     link: "http://palmira.univalle.edu.co/univalle-formacion/pregrados/tecnologia-gestion-logistica",
+    position: [6.06, -1, -24.39],
+    signPosition: [8.56, -1, -22.89],
   },
 
   agroforestal: {
@@ -93,6 +115,8 @@ export const NPCS = {
     career: "tecnóloga en producción agroforestal",
     career_name: "Tecnología en Manejo de la Producción Agroforestal",
     link: "http://palmira.univalle.edu.co/tecnologia-manejo-produccion-agroforestal",
+    position: [35.14, -2.20, -2.52],
+    signPosition: [37.64, -2.20, -1.02],
   },
 
   mantenimiento: {
@@ -101,5 +125,7 @@ export const NPCS = {
     career: "tecnólogo en mantenimiento de sistemas electromecánico",
     career_name: "Tecnología en Mantenimiento de Sistemas Electromecánicos",
     link: "http://palmira.univalle.edu.co/tecnologo-en-mantenimiento-de-sistemas-electromecanicos",
+    position: [16.5, -1, 6.43],
+    signPosition: [19.0, -1, 7.93],
   },
 };

@@ -1,106 +1,157 @@
 export const agroambientalIntroDialogues = [
   {
     speaker: "Liam",
-    text: "¡Hola! 🌱 Bienvenido. Soy Liam, tecnólogo agroambiental.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Liam",
-    text: "Mi trabajo consiste en cuidar los cultivos, el suelo y el medio ambiente al mismo tiempo.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Liam",
-    text: "Si te gusta la naturaleza, el campo y encontrar formas sostenibles de producir alimentos… esta carrera podría interesarte mucho.",
+    text: "¡Hola! Qué alegría encontrarte por aquí.",
     animation: "talking2",
   },
 
   {
     speaker: "Liam",
-    text: "La Tecnología Agroambiental combina dos cosas muy importantes: la producción agrícola 🌾 y el cuidado del medio ambiente 🌎.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Liam",
-    text: "Buscamos responder preguntas como: ¿cómo producir alimentos sin dañar la naturaleza? ¿cómo cuidar el suelo, el agua y los ecosistemas?",
-    animation: "talking2",
-  },
-  {
-    speaker: "Liam",
-    text: "La idea es lograr un equilibrio entre producción y conservación del ambiente. 🌱",
-    animation: "idle",
-  },
-  {
-    speaker: "Liam",
-    text: "Un día de trabajo puede ser bastante activo.",
-    animation: "idle",
-  },
-  {
-    speaker: "Liam",
-    text: "Muchas veces estoy en el campo revisando cultivos o analizando el estado del suelo.",
-    animation: "talking",
-  },
-  {
-    speaker: "Liam",
-    text: "También evaluamos la calidad del agua, el crecimiento de las plantas y la presencia de plagas.",
-    animation: "talking",
-  },
-  {
-    speaker: "Liam",
-    text: "Después analizamos esa información para proponer mejoras en el manejo agrícola y ambiental.",
-    animation: "talking",
-  },
-  {
-    speaker: "Liam",
-    text: "En algunos casos trabajamos con comunidades o agricultores enseñando prácticas más sostenibles.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Liam",
-    text: "Esta carrera permite trabajar en diferentes áreas.",
-    animation: "talking",
-  },
-  {
-    speaker: "Liam",
-    text: "🌾 Producción agrícola sostenible, 🌎 gestión ambiental, 🌱 proyectos agroecológicos.",
-    animation: "talking",
-  },
-  {
-    speaker: "Liam",
-    text: "🚜 Asesoría a agricultores, 🏞 conservación de suelos y 🏢 instituciones ambientales o agrícolas.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Liam",
-    text: "Para desempeñarte bien en esta carrera, hay habilidades muy importantes.",
-    animation: "idle",
-  },
-  {
-    speaker: "Liam",
-    text: "🌿 Interés por la naturaleza, 🔍 capacidad de observación, 🧠 resolución de problemas.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Liam",
-    text: "🤝 Trabajo con comunidades y 📚 aprendizaje constante sobre agricultura y sostenibilidad.",
+    text: "Soy Liam y me dedico a la Tecnología Agroambiental.",
     animation: "talking2",
   },
 
   {
     speaker: "Liam",
-    text: "Muchas personas disfrutan esta carrera por varias razones.",
-    animation: "idle",
-  },
-  {
-    speaker: "Liam",
-    text: "✨ Trabajar al aire libre, ✨ conectar con la naturaleza, ✨ ayudar a producir alimentos de forma responsable.",
+    text: "Mucha gente se pregunta qué es esto exactamente.",
     animation: "talking2",
   },
+
   {
     speaker: "Liam",
-    text: "✨ Y contribuir al cuidado del medio ambiente. 🌍",
+    text: "Imagina que mi trabajo es ser el puente entre el campo y la naturaleza.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Buscamos producir alimentos sin agotar los recursos naturales.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Básicamente, aplico tecnologías para que los cultivos y la ganadería sean sostenibles.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Siempre cuidando recursos importantes como el suelo y el agua.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Mi día a día es muy dinámico.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Algunas veces estoy en el campo supervisando procesos de producción.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Otras veces analizo la calidad del aire o del agua para evitar contaminación.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "También paso mucho tiempo trabajando con comunidades.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Les ayudamos a aprovechar mejor sus tierras de manera responsable.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Para hacer esto, uno desarrolla una visión muy completa.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Debes ser analítico y creativo para proponer nuevas soluciones.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Especialmente cuando algunos métodos tradicionales afectan el entorno natural.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Ayudo a resolver problemas reales relacionados con el medio ambiente.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Por ejemplo, el manejo de residuos o la recuperación de ríos y ecosistemas.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Lo genial es que puedo trabajar en muchos lugares diferentes.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Desde empresas agrícolas y organizaciones ambientales hasta proyectos propios.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Incluso es posible crear emprendimientos relacionados con productos orgánicos o mercados verdes.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Al final del día, lo que buscamos es mantener un equilibrio.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "La idea es que las comunidades crezcan sin afectar la biodiversidad.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Es una labor que requiere mucha ética y compromiso social.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Cada mejora que proponemos puede ayudar a proteger el futuro del planeta.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "A continuación participarás en una experiencia donde deberás identificar diferentes problemáticas ambientales.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "Analiza cada escenario y reconoce el problema ambiental que afecta al entorno.",
     animation: "talking2",
   },
 ];
@@ -108,27 +159,37 @@ export const agroambientalIntroDialogues = [
 export const agroambientalEndingDialogues = [
   {
     speaker: "Liam",
-    text: "Ahora quiero que pienses algo…",
-    animation: "idle",
+    text: "¡Buen trabajo! Lograste identificar correctamente las diferentes problemáticas ambientales.",
+    animation: "talking2",
   },
+
   {
     speaker: "Liam",
-    text: "¿Te gustaría ayudar a producir alimentos mientras cuidas el planeta?",
-    animation: "talking",
+    text: "Durante esta experiencia analizaste situaciones que afectan al medio ambiente y a las comunidades.",
+    animation: "talking2",
   },
+
   {
     speaker: "Liam",
-    text: "Si te interesa la agricultura, la naturaleza y la sostenibilidad…",
-    animation: "talking",
+    text: "Reconocer este tipo de problemas es una parte importante dentro de la Tecnología Agroambiental.",
+    animation: "talking2",
   },
+
   {
     speaker: "Liam",
-    text: "quizás Tecnología Agroambiental sea tu camino. 🌱🌍🚜",
-    animation: "talking",
+    text: "Profesionales de esta área trabajan constantemente buscando soluciones más sostenibles y responsables.",
+    animation: "talking2",
   },
+
   {
     speaker: "Liam",
-    text: "Nos vemos en tu próxima decisión profesional.",
-    animation: "clap",
+    text: "Esperamos que esta actividad te haya ayudado a comprender mejor cómo esta carrera contribuye al cuidado del entorno.",
+    animation: "talking2",
+  },
+
+  {
+    speaker: "Liam",
+    text: "¡Gracias por participar y continuar explorando nuevas profesiones!",
+    animation: "talking2",
   },
 ];

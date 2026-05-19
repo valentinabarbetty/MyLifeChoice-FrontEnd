@@ -57,22 +57,72 @@ export default function AdministracionGame({ onComplete }) {
 
   const getMoneyCost = (level) => {
     switch (level) {
-      case "baja": return 10;
-      case "media": return 18;
-      case "alta": return 25;
-      default: return 0;
+      case "baja":
+        return 10;
+      case "media":
+        return 18;
+      case "alta":
+        return 25;
+      default:
+        return 0;
     }
   };
 
   const getPeopleCost = (level) => {
     switch (level) {
-      case "baja": return 8;
-      case "media": return 15;
-      case "alta": return 25;
-      default: return 0;
+      case "baja":
+        return 8;
+      case "media":
+        return 15;
+      case "alta":
+        return 25;
+      default:
+        return 0;
     }
   };
+  const showAccessibleAlert = async ({ icon, title, text }) => {
+    const previouslyFocused = document.activeElement;
 
+    const swalConfig = {
+      title,
+      text,
+      icon,
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "#f59e0b",
+      background: "#fef7e7",
+      backdrop: true,
+      allowOutsideClick: false,
+      allowEscapeKey: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton();
+        if (confirmButton) {
+          confirmButton.focus();
+          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+        }
+
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.setAttribute("role", "alertdialog");
+          popup.setAttribute("aria-modal", "true");
+          popup.setAttribute("aria-label", title);
+
+          popup.style.borderRadius = "20px";
+        }
+
+        const content = Swal.getHtmlContainer();
+        if (content) {
+          content.setAttribute("aria-live", "polite");
+        }
+      },
+      willClose: () => {
+        if (previouslyFocused && previouslyFocused.focus) {
+          previouslyFocused.focus();
+        }
+      },
+    };
+
+    return Swal.fire(swalConfig);
+  };
   const getMoneyScore = (selected, correct) => {
     if (!selected) return 0;
     if (selected === correct) return 15;
@@ -81,7 +131,8 @@ export default function AdministracionGame({ onComplete }) {
       (selected === "media" && correct === "alta") ||
       (selected === "baja" && correct === "media") ||
       (selected === "alta" && correct === "media")
-    ) return 8;
+    )
+      return 8;
     return 3;
   };
 
@@ -93,22 +144,23 @@ export default function AdministracionGame({ onComplete }) {
       (selected === "media" && correct === "alta") ||
       (selected === "baja" && correct === "media") ||
       (selected === "alta" && correct === "media")
-    ) return 5;
+    )
+      return 5;
     return 2;
   };
 
-  const handleMoneyChange = (level) => {
-    const oldCost = currentAssignment.money ? getMoneyCost(currentAssignment.money) : 0;
+  const handleMoneyChange = async (level) => {
+    const oldCost = currentAssignment.money
+      ? getMoneyCost(currentAssignment.money)
+      : 0;
     const newCost = getMoneyCost(level);
     const newBudgetLeft = budgetLeft + oldCost - newCost;
 
     if (newBudgetLeft < 0) {
-      Swal.fire({
+      await showAccessibleAlert({
+        icon: "warning",
         title: "Presupuesto insuficiente",
         text: `No tienes suficiente presupuesto. Te queda ${budgetLeft}% y necesitas ${newCost}%`,
-        icon: "warning",
-        confirmButtonColor: "#22c55e",
-        background: "#fef7e7",
       });
       return;
     }
@@ -124,7 +176,9 @@ export default function AdministracionGame({ onComplete }) {
   };
 
   const handlePeopleChange = (level) => {
-    const oldCost = currentAssignment.people ? getPeopleCost(currentAssignment.people) : 0;
+    const oldCost = currentAssignment.people
+      ? getPeopleCost(currentAssignment.people)
+      : 0;
     const newCost = getPeopleCost(level);
     const newStaffLeft = staffLeft + oldCost - newCost;
 
@@ -149,19 +203,18 @@ export default function AdministracionGame({ onComplete }) {
     setStaffLeft(newStaffLeft);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!currentAssignment.money || !currentAssignment.people) {
-      Swal.fire({
+      await showAccessibleAlert({
+        icon: "warning",
         title: "Selecciona ambas opciones",
         text: "Debes asignar tanto presupuesto como personal para esta situación",
-        icon: "warning",
-        confirmButtonColor: "#22c55e",
-        background: "#fef7e7",
       });
       return;
     }
 
-    const newReputation = reputation + currentAssignment.moneyScore + currentAssignment.peopleScore;
+    const newReputation =
+      reputation + currentAssignment.moneyScore + currentAssignment.peopleScore;
     setReputation(Math.min(100, newReputation));
 
     if (step === scenarios.length - 1) {
@@ -181,7 +234,11 @@ export default function AdministracionGame({ onComplete }) {
         <GameCompleteModal
           title="¡Felicidades!"
           message="Has completado el desafío de administración."
-          extra={<p>Reputación final: <strong>{reputation}%</strong></p>}
+          extra={
+            <p>
+              Reputación final: <strong>{reputation}%</strong>
+            </p>
+          }
           onContinue={() => onComplete?.()}
         />
       </>
@@ -190,25 +247,46 @@ export default function AdministracionGame({ onComplete }) {
 
   const getCurrentCost = () => {
     let cost = { money: 0, people: 0 };
-    if (currentAssignment.money) cost.money = getMoneyCost(currentAssignment.money);
-    if (currentAssignment.people) cost.people = getPeopleCost(currentAssignment.people);
+    if (currentAssignment.money)
+      cost.money = getMoneyCost(currentAssignment.money);
+    if (currentAssignment.people)
+      cost.people = getPeopleCost(currentAssignment.people);
     return cost;
   };
 
   const currentCost = getCurrentCost();
   const situationsLeft = scenarios.length - step;
   const totalEarned = assignments.reduce(
-    (sum, a) => sum + (a.moneyScore || 0) + (a.peopleScore || 0), 0
+    (sum, a) => sum + (a.moneyScore || 0) + (a.peopleScore || 0),
+    0,
   );
 
   return (
     <div className="adminGameOverlay">
       <div className="adminGamePanel">
-
-        <div className="adminGameTopBar" role="region" aria-label="Recursos disponibles">
-          <AdminStat img={starImg}   label="Reputación"  value={`${reputation}%`} percent={reputation} />
-          <AdminStat img={dollarImg} label="Presupuesto" value={`${budgetLeft}%`} percent={budgetLeft} />
-          <AdminStat img={groupImg}  label="Personal"    value={`${staffLeft}%`}  percent={staffLeft} />
+        <div
+          className="adminGameTopBar"
+          role="region"
+          aria-label="Recursos disponibles"
+        >
+          <AdminStat
+            img={starImg}
+            label="Reputación"
+            value={`${reputation}%`}
+            percent={reputation}
+          />
+          <AdminStat
+            img={dollarImg}
+            label="Presupuesto"
+            value={`${budgetLeft}%`}
+            percent={budgetLeft}
+          />
+          <AdminStat
+            img={groupImg}
+            label="Personal"
+            value={`${staffLeft}%`}
+            percent={staffLeft}
+          />
         </div>
 
         <div
@@ -221,8 +299,13 @@ export default function AdministracionGame({ onComplete }) {
           Situación {step + 1} de {scenarios.length}
         </div>
 
-        <p className="adminGameInstruction" tabIndex={0} style={{ outline: "none" }}>
-          Ayúdame a asignar presupuesto y personal para solucionar la siguiente situación
+        <p
+          className="adminGameInstruction"
+          tabIndex={0}
+          style={{ outline: "none" }}
+        >
+          Ayúdame a asignar presupuesto y personal para solucionar la siguiente
+          situación
         </p>
 
         <div className="adminGameNpcContainer">
@@ -249,9 +332,24 @@ export default function AdministracionGame({ onComplete }) {
             title="Presupuesto a asignar"
             value={currentAssignment.money}
             options={[
-              { value: "baja",  label: "Bajo",  cost: "10%", desc: "Inversión mínima"  },
-              { value: "media", label: "Medio", cost: "18%", desc: "Inversión estándar" },
-              { value: "alta",  label: "Alto",  cost: "25%", desc: "Inversión máxima"  },
+              {
+                value: "baja",
+                label: "Bajo",
+                cost: "10%",
+                desc: "Inversión mínima",
+              },
+              {
+                value: "media",
+                label: "Medio",
+                cost: "18%",
+                desc: "Inversión estándar",
+              },
+              {
+                value: "alta",
+                label: "Alto",
+                cost: "25%",
+                desc: "Inversión máxima",
+              },
             ]}
             onChange={handleMoneyChange}
           />
@@ -259,9 +357,24 @@ export default function AdministracionGame({ onComplete }) {
             title="Personal a asignar"
             value={currentAssignment.people}
             options={[
-              { value: "baja",  label: "Bajo",  cost: "8%",  desc: "Equipo mínimo"   },
-              { value: "media", label: "Medio", cost: "15%", desc: "Equipo estándar" },
-              { value: "alta",  label: "Alto",  cost: "25%", desc: "Equipo completo" },
+              {
+                value: "baja",
+                label: "Bajo",
+                cost: "8%",
+                desc: "Equipo mínimo",
+              },
+              {
+                value: "media",
+                label: "Medio",
+                cost: "15%",
+                desc: "Equipo estándar",
+              },
+              {
+                value: "alta",
+                label: "Alto",
+                cost: "25%",
+                desc: "Equipo completo",
+              },
             ]}
             onChange={handlePeopleChange}
           />
@@ -270,7 +383,6 @@ export default function AdministracionGame({ onComplete }) {
         <button className="adminGameBtn" onClick={handleContinue}>
           {step === scenarios.length - 1 ? "Finalizar" : "Continuar"}
         </button>
-
       </div>
     </div>
   );
@@ -281,8 +393,12 @@ function AdminStat({ img, label, value, percent }) {
     <div className="adminGameStat">
       <img src={img} className="adminGameIconImg" alt="" aria-hidden="true" />
       <div className="adminGameStatContent">
-        <div className="adminGameLabel" aria-hidden="true">{label}</div>
-        <div className="adminGameValueSmall" aria-hidden="true">{value}</div>
+        <div className="adminGameLabel" aria-hidden="true">
+          {label}
+        </div>
+        <div className="adminGameValueSmall" aria-hidden="true">
+          {value}
+        </div>
         <div
           className="adminGameProgressBar"
           role="progressbar"
@@ -293,7 +409,10 @@ function AdminStat({ img, label, value, percent }) {
           tabIndex={0}
           style={{ outline: "none" }}
         >
-          <div className="adminGameProgressFill" style={{ width: `${percent}%` }} />
+          <div
+            className="adminGameProgressFill"
+            style={{ width: `${percent}%` }}
+          />
         </div>
       </div>
     </div>
@@ -305,7 +424,9 @@ function ResourceSelector({ title, value, options, onChange }) {
 
   return (
     <div className="resourceSelector" role="group" aria-labelledby={groupId}>
-      <h3 id={groupId} className="resourceSelectorTitle">{title}</h3>
+      <h3 id={groupId} className="resourceSelectorTitle">
+        {title}
+      </h3>
       <div className="resourceOptions">
         {options.map((opt) => (
           <button
@@ -315,9 +436,15 @@ function ResourceSelector({ title, value, options, onChange }) {
             aria-pressed={value === opt.value}
             aria-label={`${opt.label}, costo ${opt.cost}, ${opt.desc}`}
           >
-            <div className="resourceOptionLabel" aria-hidden="true">{opt.label}</div>
-            <div className="resourceOptionCost"  aria-hidden="true">{opt.cost}</div>
-            <div className="resourceOptionDesc"  aria-hidden="true">{opt.desc}</div>
+            <div className="resourceOptionLabel" aria-hidden="true">
+              {opt.label}
+            </div>
+            <div className="resourceOptionCost" aria-hidden="true">
+              {opt.cost}
+            </div>
+            <div className="resourceOptionDesc" aria-hidden="true">
+              {opt.desc}
+            </div>
           </button>
         ))}
       </div>

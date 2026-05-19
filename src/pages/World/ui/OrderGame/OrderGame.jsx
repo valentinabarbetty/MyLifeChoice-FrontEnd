@@ -1,8 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
-import "./OrderGame.css"
+import "./OrderGame.css";
 
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
@@ -16,7 +23,6 @@ import GameCompleteModal from "../GameCompleteModal/GameCompleteModal";
 
 const getItemLabel = (item) =>
   item.label || item.text || item.name || item.title || "Elemento";
-
 
 const stripEmojis = (str = "") =>
   str.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "").trim();
@@ -78,8 +84,59 @@ export default function OrderGame({
   const [gameFinished, setGameFinished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [announcement, setAnnouncement] = useState("");
+  const showAccessibleAlert = async ({
+    icon,
+    title,
+    text,
+    showConfirmButton = true,
+  }) => {
+    const previouslyFocused = document.activeElement;
 
-  const titleRef     = useRef(null);
+    const swalConfig = {
+      title,
+      text,
+      icon,
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "#f59e0b",
+      background: "#fef7e7",
+      backdrop: "rgba(0,0,0,0.4)",
+      allowOutsideClick: false,
+      allowEscapeKey: true,
+      showConfirmButton,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton();
+        if (confirmButton) {
+          confirmButton.focus();
+          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+        }
+
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.setAttribute("role", "alertdialog");
+          popup.setAttribute("aria-modal", "true");
+          popup.setAttribute("aria-label", title);
+          popup.style.borderRadius = "20px";
+        }
+
+        const content = Swal.getHtmlContainer();
+        if (content) {
+          content.setAttribute("aria-live", "polite");
+        }
+
+        if (announcerRef.current) {
+          announcerRef.current.textContent = `${title}. ${text}. Presiona Enter o Espacio para cerrar.`;
+        }
+      },
+      willClose: () => {
+        if (previouslyFocused && previouslyFocused.focus) {
+          previouslyFocused.focus();
+        }
+      },
+    };
+
+    return Swal.fire(swalConfig);
+  };
+  const titleRef = useRef(null);
   const containerRef = useRef(null);
   const announcerRef = useRef(null);
 
@@ -87,7 +144,7 @@ export default function OrderGame({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -100,8 +157,7 @@ export default function OrderGame({
         announcerRef.current.textContent = "";
         requestAnimationFrame(() => {
           if (announcerRef.current) {
-            announcerRef.current.textContent =
-              `${stripEmojis(title)}. ${stripEmojis(subtitle)}`;
+            announcerRef.current.textContent = `${stripEmojis(title)}. ${stripEmojis(subtitle)}`;
           }
         });
       }
@@ -121,18 +177,16 @@ export default function OrderGame({
     });
   }, [announcement]);
 
-  const handleValidate = () => {
+  const handleValidate = async () => {
     const isCorrect = order.every((item, i) => item.id === correctOrder[i]);
 
     if (!isCorrect) {
       setAnnouncement("El orden es incorrecto. Revisa e intenta de nuevo.");
-      Swal.fire({
-        title: "Casi lo logras 😅",
-        text: errorMessage,
+      await showAccessibleAlert({
         icon: "warning",
-        confirmButtonColor: "#22c55e",
-        background: "#fef7e7",
-        backdrop: `rgba(0,0,0,0.4)`,
+        title: "Casi lo logras",
+        text: errorMessage,
+        showConfirmButton: true,
       });
       return;
     }
@@ -152,7 +206,7 @@ export default function OrderGame({
       const newOrder = arrayMove(order, oldIndex, newIndex);
       setOrder(newOrder);
       setAnnouncement(
-        `${getItemLabel(order[oldIndex])} movido a la posición ${newIndex + 1}`
+        `${getItemLabel(order[oldIndex])} movido a la posición ${newIndex + 1}`,
       );
     }
   };
@@ -178,7 +232,6 @@ export default function OrderGame({
         aria-labelledby="game-title"
         aria-describedby="game-subtitle game-instructions"
       >
-      
         <h2
           id="game-title"
           ref={titleRef}
@@ -201,10 +254,10 @@ export default function OrderGame({
         />
 
         <div id="game-instructions" className="sr-only">
-          Arrastra y ordena los elementos. Usa Tab para navegar entre
-          elementos. Presiona Enter para seleccionar un elemento, luego
-          usa las flechas izquierda y derecha para moverlo de posición,
-          y presiona Enter nuevamente para soltarlo.
+          Arrastra y ordena los elementos. Usa Tab para navegar entre elementos.
+          Presiona Enter para seleccionar un elemento, luego usa las flechas
+          izquierda y derecha para moverlo de posición, y presiona Enter
+          nuevamente para soltarlo.
         </div>
 
         <div className="order-game-container" ref={containerRef}>
@@ -246,8 +299,8 @@ export default function OrderGame({
         </button>
 
         <span id="validate-desc" className="sr-only">
-          Presiona este botón para verificar si el orden de los elementos
-          es correcto
+          Presiona este botón para verificar si el orden de los elementos es
+          correcto
         </span>
       </div>
     </div>

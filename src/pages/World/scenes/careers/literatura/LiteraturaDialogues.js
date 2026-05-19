@@ -1,7 +1,7 @@
 export const literaturaIntroDialogues = [
   {
     speaker: "Emma",
-    text: "Hola… 📚 bienvenido. Soy Emma, licenciada en literatura.",
+    text: "Hola, bienvenido. Soy Emma, licenciada en literatura.",
     animation: "talking",
   },
   {
@@ -11,97 +11,58 @@ export const literaturaIntroDialogues = [
   },
   {
     speaker: "Emma",
-    text: "Si te gusta leer, escribir o analizar lo que las historias nos enseñan… esta carrera podría interesarte.",
-    animation: "idle",
-  },
-
-  {
-    speaker: "Emma",
-    text: "La Licenciatura en Literatura se enfoca en estudiar, analizar y enseñar obras literarias. 📖",
-    animation: "idle",
-  },
-  {
-    speaker: "Emma",
-    text: "Exploramos novelas, cuentos, poesía, teatro y textos de diferentes épocas y culturas.",
+    text: "Ser licenciada en esta área significa prepararse para ser una maestra que no solo conoce los libros, sino que sabe cómo enseñarlos con sensibilidad y creatividad.",
     animation: "talking",
   },
   {
     speaker: "Emma",
-    text: "Pero no solo leemos… también buscamos entender qué quería expresar el autor y qué significan las historias.",
+    text: "En el día a día, mi labor es ser un puente entre los autores y los estudiantes, ayudándoles a descubrir el sentido de lo que leen y a producir sus propios textos.",
     animation: "talking",
   },
   {
     speaker: "Emma",
-    text: "La literatura nos ayuda a comprender el mundo y a las personas.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Emma",
-    text: "Un día en esta profesión puede ser bastante interesante.",
+    text: "No solo nos quedamos con los libros clásicos.",
     animation: "talking",
   },
   {
     speaker: "Emma",
-    text: "Muchas veces estoy leyendo y analizando textos.",
-    animation: "idle",
-  },
-  {
-    speaker: "Emma",
-    text: "También preparo clases o discusiones sobre obras literarias.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Emma",
-    text: "En ocasiones escribo artículos, investigaciones o textos propios.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Emma",
-    text: "Y cuando enseño, guío a los estudiantes para que interpreten y reflexionen sobre las historias.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Emma",
-    text: "Esta carrera tiene diferentes caminos profesionales.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Emma",
-    text: "🏫 Docencia, ✍️ escritura, 📚 edición, 📰 periodismo cultural y 📖 investigación.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Emma",
-    text: "También puedes participar en proyectos culturales y literarios.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Emma",
-    text: "Hay habilidades muy importantes en esta carrera.",
-    animation: "idle",
-  },
-  {
-    speaker: "Emma",
-    text: "📖 Gusto por la lectura, ✍️ escritura, 🧠 análisis y 🗣 buena comunicación.",
+    text: "También exploramos nuevas formas de narrar y usamos la tecnología para que la literatura sea algo vivo en la comunicación actual.",
     animation: "talking",
   },
   {
     speaker: "Emma",
-    text: "También necesitas creatividad para interpretar y expresar ideas.",
+    text: "Un profesional en literatura desarrolla la capacidad de investigar, de imaginar y, sobre todo, de reflexionar de forma crítica sobre el mundo que nos rodea.",
+    animation: "talking",
+  },
+  {
+    speaker: "Emma",
+    text: "Ayudamos a resolver problemas fundamentales, como la falta de empatía o la dificultad para convivir, promoviendo valores humanos y el respeto por nuestra cultura.",
+    animation: "talking",
+  },
+  {
+    speaker: "Emma",
+    text: "Podemos trabajar en colegios y universidades, pero también en el campo de la investigación, la promoción artística o incluso creando obras literarias propias.",
+    animation: "talking",
+  },
+  {
+    speaker: "Emma",
+    text: "Nuestro impacto es enorme porque transformamos la educación y fortalecemos la identidad cultural a través de la enseñanza de los lenguajes y las artes.",
+    animation: "talking",
+  },
+  {
+    speaker: "Emma",
+    text: "Si te gusta leer, escribir y quieres transformar la sociedad a través de la educación y la cultura, este es un camino fascinante.",
     animation: "talking",
   },
 
   {
     speaker: "Emma",
-    text: "Muchos aman esta carrera porque pueden explorar historias de diferentes culturas y épocas.",
+    text: "Ahora tendrás un reto en el que deberás organizar los fragmentos de una historia en el lugar correcto: inicio, desarrollo y final.",
     animation: "talking",
   },
   {
     speaker: "Emma",
-    text: "Cada obra literaria es como un viaje a otra mente o a otro momento de la historia.",
+    text: "Arrastra cada fragmento al espacio que corresponda y, cuando completes la historia, presiona Continuar para revisar tu respuesta.",
     animation: "talking",
   },
 ];
@@ -109,27 +70,27 @@ export const literaturaIntroDialogues = [
 export const literaturaEndingDialogues = [
   {
     speaker: "Emma",
-    text: "Ahora te dejo una pregunta…",
+    text: "Antes de despedirnos, quiero dejarte una última pregunta.",
     animation: "idle",
   },
   {
     speaker: "Emma",
-    text: "¿Te gustaría explorar historias, entender su significado y compartirlas con otros?",
+    text: "¿Te gustaría descubrir nuevas historias, interpretar sus significados y compartir su riqueza con los demás?",
     animation: "talking",
   },
   {
     speaker: "Emma",
-    text: "Si te apasionan los libros, la escritura y la cultura…",
+    text: "Si disfrutas leer, escribir y explorar la cultura a través de las palabras,",
     animation: "talking",
   },
   {
     speaker: "Emma",
-    text: "quizás Licenciatura en Literatura sea tu camino. 📚✨",
+    text: "la Licenciatura en Literatura puede ser el camino perfecto para ti.",
     animation: "talking",
   },
   {
     speaker: "Emma",
-    text: "Nos vemos en tu próxima aventura entre historias.",
+    text: "¡Nos vemos en tu próxima aventura entre libros, letras e historias!",
     animation: "clap",
   },
 ];

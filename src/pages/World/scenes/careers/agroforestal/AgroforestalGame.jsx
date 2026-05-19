@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Swal from "sweetalert2";
 import ConfettiEffect from "../../../ui/Confetti";
 import GameCompleteModal from "../../../ui/GameCompleteModal/GameCompleteModal";
 import OptionCard from "../../../ui/OptionCard";

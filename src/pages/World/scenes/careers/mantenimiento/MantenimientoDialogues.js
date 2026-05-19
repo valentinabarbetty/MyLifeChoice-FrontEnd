@@ -1,127 +1,67 @@
 export const mantenimientoElectromecanicoIntroDialogues = [
   {
     speaker: "Mathias",
-    text: "¡Hola! 🔧⚡ Bienvenido.\nSoy Mathias, tecnólogo en mantenimiento electromecánico.",
+    text: "¡Hola! ¿Cómo vas? Soy Mathias, y hoy te voy a contar de qué trata mi mundo: el mantenimiento de sistemas electromecánicos.",
     animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "Mi trabajo consiste en revisar, reparar y mantener máquinas industriales para que funcionen correctamente.",
+    text: "En pocas palabras, soy la persona encargada de que las grandes máquinas y equipos industriales funcionen correctamente y no se detengan.",
     animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "Si te gustan las máquinas, las herramientas y entender cómo funcionan los equipos… esta carrera puede ser perfecta para ti.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Mathias",
-    text: "La Tecnología en Mantenimiento Electromecánico se enfoca en mantener y reparar equipos que combinan sistemas eléctricos y mecánicos.",
+    text: "Mi trabajo es una mezcla muy interesante de varias áreas: desde la electricidad y la mecánica, hasta sistemas que se mueven con aire o líquidos, que llamamos neumáticos e hidráulicos.",
     animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "Muchas máquinas funcionan gracias a motores eléctricos, sistemas mecánicos, sensores y sistemas de control.",
+    text: "En un día normal, puedo estar revisando que los motores y piezas de una máquina giren perfecto, lubricando componentes para evitar desgastes o ajustando circuitos eléctricos complejos.",
     animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "Nuestro trabajo es asegurar que todo eso funcione correctamente y sin fallas.",
-    animation: "talking",
-  },
-
-  {
-    speaker: "Mathias",
-    text: "Un día de trabajo puede ser muy dinámico.",
+    text: "Pero no todo es reparar cosas rotas; gran parte de mi tiempo lo dedico a la gestión, es decir, a planear cómo prevenir fallas antes de que ocurran para que la producción sea siempre eficiente.",
     animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "Primero reviso equipos o máquinas para detectar posibles fallas.",
+    text: "Para lograr esto, desarrollamos habilidades en matemáticas y ciencias, pero sobre todo usamos mucho la lógica y la creatividad para resolver problemas tecnológicos.",
     animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "También realizo mantenimiento preventivo, es decir, revisar antes de que algo se dañe.",
+    text: "También es clave saber trabajar en equipo y comunicarse bien, porque solemos colaborar con ingenieros y otros especialistas para sacar adelante grandes proyectos.",
     animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "Si una máquina falla, debo analizar el problema y repararla lo más rápido posible.",
-    animation: "idle",
-  },
-  {
-    speaker: "Mathias",
-    text: "Porque cuando una máquina se detiene… también puede detenerse toda la producción.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Mathias",
-    text: "Esta carrera tiene muchas oportunidades laborales.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Mathias",
-    text: "Puedes trabajar en mantenimiento industrial, reparación de maquinaria, instalación de equipos o sistemas eléctricos.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Mathias",
-    text: "También en empresas industriales, agrícolas o de servicios técnicos.",
-    animation: "talking2",
-  },
-
-  {
-    speaker: "Mathias",
-    text: "Para desempeñarte bien, hay habilidades muy importantes.",
-    animation: "idle",
-  },
-  {
-    speaker: "Mathias",
-    text: "Pensamiento técnico, uso de herramientas, detección de fallas y resolución de problemas.",
+    text: "Lo genial es que tenemos muchas opciones: podemos trabajar montando equipos nuevos, en laboratorios de precisión, controlando inventarios técnicos o incluso como asesores comerciales de tecnología.",
     animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "Además, muchas veces trabajarás en equipo.",
+    text: "Al final del día, nuestro trabajo impacta directamente en que la industria sea más productiva, segura y respetuosa con el medio ambiente.",
     animation: "talking",
   },
-
   {
     speaker: "Mathias",
-    text: "Muchas personas disfrutan esta carrera porque trabajan con máquinas reales.",
-    animation: "idle",
+    text: "Es una labor de aprendizaje constante, porque la tecnología siempre cambia y nosotros debemos estar listos para entender esos nuevos desafíos.",
+    animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "También porque resuelven problemas técnicos y ven resultados cuando logran reparar un equipo.",
-    animation: "talking2",
+    text: "Ahora tendrás un reto en el que deberás organizar en el orden correcto los pasos para reparar una máquina.",
+    animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "Pero también hay retos.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Mathias",
-    text: "A veces trabajarás en ambientes industriales o con esfuerzo físico.",
-    animation: "talking2",
-  },
-  {
-    speaker: "Mathias",
-    text: "Y algunos problemas pueden ser complejos de resolver.",
-    animation: "talking2",
+    text: "Arrastra cada acción a la posición que corresponda y, cuando consideres que todo está en el orden adecuado, presiona Continuar para revisar tu respuesta.",
+    animation: "talking",
   },
 ];
 
 export const mantenimientoElectromecanicoEndingDialogues = [
-  {
-    speaker: "Mathias",
-    text: "Ahora piensa un momento…",
-    animation: "talking",
-  },
   {
     speaker: "Mathias",
     text: "¿Te gustaría aprender cómo funcionan las máquinas y ser quien las mantenga funcionando correctamente?",
@@ -129,12 +69,12 @@ export const mantenimientoElectromecanicoEndingDialogues = [
   },
   {
     speaker: "Mathias",
-    text: "Si te gustan las herramientas, la tecnología y resolver problemas… quizás esta carrera sea tu camino.",
+    text: "Si te gustan las herramientas, la tecnología y resolver problemas, quizás esta carrera sea tu camino.",
     animation: "talking",
   },
   {
     speaker: "Mathias",
-    text: "Nos vemos en tu próxima decisión profesional. 🔧⚙️⚡",
+    text: "¡Nos vemos!",
     animation: "clap",
   },
 ];

@@ -11,21 +11,17 @@ useEffect(() => {
   const style = document.createElement("style");
   style.id = "a11y-fix";
   style.textContent = `
-  /* Todo lo anterior... */
-
-  /* CRÍTICO: El portal donde drei inyecta Html */
   .drei-html-portal,
   [class*="drei"] {
     overflow: hidden !important;
   }
 
-  /* Los divs que crea Html de drei */
   .drei-html {
     position: fixed !important;
     overflow: visible !important;
   }
 
-  /* Contenedor raíz nunca debe expandirse */
+
   html, body, #root {
     position: fixed !important;
     inset: 0 !important;
@@ -99,7 +95,6 @@ useEffect(() => {
         contain: "strict",
       }}
     >
-      <A11yAnnouncer />
       <Canvas
         shadows
         camera={{ position: [6, 6, 10], fov: 40, near: 0.1, far: 100 }}
