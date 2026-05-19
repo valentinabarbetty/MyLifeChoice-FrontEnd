@@ -151,7 +151,7 @@ function generatePDFReport(allProcessed, playerName) {
         fs(6);
         fn("bold");
         st(C.white);
-        doc.text("Ver en Univalle", lnkX + lnkW / 2, lnkY + lnkH / 2 + 1, {
+        doc.text("Ver en más Información", lnkX + lnkW / 2, lnkY + lnkH / 2 + 1, {
           align: "center",
         });
         doc.link(lnkX, lnkY, lnkW, lnkH, { url: c.npc.link });
