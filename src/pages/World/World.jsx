@@ -288,13 +288,15 @@ export default function World() {
       >
         ⚙️
       </button>
-      <A11yCareerPanel
-  onInteract={(career) => {
-    setActiveNPC(career);
-    setMode("interact");
-  }}
-  onHighlight={setHighlightedCareer}
-/>
+      {scene === "WORLD" && (
+  <A11yCareerPanel
+    onInteract={(career) => {
+      setActiveNPC(career);
+      setMode("interact");
+    }}
+    onHighlight={setHighlightedCareer}
+  />
+)}
       <WorldCanvas>
         <Suspense fallback={<Loader />}>
           {scene === "WORLD" && (
