@@ -287,9 +287,7 @@ function CareerDetailsModal({ career, onClose }) {
         >
           Puntaje: {finalScore.toFixed(0)} pts
         </div>
-        <div className="modal-section">
-    
-        </div>
+        <div className="modal-section"></div>
         <div className="modal-links">
           {npc?.link && (
             <a
@@ -387,10 +385,12 @@ export default function CareerSummary() {
     () =>
       data
         .map((item) => {
-          const npc = NPCS[item.career];
+          const npc = item.career_id
+            ? Object.values(NPCS).find((n) => n.id === item.career_id)
+            : NPCS[item.career];
           return {
             ...item,
-            career: npc?.career_name || item.career,
+            career: item.career,
             finalScore: item.score * 5,
             npc,
           };
@@ -398,7 +398,6 @@ export default function CareerSummary() {
         .sort((a, b) => b.finalScore - a.finalScore),
     [data],
   );
-
   const displayed = showAllCareers ? allProcessed : allProcessed.slice(0, 5);
   const best = allProcessed[0];
 
