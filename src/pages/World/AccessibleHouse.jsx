@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const NAMES = {
   administracion: "Administración de Empresas",
   logistica: "Tecnología en Gestión Logística",
@@ -14,7 +16,9 @@ const NAMES = {
   literatura: "Licenciatura en Literatura",
 };
 
-function HouseMesh({ highlighted }) {
+function HouseMesh({ highlighted, onInteract }) {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <>
       {highlighted && (
@@ -28,18 +32,40 @@ function HouseMesh({ highlighted }) {
           />
         </mesh>
       )}
-      <mesh castShadow receiveShadow>
+      <mesh
+        castShadow
+        receiveShadow
+        onClick={(e) => {
+          e.stopPropagation();
+          onInteract?.();
+        }}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered(true);
+          document.body.style.cursor = "pointer";
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          document.body.style.cursor = "default";
+        }}
+      >
         <boxGeometry args={[2, 2, 2]} />
-        <meshStandardMaterial color="#8B4513" />
+        <meshStandardMaterial
+          transparent
+          opacity={0} 
+        />
       </mesh>
     </>
   );
 }
 
-export default function AccessibleHouse({ position, career, highlighted }) {
+export default function AccessibleHouse({ position, career, highlighted, onInteract }) {
   return (
     <group position={position}>
-      <HouseMesh career={career} highlighted={highlighted} />
+      <HouseMesh
+        highlighted={highlighted}
+        onInteract={() => onInteract?.(career)}
+      />
     </group>
   );
 }
