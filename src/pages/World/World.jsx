@@ -59,7 +59,7 @@ export default function World() {
   const [soundEnabled, setSoundEnabled] = useState(savedSettings.soundEnabled);
   const [volume, setVolume] = useState(savedSettings.volume);
 
-  const { visited, markVisited } = useUserProgress();
+  const { visited, markVisited, progressLoaded } = useUserProgress();
   const ActiveGame = GAME_COMPONENTS[activeCareer];
   const availableCareers = ALL_CAREERS.filter((c) => {
     const npc = NPCS[c];
@@ -268,6 +268,7 @@ export default function World() {
       announce(`${npcInfo?.career_name}. Presiona Enter para interactuar`);
     }
   }, [nearNPC]);
+
 
   return (
     <>
