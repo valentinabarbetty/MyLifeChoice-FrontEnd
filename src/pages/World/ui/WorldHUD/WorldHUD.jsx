@@ -77,6 +77,22 @@ export default function WorldHUD({
   
     );
   }
+  if (mode === "house-interact") {
+  const careerName = npc?.career_name || currentKey;
+
+  return (
+    <DialogueBox
+      speaker={careerName}  
+      text={`¿Quieres explorar ${careerName}?`}
+      showNext={false}
+    >
+      <div className="dgl-options" role="group" aria-label="Opciones de respuesta">
+        <button onClick={onAccept} className="option-btn option-yes">Sí</button>
+        <button onClick={onReject} className="option-btn option-no">No</button>
+      </div>
+    </DialogueBox>
+  );
+}
 
  
   if ((mode === "dialogue" || mode === "career-ending") && dialogue) {

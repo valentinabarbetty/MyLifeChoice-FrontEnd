@@ -22,7 +22,7 @@ export default function WorldScene({
 
   const handleHouseInteract = (career) => {
     setActiveNPC(career);
-    setMode("interact");
+    setMode("house-interact");
   };
 
   return (
