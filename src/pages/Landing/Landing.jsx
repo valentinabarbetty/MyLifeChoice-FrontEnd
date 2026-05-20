@@ -117,6 +117,8 @@ export default function Landing() {
     localStorage.removeItem("selectedGuide");
     localStorage.removeItem("mlc_progress");
     localStorage.removeItem("sessionType");
+    localStorage.removeItem("careerTestResults");
+    localStorage.removeItem("intro_done");  
     window.location.href = "/";
   };
 
@@ -139,7 +141,7 @@ export default function Landing() {
           onClick={() => setShowHelpModal(true)}
           aria-label="Ayuda"
         >
-          <span className="btn-icon">❓</span>
+          <span className="btn-icon"></span>
           <span className="btn-text">Ayuda</span>
         </button>
 
@@ -148,12 +150,10 @@ export default function Landing() {
           onClick={() => setShowSettingsModal(true)}
           aria-label="Configuración"
         >
-          <span className="btn-icon">⚙️</span>
           <span className="btn-text">Configuración</span>
         </button>
         {localStorage.getItem("logged") === "logged" ? (
           <button className="top-btn logout-btn" onClick={logout}>
-            <span className="btn-icon">🚪</span>
             <span className="btn-text">Cerrar Sesión</span>
           </button>
         ) : (
@@ -161,7 +161,6 @@ export default function Landing() {
             className="top-btn login-btn"
             onClick={() => setShowLoginModal(true)}
           >
-            <span className="btn-icon">🔓</span>
             <span className="btn-text">Iniciar Sesión</span>
           </button>
         )}

@@ -457,14 +457,7 @@ export default function CareerSummary() {
       <div className="overlay" role="alert" aria-live="assertive">
         <div className="container">
           <h1 className="title">Sin Resultados</h1>
-          <p>Completa el test primero para ver tus carreras recomendadas.</p>
-          <button
-            className="btn-explore"
-            onClick={() => (window.location.href = "/test")}
-            aria-label="Ir al test vocacional"
-          >
-            Ir al test vocacional
-          </button>
+          <p>Completa el mundo primero para ver tus carreras recomendadas.</p>   
         </div>
       </div>
     );
