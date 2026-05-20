@@ -293,7 +293,7 @@ export default function World() {
   <A11yCareerPanel
     onInteract={(career) => {
       setActiveNPC(career);
-      setMode("interact");
+      setMode("house-interact");
     }}
     onHighlight={setHighlightedCareer}
   />
@@ -366,7 +366,7 @@ export default function World() {
           }
         }}
         onAccept={async () => {
-          if (mode === "interact") {
+          if (mode === "interact" || mode === "house-interact") {
             setScene("CAREER");
             setActiveCareer(activeNPC);
             setDialogueIndex(0);
@@ -383,7 +383,7 @@ export default function World() {
           }
         }}
         onReject={() => {
-          if (mode === "interact") {
+          if (mode === "interact" || mode === "house-interact") {
             markVisited(activeNPC);
             setActiveNPC(null);
             setMode("explore");
