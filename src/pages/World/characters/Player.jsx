@@ -148,6 +148,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
         wasMoving.current = true;
 
         onMove?.(playerRef.current.position.clone());
+      //console.log(`x: ${playerRef.current.position.x.toFixed(2)}, z: ${playerRef.current.position.z.toFixed(2)}`); // 👈
       } else {
         if (wasMoving.current) setIsMoving(false);
         wasMoving.current = false;
@@ -232,6 +233,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     
     if (p.x !== lastPosition.current.x || p.z !== lastPosition.current.z) {
       lastPosition.current = { x: p.x, z: p.z };
+     // console.log(`x: ${p.x.toFixed(2)}, z: ${p.z.toFixed(2)}`);
     }
     
     onMove?.(new THREE.Vector3(p.x, p.y, p.z));

@@ -204,7 +204,6 @@ export default function World() {
   };
   const [highlightedCareer, setHighlightedCareer] = useState(null);
 
-
   const handleVolumeChange = (newVolume) => {
     setVolume(newVolume);
     if (audioRef.current) {
@@ -269,7 +268,6 @@ export default function World() {
     }
   }, [nearNPC]);
 
-
   return (
     <>
       <BackButton />
@@ -290,18 +288,18 @@ export default function World() {
         ⚙️
       </button>
       {scene === "WORLD" && (
-  <A11yCareerPanel
-    onInteract={(career) => {
-      setActiveNPC(career);
-      setMode("house-interact");
-    }}
-    onHighlight={setHighlightedCareer}
-  />
-)}
+        <A11yCareerPanel
+          onInteract={(career) => {
+            setActiveNPC(career);
+            setMode("house-interact");
+          }}
+          onHighlight={setHighlightedCareer}
+        />
+      )}
       <WorldCanvas>
         <Suspense fallback={<Loader />}>
           {scene === "WORLD" && (
-            <Physics gravity={[0, -9.8, 0]} debug={false}>
+            <Physics gravity={[0, -9.8, 0]} debug={true}>
               <WorldScene
                 worldNPCs={worldNPCs}
                 mode={mode}
