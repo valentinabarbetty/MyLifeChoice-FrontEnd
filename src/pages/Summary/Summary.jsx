@@ -390,7 +390,7 @@ export default function CareerSummary() {
             : NPCS[item.career];
           return {
             ...item,
-            career: item.career,
+            career: npc?.career_name ?? item.career,
             finalScore: item.score * 5,
             npc,
           };
