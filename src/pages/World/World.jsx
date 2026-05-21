@@ -79,23 +79,26 @@ export default function World() {
 
   const ROUTES = [
     [
-      [-13.73, -2.2, -0.92],
-      [9.13, -2.2, -0.92],
-      [9.13, -1.84, -14.64],
-      [-8.57, -2.0, -1.67],
+      [26.44, -2.2, 11.67],
+      [16.14, -2.2, -4.11],
+      [5.11, -2.2, 1.29],
+      [10.26, -2.2, 15.46],
+      [25.93, -2.2, 12.23],
     ],
     [
-      [8.91, -2.2, 14.06],
-      [26.17, -2.2, 9.99],
-      [8.61, -1.76, -17.42],
-      [-5.36, -2.16, -5.12],
-      [10.43, -2.2, 13.81],
+      [-11.37, -2.2, 0.05],
+      [16.58, -2.2, -4.35],
+      [6.96, -2.2, -15.87],
+      [-4.92, -2.2, -5.1],
+      [-10.41, -2.2, 0.61],
     ],
     [
-      [37.9, -2.2, 6.82],
-      [31.3, -2.2, 11.67],
-      [15.04, -1.95, -7.33],
-      [28.92, -2.03, -9.09],
+      [30.97, -2.2, -1.87],
+      [18.11, -2.2, -23.29],
+      [8.86, -2.2, -20.62],
+      [14.63, -2.2, -5.69],
+      [24.31, -2.2, 4.14],
+      [32.44, -2.2, 0.08],
     ],
   ];
 
@@ -204,7 +207,6 @@ export default function World() {
   };
   const [highlightedCareer, setHighlightedCareer] = useState(null);
 
-
   const handleVolumeChange = (newVolume) => {
     setVolume(newVolume);
     if (audioRef.current) {
@@ -269,7 +271,6 @@ export default function World() {
     }
   }, [nearNPC]);
 
-
   return (
     <>
       <BackButton />
@@ -290,14 +291,14 @@ export default function World() {
         ⚙️
       </button>
       {scene === "WORLD" && (
-  <A11yCareerPanel
-    onInteract={(career) => {
-      setActiveNPC(career);
-      setMode("house-interact");
-    }}
-    onHighlight={setHighlightedCareer}
-  />
-)}
+        <A11yCareerPanel
+          onInteract={(career) => {
+            setActiveNPC(career);
+            setMode("house-interact");
+          }}
+          onHighlight={setHighlightedCareer}
+        />
+      )}
       <WorldCanvas>
         <Suspense fallback={<Loader />}>
           {scene === "WORLD" && (

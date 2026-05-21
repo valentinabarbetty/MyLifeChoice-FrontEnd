@@ -86,8 +86,8 @@ export default function WorldScene({
 
         <CuboidCollider args={[1, 3, 1]} position={[36.54, -1, -16.8]} />
         <CuboidCollider args={[3, 3, 3]} position={[29.49, -1, -14.63]} />
-        <CuboidCollider args={[2, 2, 1]} position={[17.08, -1, -17.03]} />
-        <CuboidCollider args={[3, 3, 3]} position={[19.82, -1, -29.72]} />
+        <CuboidCollider args={[2.5, 2, 3]} position={[17.08, -1, -16.03]} />
+        {/* <CuboidCollider args={[3, 1, 3]} position={[19.82, -1, -29.72]} /> */}
         <CuboidCollider args={[1, 3, 1]} position={[23.65, -1, -31.03]} />
         <CuboidCollider args={[4, 3, 5]} position={[8.08, -1, -38.01]} />
         <CuboidCollider args={[3, 3, 2]} position={[6.06, -1, -24.39]} />
@@ -106,6 +106,34 @@ export default function WorldScene({
         <CuboidCollider args={[2, 3, 2]} position={[-10.85, -1, 4.15]} />
 
         <CuboidCollider args={[3, 3, 3]} position={[-19.88, -1, -12.05]} />
+        <CuboidCollider args={[1, 1, 0.5]} position={[-7.42, -2, 3.79]} />
+        <CuboidCollider args={[1, 1, 0.5]} position={[3.05, -2, 5.32]} />
+        <CuboidCollider
+          args={[0.5, 1, 2]}
+          position={[10.1, -2, 6.1]}
+          rotation={[0, 2, 0]}
+        />
+        <CuboidCollider
+          args={[0.8, 1, 1]}
+          position={[29.4, -2, 7.8]}
+          rotation={[0, 2, 0]}
+        />
+        <CuboidCollider args={[2.5, 2, 2.5]} position={[32.07, -2, 6.5]} />
+        <CuboidCollider args={[2, 2, 2]} position={[34.79, -2, -2.22]} />
+        <CuboidCollider args={[2, 1, 0.5]} position={[38.31, -2, 0.4]} />
+        <CuboidCollider args={[2, 1, 0.6]} position={[2.16, -2, -26.21]} />
+        <CuboidCollider args={[1.5, 1, 0.5]} position={[-2.68, -2, -19.69]} />
+        <CuboidCollider args={[1.2, 1, 0.5]} position={[-7.67, -2, -12.84]} />
+        <CuboidCollider
+          args={[4, 1, 7.5]}
+          position={[-13.24, -2, -7.91]}
+          rotation={[0, 2.3, 0]}
+        />
+        <CuboidCollider args={[0.5, 1, 0.5]} position={[-14.97, -2, -18.0]} />
+        <CuboidCollider args={[1, 1, 1]} position={[-14.62, -2, -14.24]} />
+        <CuboidCollider args={[1.5, 1, 0.5]} position={[8.04, -2, -9.5]} />
+        <CuboidCollider args={[1.5, 1, 0.5]} position={[14.23, -2, -14.39]} />
+        <CuboidCollider args={[1, 1, 1]} position={[37.61, -2, -2.86]} />
       </RigidBody>
 
       <NPCGroup
@@ -125,7 +153,7 @@ export default function WorldScene({
         onMove={(pos) => setPlayerPos(pos)}
         scene="WORLD"
       />
-{/* 
+      {/* 
       <Guide
         position={[0, -3, -7]}
         onInteract={() => {
