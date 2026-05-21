@@ -5,12 +5,19 @@ import { RigidBody, CapsuleCollider } from "@react-three/rapier";
 import footstepsSound from "/assets/music/Footsteps.mp3";
 import * as THREE from "three";
 
-export default function Player({ onMove, mode, lookAt, spawnPosition, scene, scale }) {
+export default function Player({
+  onMove,
+  mode,
+  lookAt,
+  spawnPosition,
+  scene,
+  scale,
+}) {
   const playerRef = useRef(null);
   const direction = useRef(0);
   const wasMoving = useRef(false);
   const footstepsRef = useRef(null);
-  const lastPosition = useRef({ x: 0, z: 0 }); 
+  const lastPosition = useRef({ x: 0, z: 0 });
 
   const [isMoving, setIsMoving] = useState(false);
   const currentAction = useRef(null);
@@ -25,7 +32,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     KeyA: false,
     KeyD: false,
   });
-  
+
   const rb = useRef();
   const selectedPlayer = localStorage.getItem("selectedPlayer");
 
@@ -46,10 +53,16 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
   const { actions } = useAnimations(animations, playerRef);
 
   const isMovementKey = (key) => {
-    return keys.current.ArrowUp || keys.current.ArrowDown || 
-           keys.current.ArrowLeft || keys.current.ArrowRight ||
-           keys.current.KeyW || keys.current.KeyS || 
-           keys.current.KeyA || keys.current.KeyD;
+    return (
+      keys.current.ArrowUp ||
+      keys.current.ArrowDown ||
+      keys.current.ArrowLeft ||
+      keys.current.ArrowRight ||
+      keys.current.KeyW ||
+      keys.current.KeyS ||
+      keys.current.KeyA ||
+      keys.current.KeyD
+    );
   };
 
   useEffect(() => {
@@ -82,7 +95,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
         keys.current[e.code] = true;
       }
     };
-    
+
     const up = (e) => {
       if (e.code in keys.current) {
         e.preventDefault();
@@ -148,7 +161,9 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
         wasMoving.current = true;
 
         onMove?.(playerRef.current.position.clone());
-      //console.log(`x: ${playerRef.current.position.x.toFixed(2)}, z: ${playerRef.current.position.z.toFixed(2)}`); // 👈
+        console.log(
+          `x: ${playerRef.current.position.x.toFixed(2)}, z: ${playerRef.current.position.z.toFixed(2)}`,
+        ); // 👈
       } else {
         if (wasMoving.current) setIsMoving(false);
         wasMoving.current = false;
@@ -164,7 +179,6 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     let dirZ = 0;
     let moving = false;
 
-    
     if (keys.current.KeyW) {
       direction.current = Math.PI;
       dirZ = -1;
@@ -175,7 +189,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
       dirZ = 1;
       moving = true;
     }
-    
+
     if (keys.current.KeyA) {
       direction.current = -Math.PI / 2;
       dirX = -1;
@@ -217,7 +231,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
     if (!wasMoving.current && moving) setIsMoving(true);
     if (wasMoving.current && !moving) setIsMoving(false);
     wasMoving.current = moving;
-    
+
     if (moving) {
       if (footstepsRef.current && footstepsRef.current.paused) {
         footstepsRef.current.play().catch(() => {});
@@ -228,17 +242,17 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
         footstepsRef.current.currentTime = 0;
       }
     }
-    
+
     const p = rb.current.translation();
-    
+
     if (p.x !== lastPosition.current.x || p.z !== lastPosition.current.z) {
       lastPosition.current = { x: p.x, z: p.z };
-     // console.log(`x: ${p.x.toFixed(2)}, z: ${p.z.toFixed(2)}`);
+      console.log(`x: ${p.x.toFixed(2)}, z: ${p.z.toFixed(2)}`);
     }
-    
+
     onMove?.(new THREE.Vector3(p.x, p.y, p.z));
   });
-  
+
   const debugBox = false;
 
   if (scene === "CAREER") {
@@ -248,7 +262,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
       </group>
     );
   }
-  
+
   useEffect(() => {
     footstepsRef.current = new Audio(footstepsSound);
     footstepsRef.current.loop = true;
@@ -258,7 +272,7 @@ export default function Player({ onMove, mode, lookAt, spawnPosition, scene, sca
       footstepsRef.current?.pause();
     };
   }, []);
-  
+
   return (
     <RigidBody
       ref={rb}

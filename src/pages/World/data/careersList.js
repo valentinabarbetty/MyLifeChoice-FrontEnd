@@ -1,7 +1,7 @@
 export const ALL_CAREERS = [
   "administracion",
   "psicologia",
-   "software",
+  "software",
   "logistica",
   "mantenimiento",
   "ingenieriaIndustrial",
