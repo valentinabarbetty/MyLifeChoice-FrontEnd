@@ -165,7 +165,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       onLoginSuccess?.(response);
       window.location.reload();
     } catch (error) {
-      console.error("Error en login:", error);
+      //console.error("Error en login:", error);
       announce("Error al iniciar sesión. Credenciales incorrectas o usuario no encontrado.");
       await showAccessibleAlert({
         icon: "error",
@@ -205,7 +205,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       onLoginSuccess?.(data);
       window.location.reload();
     } catch (error) {
-      console.error("Error en login con Google:", error);
+     // console.error("Error en login con Google:", error);
       announce("Error al autenticar con Google. Intenta de nuevo.");
       await showAccessibleAlert({
         icon: "error",

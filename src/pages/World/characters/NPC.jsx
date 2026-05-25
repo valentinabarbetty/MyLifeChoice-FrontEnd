@@ -61,7 +61,7 @@ export default function NPC({
   useEffect(() => {
     if (!rb.current || !hasRoute) return;
     const start = route[0];
-    console.log(`NPC ${modelPath} spawn en:`, start);
+   // console.log(`NPC ${modelPath} spawn en:`, start);
     rb.current.setTranslation(
       {
         x: start[0],

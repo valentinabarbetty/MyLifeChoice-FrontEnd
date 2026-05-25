@@ -1,8 +1,6 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import FloatingCloud from "./elements/FunctionCloud";
 import Sea from "./elements/Sea";
-import { A11yAnnouncer } from "@react-three/a11y";
 import { useEffect, useRef } from "react";
 
 export default function WorldCanvas({ children }) {

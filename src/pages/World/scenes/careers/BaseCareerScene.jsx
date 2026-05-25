@@ -15,7 +15,7 @@ export default function BaseCareerScene({
   const { scene } = useGLTF(
     `/assets/models/scenes/careers/${careerId}.glb`
   );
-  console.log(careerId);
+  //console.log(careerId);
   const clonedScene = useMemo(() => scene.clone(true), [scene]);
 
   return (

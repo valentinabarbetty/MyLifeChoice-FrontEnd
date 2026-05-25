@@ -1,6 +1,5 @@
 import Village from "./../environments/Village";
 import Player from "./../characters/Player";
-import Guide from "./../characters/Guide";
 import CameraManager from "./../camera/FollowCamera";
 import NPCGroup from "./NPCGroup";
 import { useRef } from "react";

@@ -1,7 +1,4 @@
 import { useState, useEffect, useMemo } from "react";
-import Scene3D from "../Scene3D/Scene3D";
-import DialogueBox from "../../../../components/DialogueBox/DialogueBox";
-import AuthModal from "../../../../components/AuthModal/AuthModal";
 import dialoguesIntro from "../../../../data/dialogues/intro3D";
 import "./SessionStep.css";
 import RegisterModal from "../../../../components/RegisterModal/RegisterModal";
@@ -45,8 +42,6 @@ export default function SessionStep({ guide, playerName, onNext }) {
 
   return (
     <div className="choose-guide-container">
-
-      {/* Tarjeta de elección — fuera del dialogue-container */}
       <div className="session-choice-container">
         <h3 className="session-title">¿Cómo quieres continuar?</h3>
         <div className="session-buttons">
@@ -67,7 +62,6 @@ export default function SessionStep({ guide, playerName, onNext }) {
 
       <div className="dialogue-container">
         <div className="input-wrapper">
-          {/* DialogueBox u otros elementos aquí */}
         </div>
       </div>
 
