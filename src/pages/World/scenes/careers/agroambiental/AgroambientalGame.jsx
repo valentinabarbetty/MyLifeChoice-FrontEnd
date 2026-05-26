@@ -1,7 +1,3 @@
-import { useState } from "react";
-import ConfettiEffect from "../../../ui/Confetti";
-import GameCompleteModal from "../../../ui/GameCompleteModal/GameCompleteModal";
-import OptionCard from "../../../ui/OptionCard";
 import GenericDecisionGame from "../../../ui/GenericDecisionGame/GenericDecisionGame";
 
 const CASES = [

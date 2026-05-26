@@ -85,12 +85,12 @@ function GuideModel({ guideId, showArrows, animationState }) {
 }
 
 export default function Scene3D({ guideId, showArrows, animationState }) {
-  console.log(
-    "Rendering Scene3D with guideId:",
-    guideId,
-    "and showArrows:",
-    showArrows
-  );
+  // console.log(
+  //   "Rendering Scene3D with guideId:",
+  //   guideId,
+  //   "and showArrows:",
+  //   showArrows
+  // );
   if (!guideId) return null;
   return (
     <Canvas

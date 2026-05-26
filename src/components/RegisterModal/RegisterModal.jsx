@@ -155,7 +155,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
 
       onLoginSuccess?.(data);
     } catch (error) {
-      console.error("Error en login con Google:", error);
+      //console.error("Error en login con Google:", error);
       announce("Error al autenticar con Google. Intenta de nuevo.");
       await showAccessibleAlert({
         icon: "error",

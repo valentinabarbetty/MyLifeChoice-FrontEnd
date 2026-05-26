@@ -80,7 +80,7 @@ export default function Landing() {
   };
 
   const handleLoginSuccess = async (userData) => {
-    console.log("Login exitoso:", userData);
+   // console.log("Login exitoso:", userData);
 
     const newUserId = userData?.user_id;
     if (newUserId) {
@@ -102,7 +102,7 @@ export default function Landing() {
       const res = await checkIntroStatus(newUserId || userId);
       setHasProgress(res.has_intro);
     } catch (err) {
-      console.error("Error checking intro:", err);
+     // console.error("Error checking intro:", err);
     }
 
     setShowLoginModal(false);

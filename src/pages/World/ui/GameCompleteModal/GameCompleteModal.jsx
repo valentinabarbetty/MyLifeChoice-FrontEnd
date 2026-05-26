@@ -65,7 +65,7 @@ export default function GameCompleteModal({
       }
       audioRef.current.volume = volume;
       audioRef.current.play().catch((err) => {
-        console.log("Error reproduciendo sonido:", err);
+        //console.log("Error reproduciendo sonido:", err);
       });
       hasPlayed.current = true;
     } else if (audioRef.current && audioRef.current.volume !== volume) {

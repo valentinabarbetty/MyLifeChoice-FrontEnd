@@ -173,6 +173,31 @@
   border-top: 1px solid #e3d7b8;
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+}
+
+.help-btn-secondary {
+  font-family: 'DM Sans', sans-serif;
+  background: transparent;
+  border: 1.5px solid #e3d7b8;
+  padding: 11px 24px;
+  border-radius: 14px;
+  color: #7f7359;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.help-btn-secondary:hover {
+  background: rgba(127, 115, 89, 0.08);
+  border-color: #b8a876;
+  transform: translateY(-2px);
+}
+
+.help-btn-secondary:active {
+  transform: translateY(0);
 }
 
 .help-btn-primary {

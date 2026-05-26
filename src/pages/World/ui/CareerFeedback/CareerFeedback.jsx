@@ -49,7 +49,7 @@ export default function CareerFeedback({ career, onFinish }) {
       }
       localStorage.setItem("careerTestResults", JSON.stringify(allResults));
     } catch (error) {
-      console.error("Error guardando:", error);
+     // console.error("Error guardando:", error);
     }
     onFinish?.();
   };

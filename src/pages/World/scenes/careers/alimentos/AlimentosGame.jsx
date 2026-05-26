@@ -1,5 +1,3 @@
-
-
 import ClassificationGame from "../../../ui/ClassificationGame/ClassificationGame";
 
 

@@ -24,7 +24,7 @@ export function useUserProgress() {
         localStorage.setItem("mlc_progress", JSON.stringify(data));
       })
       .catch(() => {
-        console.log("Error cargando progreso");
+       // console.log("Error cargando progreso");
       });
   }, []);
 
