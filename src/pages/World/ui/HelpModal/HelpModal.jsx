@@ -2,12 +2,14 @@ import { useEffect, useRef } from "react";
 import "./HelpModal.css";
 
 export default function HelpModal({ open, onClose }) {
-  const modalRef    = useRef(null);
+  const modalRef = useRef(null);
   const closeBtnRef = useRef(null);
   const announcerRef = useRef(null);
 
   useEffect(() => {
-    const handleEsc = (e) => { if (e.key === "Escape" && open) onClose(); };
+    const handleEsc = (e) => {
+      if (e.key === "Escape" && open) onClose();
+    };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, [open, onClose]);
@@ -34,23 +36,32 @@ export default function HelpModal({ open, onClose }) {
       });
     }, 300);
 
-    return () => { clearTimeout(focusId); clearTimeout(announceId); };
+    return () => {
+      clearTimeout(focusId);
+      clearTimeout(announceId);
+    };
   }, [open]);
 
   useEffect(() => {
     if (!open || !modalRef.current) return;
     const focusable = modalRef.current.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
     const first = focusable[0];
-    const last  = focusable[focusable.length - 1];
+    const last = focusable[focusable.length - 1];
 
     const trap = (e) => {
       if (e.key !== "Tab") return;
       if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        }
       } else {
-        if (document.activeElement === last)  { e.preventDefault(); first?.focus(); }
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
       }
     };
     document.addEventListener("keydown", trap);
@@ -59,7 +70,9 @@ export default function HelpModal({ open, onClose }) {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "unset";
-    return () => { document.body.style.overflow = "unset"; };
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [open]);
 
   const handleBackdropClick = (e) => {
@@ -100,18 +113,35 @@ export default function HelpModal({ open, onClose }) {
           </button>
         </div>
 
-        <div className="help-body" role="list" aria-label="Instrucciones del juego">
-
-          <div className="help-section" role="listitem" aria-label="Objetivo: Explora el mundo y completa todas las carreras profesionales">
-            <div className="help-icon" aria-hidden="true">🎯</div>
+        <div
+          className="help-body"
+          role="list"
+          aria-label="Instrucciones del juego"
+        >
+          <div
+            className="help-section"
+            role="listitem"
+            aria-label="Objetivo: Explora el mundo y completa todas las carreras profesionales"
+          >
+            <div className="help-icon" aria-hidden="true">
+              🎯
+            </div>
             <div className="help-content" aria-hidden="true">
               <h4>Objetivo</h4>
-              <p>Explora el mundo y completa todas las carreras profesionales</p>
+              <p>
+                Explora el mundo y completa todas las carreras profesionales
+              </p>
             </div>
           </div>
 
-          <div className="help-section" role="listitem" aria-label="Movimiento: usa las teclas de flecha arriba, abajo, izquierda y derecha para moverte">
-            <div className="help-icon" aria-hidden="true">🕹️</div>
+          <div
+            className="help-section"
+            role="listitem"
+            aria-label="Movimiento: usa las teclas de flecha arriba, abajo, izquierda y derecha para moverte"
+          >
+            <div className="help-icon" aria-hidden="true">
+              🕹️
+            </div>
             <div className="help-content" aria-hidden="true">
               <h4>Movimiento</h4>
               <div className="help-keys">
@@ -124,24 +154,42 @@ export default function HelpModal({ open, onClose }) {
             </div>
           </div>
 
-          <div className="help-section" role="listitem" aria-label="Interacción: acércate a los personajes y haz clic en ellos para hablar">
-            <div className="help-icon" aria-hidden="true">💬</div>
+          <div
+            className="help-section"
+            role="listitem"
+            aria-label="Interacción: acércate a los personajes y haz clic en ellos para hablar"
+          >
+            <div className="help-icon" aria-hidden="true">
+              💬
+            </div>
             <div className="help-content" aria-hidden="true">
               <h4>Interacción</h4>
               <p>Acércate a los NPCs y haz clic en ellos para hablar</p>
             </div>
           </div>
 
-          <div className="help-section" role="listitem" aria-label="Diálogos: usa el botón siguiente para avanzar en la conversación">
-            <div className="help-icon" aria-hidden="true">📖</div>
+          <div
+            className="help-section"
+            role="listitem"
+            aria-label="Diálogos: usa el botón siguiente para avanzar en la conversación"
+          >
+            <div className="help-icon" aria-hidden="true">
+              📖
+            </div>
             <div className="help-content" aria-hidden="true">
               <h4>Diálogos</h4>
               <p>Usa el botón → para avanzar en la conversación</p>
             </div>
           </div>
 
-          <div className="help-section" role="listitem" aria-label="Progreso: completa cada carrera para desbloquear la siguiente">
-            <div className="help-icon" aria-hidden="true">🏆</div>
+          <div
+            className="help-section"
+            role="listitem"
+            aria-label="Progreso: completa cada carrera para desbloquear la siguiente"
+          >
+            <div className="help-icon" aria-hidden="true">
+              🏆
+            </div>
             <div className="help-content" aria-hidden="true">
               <h4>Progreso</h4>
               <p>Completa cada carrera para desbloquear la siguiente</p>
@@ -150,6 +198,19 @@ export default function HelpModal({ open, onClose }) {
         </div>
 
         <div className="help-footer">
+          <button
+            className="help-btn-secondary"
+            onClick={() =>
+              window.open(
+                "https://mylifechoice-manual.vercel.app/",
+                "_blank",
+                "noopener,noreferrer",
+              )
+            }
+            aria-label="Abrir manual de usuario en una nueva ventana"
+          >
+            Ver manual de usuario
+          </button>
           <button
             className="help-btn-primary"
             onClick={onClose}
