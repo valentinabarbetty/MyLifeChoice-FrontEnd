@@ -12,4 +12,5 @@ export const ALL_CAREERS = [
   // "electronica",
   // "literatura",
   // "agroforestal",
+  //////Al careers
 ];
