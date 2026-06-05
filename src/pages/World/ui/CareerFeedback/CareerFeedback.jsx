@@ -77,21 +77,22 @@ export default function CareerFeedback({ career, onFinish }) {
 
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <Rating
-            name="career-rating"
-            value={answers[current] || 0}
-            precision={1}
-            aria-labelledby="feedback-question-label"
-            getLabelText={(value) =>
-              `${value} ${value === 1 ? "estrella" : "estrellas"}`
-            }
-            onChange={(event, newValue) => {
-              if (newValue) handleSelect(newValue);
-            }}
-            onChangeActive={(event, newHover) => {
-              setHover(newHover);
-            }}
-            size="large"
-          />
+  name="career-rating"
+  value={answers[current] || 0}
+  precision={1}
+  max={5}
+  aria-labelledby="feedback-question-label"
+  getLabelText={(value) =>
+    `${value} ${value === 1 ? "estrella" : "estrellas"}, de 5`
+  }
+  onChange={(event, newValue) => {
+    if (newValue) handleSelect(newValue);
+  }}
+  onChangeActive={(event, newHover) => {
+    setHover(newHover);
+  }}
+  size="large"
+/>
         </Box>
 
         <p className="feedback-progress">

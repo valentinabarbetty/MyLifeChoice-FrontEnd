@@ -59,7 +59,7 @@ const CAREERS = {
     desc: "Emily te explicará sobre manejo de bosques y producción sostenible.",
   },
   educacionFisica: {
-    name: "Educación Física",
+    name: "Licenciatura enEducación Física",
     desc: "Samuel te guiará sobre deportes, actividad física y pedagogía.",
   },
   literatura: {
