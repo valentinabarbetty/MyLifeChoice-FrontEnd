@@ -38,7 +38,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
         const confirmButton = Swal.getConfirmButton();
         if (confirmButton) {
           confirmButton.focus();
-          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+          confirmButton.setAttribute("aria-label", `Cerrar aviso: ${title}. Presiona Enter o la barra espaciadora.`);
         }
 
         const popup = Swal.getPopup();
@@ -64,7 +64,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
 
       setTimeout(() => {
         announce(
-          `Alerta: ${text}. Se cerrará automáticamente en ${timer / 1000} segundos.`
+          `Aviso: ${text}. Esta ventana se cerrará sola en ${timer / 1000} segundos, no necesitas hacer nada.`
         );
       }, 100);
     }
@@ -72,13 +72,14 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     return Swal.fire(swalConfig);
   };
 
+  
   useEffect(() => {
+    if (isRegistering) return;
+
     const focusId    = setTimeout(() => titleRef.current?.focus(), 100);
     const announceId = setTimeout(() => {
       announce(
-        isRegistering
-          ? "Formulario de registro. Completa los campos para crear tu cuenta."
-          : "Formulario de inicio de sesión. Ingresa tu correo y contraseña, o usa Google."
+        "Ventana para iniciar sesión. Primero escribe tu correo, luego presiona Tab para ir a la contraseña. Al terminar, presiona Enter en cualquiera de los dos campos para entrar. También puedes usar el botón para entrar con Google. Para cerrar esta ventana, presiona Escape."
       );
     }, 300);
     return () => {
@@ -93,7 +94,10 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
+
   useEffect(() => {
+    if (isRegistering) return;
+
     const card = document.getElementById("auth-modal-card");
     if (!card) return;
 
@@ -130,7 +134,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      announce("Error: por favor completa todos los campos antes de continuar.");
+      announce("Falta información: escribe tu correo y tu contraseña antes de continuar. Usa Tab para moverte entre los dos campos.");
       await showAccessibleAlert({
         icon: "warning",
         title: "Campos incompletos",
@@ -140,7 +144,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     }
 
     setLoading(true);
-    announce("Iniciando sesión, por favor espera.");
+    announce("Entrando, espera un momento por favor.");
 
     try {
       const response = await loginUser({ email, password });
@@ -152,7 +156,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       localStorage.setItem("sessionType", "auth");
 
       announce(
-        `Bienvenido, ${response.nickname || response.email}. Sesión iniciada correctamente.`
+        `Bienvenido, ${response.nickname || response.email}. Ya iniciaste sesión correctamente.`
       );
       await showAccessibleAlert({
         icon: "success",
@@ -165,8 +169,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       onLoginSuccess?.(response);
       window.location.reload();
     } catch (error) {
-      //console.error("Error en login:", error);
-      announce("Error al iniciar sesión. Credenciales incorrectas o usuario no encontrado.");
+      announce("No se pudo iniciar sesión. Revisa que tu correo y contraseña sean correctos y vuelve a intentarlo con Tab y Enter.");
       await showAccessibleAlert({
         icon: "error",
         title: "Error al iniciar sesión",
@@ -178,7 +181,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
   };
 
   const handleGoogleLogin = async () => {
-    announce("Abriendo inicio de sesión con Google.");
+    announce("Se abrirá una ventana emergente de Google para que inicies sesión con tu cuenta.");
     try {
       const result = await signInWithPopup(auth, provider);
       const user   = result.user;
@@ -193,7 +196,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       localStorage.setItem("playerName",  data.nickname);
       localStorage.setItem("sessionType", "google");
 
-      announce(`Bienvenido, ${data.nickname}. Sesión iniciada con Google.`);
+      announce(`Bienvenido, ${data.nickname}. Ya iniciaste sesión con Google.`);
       await showAccessibleAlert({
         icon: "success",
         title: "Bienvenido",
@@ -205,8 +208,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       onLoginSuccess?.(data);
       window.location.reload();
     } catch (error) {
-     // console.error("Error en login con Google:", error);
-      announce("Error al autenticar con Google. Intenta de nuevo.");
+      announce("No se pudo entrar con Google. Vuelve a intentarlo o usa tu correo y contraseña en su lugar.");
       await showAccessibleAlert({
         icon: "error",
         title: "Error con Google",
@@ -238,6 +240,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="auth-modal-title"
+      aria-describedby="auth-modal-instructions"
     >
       <div
         ref={announcerRef}
@@ -257,13 +260,18 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
           Iniciar sesión
         </h2>
 
+        <p id="auth-modal-instructions" className="sr-only">
+          Escribe tu correo, presiona Tab para ir a la contraseña, y presiona Enter para entrar.
+          Presiona Escape en cualquier momento para cerrar esta ventana.
+        </p>
+
         <form
           role="form"
-          aria-label="Formulario de inicio de sesión"
+          aria-label="Inicia sesión con tu correo y contraseña"
           onSubmit={(e) => { e.preventDefault(); handleLogin(); }}
         >
           <label htmlFor="auth-email" className="sr-only">
-            Correo electrónico
+            Correo electrónico. Presiona Tab para ir al siguiente campo.
           </label>
           <input
             id="auth-email"
@@ -274,11 +282,11 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             className="auth-input"
             autoComplete="email"
             aria-required="true"
-            aria-label="Correo electrónico"
+            aria-label="Correo electrónico. Presiona Tab para ir al campo de contraseña."
           />
 
           <label htmlFor="auth-password" className="sr-only">
-            Contraseña
+            Contraseña. Presiona Enter para entrar cuando termines de escribirla.
           </label>
           <input
             id="auth-password"
@@ -289,14 +297,14 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             className="auth-input"
             autoComplete="current-password"
             aria-required="true"
-            aria-label="Contraseña"
+            aria-label="Contraseña. Presiona Enter para entrar cuando termines de escribirla."
           />
 
           <button
             type="submit"
             className="auth-btn"
             disabled={loading}
-            aria-label={loading ? "Iniciando sesión, por favor espera" : "Iniciar sesión"}
+            aria-label={loading ? "Entrando, por favor espera" : "Iniciar sesión. También puedes presionar Enter desde los campos de arriba."}
             aria-busy={loading}
           >
             {loading ? "Ingresando..." : "Iniciar sesión"}
@@ -308,7 +316,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
         <button
           onClick={handleGoogleLogin}
           className="google-btn"
-          aria-label="Iniciar sesión con Google"
+          aria-label="Iniciar sesión con Google. Se abrirá una ventana emergente."
         >
           <img
             src="https://developers.google.com/identity/images/g-logo.png"
@@ -325,7 +333,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
           <button
             className="auth-link"
             onClick={() => setIsRegistering(true)}
-            aria-label="Ir al formulario de registro"
+            aria-label="Ir a la ventana para crear una cuenta nueva"
           >
             Regístrate
           </button>
@@ -334,7 +342,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
         <button
           className="auth-close"
           onClick={onClose}
-          aria-label="Cerrar formulario de inicio de sesión"
+          aria-label="Cerrar esta ventana sin iniciar sesión"
         >
           Cerrar
         </button>

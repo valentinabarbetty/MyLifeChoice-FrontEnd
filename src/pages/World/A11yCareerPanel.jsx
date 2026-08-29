@@ -59,7 +59,7 @@ const CAREERS = {
     desc: "Emily te explicará sobre manejo de bosques y producción sostenible.",
   },
   educacionFisica: {
-    name: "Licenciatura enEducación Física",
+    name: "Licenciatura en Educación Física",
     desc: "Samuel te guiará sobre deportes, actividad física y pedagogía.",
   },
   literatura: {
@@ -68,18 +68,35 @@ const CAREERS = {
   },
 };
 
-export default function A11yCareerPanel({ onInteract, onHighlight }) {
+export default function A11yCareerPanel({
+  visibleCareers,
+  onInteract,
+  onHighlight,
+  inert = false,
+}) {
+  const entries = visibleCareers
+    .map((key) => [key, CAREERS[key]])
+    .filter(([, data]) => Boolean(data));
+
   return (
-    <nav aria-label="Carreras universitarias disponibles" style={srOnly}>
+    <nav
+      aria-label="Carreras universitarias disponibles"
+      style={srOnly}
+
+      inert={inert ? "" : undefined}
+      aria-hidden={inert || undefined}
+    >
       <h2>Selecciona una carrera para explorar</h2>
       <p>
-        Hay 13 carreras disponibles. Usa Tab para navegar entre ellas y Enter
-        para explorar cada una.
+        Hay {entries.length}{" "}
+        {entries.length === 1 ? "carrera disponible" : "carreras disponibles"}
+        . Usa Tab para navegar entre ellas y Enter para explorar cada una.
       </p>
       <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-        {Object.entries(CAREERS).map(([key, { name, desc }]) => (
+        {entries.map(([key, { name, desc }]) => (
           <li key={key}>
             <button
+              tabIndex={inert ? -1 : 0}
               aria-label={`${name}. ${desc} Presiona Enter para explorar esta carrera.`}
               onFocus={() => onHighlight(key)}
               onBlur={() => onHighlight(null)}

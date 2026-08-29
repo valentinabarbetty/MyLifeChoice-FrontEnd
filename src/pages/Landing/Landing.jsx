@@ -11,6 +11,11 @@ import { useEffect, useRef, useState } from "react";
 import Settings from "../World/ui/Settings/Settings";
 import HelpModal from "../World/ui/HelpModal/HelpModal";
 
+
+
+const INSTRUCCION_NAVEGACION =
+  " Presiona Enter o la barra espaciadora para seleccionar. Usa Tab para pasar al siguiente.";
+
 export default function Landing() {
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -19,6 +24,7 @@ export default function Landing() {
   const [hasProgress, setHasProgress] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [volume, setVolume] = useState(0.4);
+  const [statusMessage, setStatusMessage] = useState("");
 
   const audioRef = useRef(null);
   const [userId, setUserId] = useState(localStorage.getItem("userId"));
@@ -60,18 +66,18 @@ export default function Landing() {
     }
   }, [soundEnabled, volume]);
 
- useEffect(() => {
-  const isLogged = localStorage.getItem("logged") === "logged";
-  const introDoneLocal = localStorage.getItem("intro_done") === "true";
+  useEffect(() => {
+    const isLogged = localStorage.getItem("logged") === "logged";
+    const introDoneLocal = localStorage.getItem("intro_done") === "true";
 
-  if (introDoneLocal && isLogged) {
-    setHasProgress(true);
-  } else if (userId) {
-    checkIntroStatus(userId)
-      .then((res) => setHasProgress(res.has_intro))
-      .catch((err) => console.error("Error checking intro:", err));
-  }
-}, [userId]);
+    if (introDoneLocal && isLogged) {
+      setHasProgress(true);
+    } else if (userId) {
+      checkIntroStatus(userId)
+        .then((res) => setHasProgress(res.has_intro))
+        .catch((err) => console.error("Error checking intro:", err));
+    }
+  }, [userId]);
 
   const stopMusic = () => {
     if (audioRef.current) {
@@ -80,7 +86,6 @@ export default function Landing() {
   };
 
   const handleLoginSuccess = async (userData) => {
-   // console.log("Login exitoso:", userData);
 
     const newUserId = userData?.user_id;
     if (newUserId) {
@@ -102,10 +107,12 @@ export default function Landing() {
       const res = await checkIntroStatus(newUserId || userId);
       setHasProgress(res.has_intro);
     } catch (err) {
-     // console.error("Error checking intro:", err);
     }
 
     setShowLoginModal(false);
+
+
+    setStatusMessage("Sesión iniciada correctamente. Ya puedes continuar tu partida.");
   };
 
   const logout = () => {
@@ -118,7 +125,7 @@ export default function Landing() {
     localStorage.removeItem("mlc_progress");
     localStorage.removeItem("sessionType");
     localStorage.removeItem("careerTestResults");
-    localStorage.removeItem("intro_done");  
+    localStorage.removeItem("intro_done");
     window.location.href = "/";
   };
 
@@ -131,35 +138,48 @@ export default function Landing() {
         muted
         loop
         playsInline
+        aria-hidden="true"
+        role="presentation"
+        tabIndex={-1}
       />
 
-      <div className="overlay"></div>
+      <div className="overlay" aria-hidden="true"></div>
+
+
+      <div className="sr-only" role="status" aria-live="polite">
+        {statusMessage}
+      </div>
+
 
       <div className="top-buttons">
         <button
           className="top-btn help-btn"
           onClick={() => setShowHelpModal(true)}
-          aria-label="Ayuda"
+          aria-label={"Ayuda. Abre una ventana con instrucciones sobre cómo jugar." + INSTRUCCION_NAVEGACION}
         >
-          <span className="btn-icon"></span>
           <span className="btn-text">Ayuda</span>
         </button>
 
         <button
           className="top-btn settings-btn"
           onClick={() => setShowSettingsModal(true)}
-          aria-label="Configuración"
+          aria-label={"Configuración. Abre una ventana donde puedes ajustar el sonido y el volumen de la música." + INSTRUCCION_NAVEGACION}
         >
           <span className="btn-text">Configuración</span>
         </button>
         {localStorage.getItem("logged") === "logged" ? (
-          <button className="top-btn logout-btn" onClick={logout}>
+          <button
+            className="top-btn logout-btn"
+            onClick={logout}
+            aria-label={"Cerrar sesión. Sales de tu cuenta y borras tu progreso guardado en este dispositivo." + INSTRUCCION_NAVEGACION}
+          >
             <span className="btn-text">Cerrar Sesión</span>
           </button>
         ) : (
           <button
             className="top-btn login-btn"
             onClick={() => setShowLoginModal(true)}
+            aria-label={"Iniciar sesión. Abre un formulario para entrar con tu cuenta y guardar tu progreso." + INSTRUCCION_NAVEGACION}
           >
             <span className="btn-text">Iniciar Sesión</span>
           </button>
@@ -168,7 +188,7 @@ export default function Landing() {
 
       <motion.img
         src={logo}
-        alt="My Life Choice Logo"
+        alt="Logo de Mi Vida, Mis Decisiones"
         className="landing-logo"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -190,6 +210,7 @@ export default function Landing() {
               stopMusic();
               navigate("/intro");
             }}
+            aria-label={"Empezar nueva aventura. Te lleva a la introducción del juego para crear tu personaje y comenzar desde cero." + INSTRUCCION_NAVEGACION}
           >
             Empezar Nueva Aventura
           </motion.button>
@@ -202,6 +223,7 @@ export default function Landing() {
               stopMusic();
               navigate("/world");
             }}
+            aria-label={"Continuar partida. Te lleva directamente al mundo del juego, donde retomas tu progreso guardado." + INSTRUCCION_NAVEGACION}
           >
             Continuar Partida
           </motion.button>

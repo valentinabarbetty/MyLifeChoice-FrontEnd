@@ -19,7 +19,9 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
   useEffect(() => {
     const focusId    = setTimeout(() => titleRef.current?.focus(), 100);
     const announceId = setTimeout(() => {
-      announce("Formulario de registro. Completa los campos para crear tu cuenta.");
+      announce(
+        "Ventana para crear una cuenta. Escribe tu correo, presiona Tab para ir a la contraseña, y presiona Enter para enviar cuando termines. También puedes usar el botón para entrar con Google. Para cerrar esta ventana, presiona Escape."
+      );
     }, 300);
     return () => {
       clearTimeout(focusId);
@@ -92,7 +94,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
         const confirmButton = Swal.getConfirmButton();
         if (confirmButton) {
           confirmButton.focus();
-          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+          confirmButton.setAttribute("aria-label", `Cerrar aviso: ${title}. Presiona Enter o la barra espaciadora.`);
         }
 
         const popup = Swal.getPopup();
@@ -118,7 +120,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
 
       setTimeout(() => {
         announce(
-          `Alerta: ${text}. Se cerrará automáticamente en ${timer / 1000} segundos.`
+          `Aviso: ${text}. Esta ventana se cerrará sola en ${timer / 1000} segundos, no necesitas hacer nada.`
         );
       }, 100);
     }
@@ -127,7 +129,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
   };
 
   const handleGoogleLogin = async () => {
-    announce("Abriendo inicio de sesión con Google.");
+    announce("Se abrirá una ventana emergente de Google para que inicies sesión con tu cuenta.");
     try {
       const result = await signInWithPopup(auth, provider);
       const user   = result.user;
@@ -144,7 +146,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
       localStorage.setItem("sessionType", "google");
 
 
-      announce(`Bienvenido, ${data.nickname}. Sesión iniciada con Google.`);
+      announce(`Bienvenido, ${data.nickname}. Ya iniciaste sesión con Google.`);
       await showAccessibleAlert({
         icon: "success",
         title: "Bienvenido",
@@ -155,8 +157,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
 
       onLoginSuccess?.(data);
     } catch (error) {
-      //console.error("Error en login con Google:", error);
-      announce("Error al autenticar con Google. Intenta de nuevo.");
+      announce("No se pudo entrar con Google. Vuelve a intentarlo o crea tu cuenta con correo y contraseña en su lugar.");
       await showAccessibleAlert({
         icon: "error",
         title: "Error con Google",
@@ -167,7 +168,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
 
   const handleSubmit = async () => {
     if (!email.trim() || !password.trim()) {
-      announce("Error: por favor completa todos los campos antes de continuar.");
+      announce("Falta información: escribe tu correo y una contraseña antes de continuar. Usa Tab para moverte entre los dos campos.");
       await showAccessibleAlert({
         icon: "warning",
         title: "Campos incompletos",
@@ -177,7 +178,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
     }
 
     setLoading(true);
-    announce("Creando tu cuenta, por favor espera.");
+    announce("Creando tu cuenta, espera un momento por favor.");
 
     try {
       const response = await registerUser({
@@ -195,7 +196,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
       localStorage.setItem("userId",      response.user_id);
 
       announce(
-        `Registro exitoso. Bienvenido/a, ${response.nickname || nickname}.`
+        `Cuenta creada. Bienvenido o bienvenida, ${response.nickname || nickname}.`
       );
       await showAccessibleAlert({
         icon: "success",
@@ -211,14 +212,14 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
       try {
         const parsed = JSON.parse(err.message);
         if (parsed.email?.[0]?.includes("already exists")) {
-          announce("El correo ya está registrado. Intenta con otro o inicia sesión.");
+          announce("Ese correo ya tiene una cuenta. Escribe otro correo, o cierra esta ventana con Escape y usa 'Iniciar sesión' en su lugar.");
           await showAccessibleAlert({
             icon: "warning",
             title: "Correo ya registrado",
             text: "Intenta con otro correo o inicia sesión",
           });
         } else {
-          announce("Error en el registro. Verifica los datos ingresados.");
+          announce("No se pudo completar el registro. Revisa el correo y la contraseña, y vuelve a intentarlo con Tab y Enter.");
           await showAccessibleAlert({
             icon: "error",
             title: "Error",
@@ -226,7 +227,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
           });
         }
       } catch {
-        announce("No se pudo crear la cuenta. Verifica tus datos.");
+        announce("No se pudo crear la cuenta. Revisa que el correo y la contraseña sean válidos y vuelve a intentarlo.");
         await showAccessibleAlert({
           icon: "error",
           title: "Error",
@@ -244,6 +245,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="register-modal-title"
+      aria-describedby="register-modal-instructions"
     >
       <div
         ref={announcerRef}
@@ -263,13 +265,18 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
           Crear cuenta
         </h2>
 
+        <p id="register-modal-instructions" className="sr-only">
+          Escribe tu correo, presiona Tab para ir a la contraseña, y presiona Enter para enviar.
+          Presiona Escape en cualquier momento para cerrar esta ventana.
+        </p>
+
         <form
           role="form"
-          aria-label="Formulario de registro"
+          aria-label="Crea tu cuenta con correo y contraseña"
           onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}
         >
           <label htmlFor="register-email" className="sr-only">
-            Correo electrónico
+            Correo electrónico. Presiona Tab para ir al siguiente campo.
           </label>
           <input
             id="register-email"
@@ -280,11 +287,11 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
             className="register-input"
             autoComplete="email"
             aria-required="true"
-            aria-label="Correo electrónico"
+            aria-label="Correo electrónico. Presiona Tab para ir al campo de contraseña."
           />
 
           <label htmlFor="register-password" className="sr-only">
-            Contraseña
+            Contraseña. Presiona Enter para enviar cuando termines de escribirla.
           </label>
           <input
             id="register-password"
@@ -295,14 +302,14 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
             className="register-input"
             autoComplete="new-password"
             aria-required="true"
-            aria-label="Contraseña"
+            aria-label="Contraseña. Presiona Enter para enviar cuando termines de escribirla."
           />
 
           <button
             type="submit"
             className="register-btn"
             disabled={loading}
-            aria-label={loading ? "Creando cuenta, por favor espera" : "Registrarme"}
+            aria-label={loading ? "Creando cuenta, por favor espera" : "Registrarme. También puedes presionar Enter desde los campos de arriba."}
             aria-busy={loading}
           >
             {loading ? "Creando..." : "Registrarme"}
@@ -314,7 +321,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
         <button
           onClick={handleGoogleLogin}
           className="google-btn"
-          aria-label="Iniciar sesión con Google"
+          aria-label="Continuar con Google. Se abrirá una ventana emergente."
         >
           <img
             src="https://developers.google.com/identity/images/g-logo.png"
@@ -329,7 +336,7 @@ export default function RegisterModal({ onClose, onLoginSuccess, onNext }) {
         <button
           className="register-close"
           onClick={onClose}
-          aria-label="Cerrar formulario de registro"
+          aria-label="Cerrar esta ventana sin crear la cuenta"
         >
           Cerrar
         </button>

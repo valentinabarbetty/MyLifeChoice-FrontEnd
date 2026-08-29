@@ -48,7 +48,7 @@ const PHASE_META = {
   2: {
     title: "¿Cuál es el cuello de botella?",
     instructions:
-      "Selecciona la etapa que tarda más tiempo y representa el cuello de botella del proceso.",
+      "Selecciona la etapa que tarda más tiempo y representa el cuello de botella del proceso. Presiona Tab para moverte entre las opciones y Enter para seleccionar.",
   },
   3: {
     title: "¿Cómo optimizamos?",
@@ -56,6 +56,35 @@ const PHASE_META = {
       "Elige la mejor solución para optimizar la etapa con mayor tiempo de proceso.",
   },
 };
+
+const dragScreenReaderInstructions = {
+  draggable:
+    "Para reordenar una tarjeta, presiona Enter o la barra espaciadora para agarrarla. Mientras la arrastras, usa las flechas del teclado para cambiarla de posición. Presiona Enter o espacio nuevamente para soltarla, o Escape para cancelar.",
+};
+
+function getDragAnnouncements(order) {
+  return {
+    onDragStart({ active }) {
+      return `${active.id} agarrado. Usa las flechas para moverlo y Enter o espacio para soltarlo.`;
+    },
+    onDragOver({ active, over }) {
+      if (over) {
+        const position = order.indexOf(over.id) + 1;
+        return `${active.id} se movió a la posición número ${position}.`;
+      }
+      return `${active.id} ya no está sobre ninguna posición.`;
+    },
+    onDragCancel({ active }) {
+      return `Movimiento cancelado. ${active.id} volvió a su posición anterior.`;
+    },
+  };
+}
+
+const SOLUTIONS = [
+  { value: "personal", label: "Contratar más personal", emoji: "📋" },
+  { value: "mejorar", label: "Comprar máquinas de empaque", emoji: "🏭" },
+  { value: "nada", label: "Nada", emoji: "❌" },
+];
 
 function SortableItem({ id, index, totalItems }) {
   const {
@@ -78,12 +107,13 @@ function SortableItem({ id, index, totalItems }) {
       ref={setNodeRef}
       style={style}
       className="card drag"
-      role="button"
-      tabIndex={0}
-      aria-label={`${id}, posición ${index + 1} de ${totalItems}. Presiona Enter para agarrar y usar flechas para mover.`}
-      aria-describedby={`sort-desc-${id}`}
       {...attributes}
       {...listeners}
+      role="button"
+      tabIndex={0}
+      aria-roledescription="tarjeta arrastrable"
+      aria-label={`${id}, posición ${index + 1} de ${totalItems}. Presiona Enter para agarrar y usar flechas para mover.`}
+      aria-describedby={`sort-desc-${id}`}
     >
       <h3 aria-hidden="true">{id}</h3>
       <img src={IMAGES[id]} className="card-img" alt="" aria-hidden="true" />
@@ -103,7 +133,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
   const [showConfetti, setShowConfetti] = useState(false);
   const [announcement, setAnnouncement] = useState("");
 
-  const titleRef = useRef(null);
+  const panelRef = useRef(null);
   const announcerRef = useRef(null);
   const showAccessibleAlert = async ({
     icon,
@@ -162,7 +192,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
 
   useEffect(() => {
     const id = setTimeout(() => {
-      titleRef.current?.focus();
+      panelRef.current?.focus();
     }, 100);
     return () => clearTimeout(id);
   }, [phase]);
@@ -195,7 +225,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
     if (isCorrect) {
       setSelectedBottleneck(null);
       setAnnouncement(
-        "¡Correcto! Avanzando a la fase 2: identificar el cuello de botella.",
+        "Orden de la línea de producción completada correctamente. Ahora identifica el cuello de botella.",
       );
       setPhase(2);
     } else {
@@ -205,7 +235,9 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
   const validatePhase2 = async () => {
     if (selectedBottleneck === "Empaque") {
       setSelectedSolution(null);
-      setAnnouncement("¡Correcto! Avanzando a la fase 3: elegir la solución.");
+      setAnnouncement(
+        `${selectedBottleneck} confirmado como cuello de botella. Ahora elige la solución para optimizarlo.`,
+      );
       setPhase(3);
     } else {
       await showError();
@@ -214,8 +246,11 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
 
   const validatePhase3 = async () => {
     if (selectedSolution === "mejorar") {
+      const solutionLabel = SOLUTIONS.find(
+        (s) => s.value === selectedSolution,
+      )?.label;
       setAnnouncement(
-        "¡Excelente! Optimizaste correctamente el proceso productivo.",
+        `${solutionLabel} aplicado a ${selectedBottleneck}. Proceso optimizado correctamente.`,
       );
       setGameFinished(true);
       setShowConfetti(true);
@@ -254,13 +289,13 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
 
       <div
         className="panel"
+        ref={panelRef}
+        tabIndex={-1}
         role="region"
         aria-labelledby="game-title"
         aria-describedby="game-instructions"
       >
-        <h2 id="game-title" ref={titleRef} tabIndex={-1} aria-live="polite">
-          {currentMeta.title}
-        </h2>
+        <h2 id="game-title">{currentMeta.title}</h2>
 
         <div id="game-instructions" className="sr-only">
           {currentMeta.instructions}
@@ -270,6 +305,10 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
+              accessibility={{
+                announcements: getDragAnnouncements(order),
+                screenReaderInstructions: dragScreenReaderInstructions,
+              }}
               onDragEnd={({ active, over }) => {
                 if (!over || active.id === over.id) return;
                 const oldIndex = order.indexOf(active.id);
@@ -277,7 +316,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
                 const newOrder = arrayMove(order, oldIndex, newIndex);
                 setOrder(newOrder);
                 setAnnouncement(
-                  `${active.id} movido a la posición ${newIndex + 1}`,
+                  `${active.id} se movió a la posición ${newIndex + 1} satisfactoriamente, presiona TAB para continuar organizando o para ir al botón de Continuar.`,
                 );
               }}
             >
@@ -316,7 +355,9 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
           <>
             <div role="group" aria-labelledby="bottleneck-group-label">
               <p id="bottleneck-group-label" className="sr-only">
-                Selecciona la etapa que representa el cuello de botella
+                Selecciona la etapa que representa el cuello de botella,
+                presiona Tab para moverte entre las opciones y Enter para
+                seleccionar.
               </p>
 
               <div
@@ -334,12 +375,12 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
                     onClick={() => {
                       setSelectedBottleneck(item);
                       setAnnouncement(
-                        `${item} seleccionado, ${TIMES[item]} segundos`,
+                        `${item} seleccionado, presiona Tab para ir al botón de continuar. ${TIMES[item]} segundos.`,
                       );
                     }}
                     aria-pressed={selectedBottleneck === item}
                     role="button"
-                    aria-label={`${item}, ${TIMES[item]} segundos${selectedBottleneck === item ? ", seleccionado" : ""}`}
+                    aria-label={`${item}, ${TIMES[item]} segundos${selectedBottleneck === item ? ", seleccionado, presiona Tab para ir al botón de continuar" : ""}`}
                   />
                 ))}
               </div>
@@ -382,19 +423,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
                 Selecciona una solución para optimizar {selectedBottleneck}
               </p>
 
-              {[
-                {
-                  value: "personal",
-                  label: "Contratar más personal",
-                  emoji: "📋",
-                },
-                {
-                  value: "mejorar",
-                  label: "Comprar máquinas de empaque",
-                  emoji: "🏭",
-                },
-                { value: "nada", label: "Nada", emoji: "❌" },
-              ].map(({ value, label, emoji }) => (
+              {SOLUTIONS.map(({ value, label, emoji }) => (
                 <button
                   key={value}
                   className={`option-button ${selectedSolution === value ? "selected" : ""}`}
@@ -402,7 +431,7 @@ export default function IngenieriaIndustrialGame({ onComplete }) {
                   aria-checked={selectedSolution === value}
                   onClick={() => {
                     setSelectedSolution(value);
-                    setAnnouncement(`${label} seleccionado`);
+                    setAnnouncement(`Seleccionaste: ${label}. Presiona Tab para ir al botón de Finalizar.`);
                   }}
                 >
                   <span aria-hidden="true">{emoji}</span> {label}

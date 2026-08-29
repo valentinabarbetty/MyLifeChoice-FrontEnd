@@ -89,6 +89,16 @@ export const psicologiaEndingDialogues = [
   },
   {
     speaker: "Mia",
+    text: "Ahora pasaremos a valorar tu experiencia en esta carrera. Aparecerá una pregunta y cinco estrellas para que califiques qué tanto te gustó la actividad.",
+    animation: "talking",
+  },
+  {
+    speaker: "Mia",
+    text: "Si estás utilizando un lector de pantalla, puedes usar la tecla Tab para desplazarte entre las estrellas y la barra espaciadora para seleccionar una opción. Una estrella significa que la actividad te gustó muy poco y cinco estrellas que te gustó mucho.",
+    animation: "talking",
+  },
+  {
+    speaker: "Mia",
     text: "¡Nos vemos en tu próxima gran decisión profesional!",
     animation: "clap",
   },

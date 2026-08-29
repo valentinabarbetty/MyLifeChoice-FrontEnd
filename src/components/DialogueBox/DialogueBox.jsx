@@ -2,16 +2,35 @@ import "./DialogueBox.css";
 import arrowIcon from "/assets/ui/arrow-next.png";
 import { useEffect, useRef, useId } from "react";
 
-export default function DialogueBox({ text, speaker = "", onNext, showNext = true, children }) {
+export default function DialogueBox({
+  text,
+  speaker = "",
+  onNext,
+  showNext = true,
+  children,
+  extraHint,
+  animateOnce = false,
+}) {
   const textRef = useRef();
   const speakerId = useId();
   const textId = useId();
-  const hintId = useId(); 
+  const hintId = useId();
+  const extraHintId = useId();
+
   useEffect(() => {
-    if (textRef.current) {
-      textRef.current.focus();
-    }
-  }, [text]);
+    const delay = animateOnce ? 1000 : 50;
+    const id = setTimeout(() => {
+      textRef.current?.focus();
+    }, delay);
+    return () => clearTimeout(id);
+  }, [text, animateOnce]);
+
+  const describedByIds = [
+    showNext ? hintId : null,
+    extraHint ? extraHintId : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div
@@ -19,7 +38,6 @@ export default function DialogueBox({ text, speaker = "", onNext, showNext = tru
       role="dialog"
       aria-modal="true"
       aria-labelledby={speaker ? speakerId : textId}
-      aria-describedby={speaker ? textId : undefined}
     >
       {speaker && (
         <div className="dlg-tag">
@@ -33,7 +51,7 @@ export default function DialogueBox({ text, speaker = "", onNext, showNext = tru
           ref={textRef}
           className="dlg-text"
           tabIndex={-1}
-          aria-describedby={showNext ? hintId : undefined} 
+          aria-describedby={describedByIds || undefined}
           style={{ outline: "none" }}
         >
           {text}
@@ -55,6 +73,25 @@ export default function DialogueBox({ text, speaker = "", onNext, showNext = tru
             }}
           >
             Para ir al siguiente mensaje, usa Tab y luego Enter.
+          </span>
+        )}
+
+        {extraHint && (
+          <span
+            id={extraHintId}
+            style={{
+              position: "absolute",
+              width: "1px",
+              height: "1px",
+              padding: 0,
+              margin: "-1px",
+              overflow: "hidden",
+              clip: "rect(0,0,0,0)",
+              whiteSpace: "nowrap",
+              border: 0,
+            }}
+          >
+            {extraHint}
           </span>
         )}
 

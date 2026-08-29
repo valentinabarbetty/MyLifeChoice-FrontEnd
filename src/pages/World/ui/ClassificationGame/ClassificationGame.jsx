@@ -27,11 +27,29 @@ export default function ClassificationGame({
   const itemsContainerRef = useRef(null);
   const categoriesRef = useRef({});
   const announcerRef = useRef(null);
+  const completionRef = useRef(null);
 
   useEffect(() => {
     const id = setTimeout(() => titleRef.current?.focus(), 100);
     return () => clearTimeout(id);
   }, []);
+
+  // Cuando la clasificación se completa correctamente, todo el panel
+  // (incluido el botón "Continuar" que tenía el foco) se desmonta y se
+  // reemplaza por GameCompleteModal. Sin manejo de foco, el navegador
+  // devuelve el foco a <body> al perderse su elemento activo, y desde
+  // ahí el lector de pantalla puede empezar a recorrer elementos
+  // externos a la aplicación (pestañas del navegador, etc.).
+  //
+  // No usamos setTimeout: React ya garantiza que completionRef.current
+  // apunta al nuevo <div> (ver JSX más abajo) para cuando este efecto
+  // se ejecuta, porque los refs se asignan durante el commit, antes de
+  // que useEffect corra. Por eso basta con enfocar directamente aquí,
+  // sin esperar con un temporizador arbitrario.
+  useEffect(() => {
+    if (!gameFinished) return;
+    completionRef.current?.focus();
+  }, [gameFinished]);
   const showAccessibleAlert = async ({
     icon,
     title,
@@ -129,12 +147,18 @@ export default function ClassificationGame({
     if (movedFromItems)
       setItems((prev) => prev.filter((i) => i.id !== item.id));
 
-    const category = categories.find((c) => c.id === zone);
+    const remainingItemsCount = items.length - (movedFromItems ? 1 : 0);
     setAnnouncement(
-      `${getItemLabel(item)} movido a ${category?.label || zone}`,
+      remainingItemsCount === 0
+        ? "Elemento clasificado satisfactoriamente. Has terminado de clasificar. Utiliza Tab para ir al botón Continuar y presiona Enter para continuar."
+        : "Elemento clasificado satisfactoriamente. Utiliza Shift + Tab para volver a las tarjetas y seleccionar otro elemento.",
     );
     setSelectedItem(null);
-    setTimeout(() => categoriesRef.current[zone]?.focus(), 100);
+    // A propósito NO se mueve el foco aquí y NO se intercepta
+    // Shift+Tab ni Tab con JavaScript. El foco permanece en el espacio
+    // de clasificación donde se presionó Enter; es el usuario quien
+    // decide cuándo navegar, usando el comportamiento estándar del
+    // teclado del navegador.
   };
 
   const moveItemBack = (item) => {
@@ -158,7 +182,7 @@ export default function ClassificationGame({
       setAnnouncement(
         isSelected
           ? `${getItemLabel(item)} deseleccionado.`
-          : `${getItemLabel(item)} seleccionado. Navega a una categoría y presiona Enter para asignarlo.`,
+          : `${getItemLabel(item)} seleccionado. Utiliza Tab para ir a los espacios de clasificación y Enter para asignarlo.`,
       );
     }
     if (e.key === "ArrowRight" || e.key === "ArrowDown") {
@@ -233,14 +257,19 @@ export default function ClassificationGame({
 
   if (gameFinished) {
     return (
-      <>
+      <div
+        ref={completionRef}
+        tabIndex={-1}
+        role="region"
+        aria-label="Clasificación completada correctamente. El juego continúa."
+      >
         {showConfetti && <ConfettiEffect />}
         <GameCompleteModal
           title="¡Excelente!"
           message="Clasificaste correctamente."
           onContinue={onComplete}
         />
-      </>
+      </div>
     );
   }
 
@@ -305,8 +334,8 @@ export default function ClassificationGame({
                 onKeyDown={(e) => handleItemKeyDown(e, item)}
                 aria-label={
                   selectedItem?.id === item.id
-                    ? `${getItemLabel(item)}, seleccionado. Navega a una categoría y presiona Enter para asignarlo.`
-                    : `${getItemLabel(item)}. Presiona Enter para seleccionar.`
+                    ? `Tarjeta sin clasificar: ${getItemLabel(item)}, seleccionado. Utiliza Tab para ir a los espacios de clasificación y Enter para asignarlo.`
+                    : `Tarjeta sin clasificar: ${getItemLabel(item)}. Presiona Enter para seleccionar.`
                 }
                 aria-pressed={selectedItem?.id === item.id}
               >
@@ -368,7 +397,7 @@ export default function ClassificationGame({
                       onDragStart={(e) => handleDragStart(e, item)}
                       tabIndex={0}
                       onKeyDown={(e) => handlePlacedItemKeyDown(e, item)}
-                      aria-label={`${getItemLabel(item)} en ${cat.label}. Presiona Enter para devolver a la bandeja.`}
+                      aria-label={`Tarjeta clasificada: ${getItemLabel(item)} en ${cat.label}. Presiona Enter para devolver a la bandeja.`}
                     >
                       <div aria-hidden="true">{renderItem(item)}</div>
                     </div>

@@ -1,4 +1,3 @@
-
 .select-guide-container {
   position: relative;
   width: 100vw;
@@ -30,6 +29,12 @@
   font-weight: 700;
   margin-bottom: 2rem;
   text-align: center;
+  outline: none;
+}
+
+.choose-title:focus-visible {
+  box-shadow: 0 0 0 4px rgba(244, 194, 76, 0.35);
+  border-radius: 6px;
 }
 
 .guide-options {
@@ -44,23 +49,43 @@
   width: 180px;
   height: 220px;
   border-radius: 30px;
+  border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.2s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.guide-card:hover {
+.guide-card:hover:not(:disabled) {
   transform: translateY(-8px) scale(1.05);
   box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
 }
 
+.guide-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(244, 194, 76, 0.6), 0 8px 14px rgba(0, 0, 0, 0.25);
+}
+
+.guide-card[aria-busy="true"] {
+  opacity: 0.75;
+  cursor: wait;
+}
+
+.guide-card:disabled:not([aria-busy="true"]) {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .guide-icon {
-  font-size: 3rem;
+  width: 180px;
+  height: 200px;
   margin-bottom: 10px;
+  margin-top: 30px;
+  object-fit: cover;
+  object-position: top;
 }
 
 .guide-card h3 {
@@ -92,17 +117,20 @@
   align-items: center;
 }
 
-.guide-icon {
-  width: 180px;
-  height: 200px;
-  margin-bottom: 10px;
-  object-fit: cover;
-  object-position: top;
-  margin-top: 30px;
-}
-
 .guide-name {
-  color:rgb(101, 72, 72);
+  color: rgb(101, 72, 72);
   font-size: 1.2rem;
   text-align: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

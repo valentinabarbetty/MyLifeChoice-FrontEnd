@@ -19,7 +19,17 @@ export default function GenericDecisionGame({
   const [gameFinished, setGameFinished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const bubbleRef = useRef(null);
+  const bubbleRef    = useRef(null);
+  const announcerRef = useRef(null);
+
+  const announce = (msg) => {
+    if (!announcerRef.current) return;
+    announcerRef.current.textContent = "";
+    requestAnimationFrame(() => {
+      if (announcerRef.current) announcerRef.current.textContent = msg;
+    });
+  };
+
   const showAccessibleAlert = async ({
     icon,
     title,
@@ -43,7 +53,7 @@ export default function GenericDecisionGame({
         const confirmButton = Swal.getConfirmButton();
         if (confirmButton) {
           confirmButton.focus();
-          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}. Presiona Enter o la barra espaciadora.`);
         }
 
         const popup = Swal.getPopup();
@@ -68,16 +78,44 @@ export default function GenericDecisionGame({
 
     return Swal.fire(swalConfig);
   };
+
+  const current = cases[index];
+
+  // NUEVO: al entrar al minijuego (o pasar a la siguiente pregunta), se
+  // enfoca la burbuja del personaje y, apenas después, se anuncia todo
+  // el contexto de una sola vez: dónde estás, qué opciones hay, y cómo
+  // seleccionar y avanzar. Sin esto, la persona solo escuchaba la frase
+  // del personaje, sin saber en qué juego está ni qué puede hacer.
   useEffect(() => {
     if (bubbleRef.current) {
       bubbleRef.current.focus();
     }
+
+    const isFirst = index === 0;
+    const optionsList = options.map((o) => o.label).join(", ");
+
+    const contextMessage =
+      (isFirst ? `${introText} ` : "") +
+      `Hay ${options.length} opciones: ${optionsList}. ` +
+      `Presiona Tab para pasar de una opción a otra, y Enter para elegirla. ` +
+      `Cuando hayas elegido, ve al botón Continuar y presiona Enter para avanzar.`;
+
+    const id = setTimeout(() => announce(contextMessage), 300);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 
-  const current = cases[index];
+  const handleSelectOption = (value, label) => {
+    setSelected(value);
+    // NUEVO: confirma en voz qué se eligió, ya que antes no había
+    // ninguna confirmación hablada de la selección más allá de lo que
+    // OptionCard pueda comunicar visualmente.
+    announce(`Elegiste: ${label}. Ve al botón Continuar con tab y presiona Enter para avanzar.`);
+  };
 
   const handleContinue = async () => {
     if (!selected) {
+      announce("No has elegido ninguna opción todavía. Usa Tab para llegar a una y presiona Enter para seleccionarla.");
       await showAccessibleAlert({
         icon: "warning",
         title: "Selecciona una opción",
@@ -87,6 +125,7 @@ export default function GenericDecisionGame({
       return;
     }
     if (selected !== current.correct) {
+      announce("Esa no es la opción correcta. Elige otra e intenta de nuevo.");
       await showAccessibleAlert({
         icon: "warning",
         title: "No es correcto",
@@ -97,12 +136,14 @@ export default function GenericDecisionGame({
     }
 
     if (index === cases.length - 1) {
+      announce("¡Correcto! Terminaste el minijuego.");
       setGameFinished(true);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 4000);
       return;
     }
 
+    announce("Correcto. Pasando a la siguiente pregunta.");
     setIndex((i) => i + 1);
     setSelected(null);
   };
@@ -122,6 +163,14 @@ export default function GenericDecisionGame({
 
   return (
     <div className="generic-game-overlay">
+      <div
+        ref={announcerRef}
+        className="sr-only"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      />
+
       <div
         className="generic-game-panel"
         role="main"
@@ -146,7 +195,8 @@ export default function GenericDecisionGame({
             <p
               ref={bubbleRef}
               className="generic-game-bubble-text"
-              tabIndex={0}
+              tabIndex={-1}
+              aria-label={`Pregunta ${index + 1} de ${cases.length}. ${current.text}`}
               style={{ outline: "none" }}
             >
               {current.text}
@@ -163,21 +213,27 @@ export default function GenericDecisionGame({
 
         <div
           className="generic-game-options"
-          role="group"
-          aria-label="Opciones de respuesta"
+          role="radiogroup"
+          aria-label={`Opciones de respuesta, ${options.length} en total`}
         >
-          {options.map((opt) => (
+          {options.map((opt, i) => (
             <OptionCard
               key={opt.value}
               title={opt.label}
               image={opt.image}
               isActive={selected === opt.value}
-              onClick={() => setSelected(opt.value)}
+              onClick={() => handleSelectOption(opt.value, opt.label)}
+              index={i + 1}
+              total={options.length}
             />
           ))}
         </div>
 
-        <button className="generic-game-btn" onClick={handleContinue}>
+        <button
+          className="generic-game-btn"
+          onClick={handleContinue}
+          aria-label={`Continuar. Pregunta ${index + 1} de ${cases.length}.`}
+        >
           Continuar
         </button>
       </div>

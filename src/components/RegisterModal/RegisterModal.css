@@ -71,6 +71,12 @@
   letter-spacing: 0.01em;
   line-height: 1.2;
   text-align: center;
+  outline: none;
+}
+
+.register-title:focus-visible {
+  box-shadow: 0 0 0 4px var(--gold-glow);
+  border-radius: 6px;
 }
 
 .register-input {
@@ -137,6 +143,13 @@
 .register-btn:disabled {
   opacity: 0.65;
   cursor: not-allowed;
+}
+
+.register-btn:focus-visible,
+.google-btn:focus-visible,
+.register-close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--gold-glow);
 }
 
 .auth-divider {
@@ -211,6 +224,18 @@
 .register-close:hover {
   color: var(--taupe);
   background: rgba(127, 115, 89, 0.08);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 @keyframes cardIn {

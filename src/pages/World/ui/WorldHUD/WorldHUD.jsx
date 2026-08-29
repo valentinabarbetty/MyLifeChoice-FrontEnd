@@ -2,6 +2,56 @@ import DialogueBox from "../../../../components/DialogueBox/DialogueBox";
 import "./WorldHUD.css";
 import { NPCS } from "../../data/npcsInfo";
 import CareerFeedback from "../CareerFeedback/CareerFeedback";
+import { useEffect } from "react";
+
+const estimateReadMs = (message, minMs = 900) =>
+  Math.max(minMs, message.split(/\s+/).length * 150);
+
+function ConfirmDialog({ speaker, text, onAccept, onReject, announce, dialogKey }) {
+  const yesInstructions =
+    "Estás en el botón Sí. Presiona Enter para explorar esta carrera. " +
+    "Presiona Tab para ir al botón No.";
+
+  const noInstructions =
+    "Estás en el botón No. Presiona Enter para no explorar esta carrera y volver al mundo. " +
+    "Presiona Tab para regresar al botón Sí.";
+
+  return (
+    <DialogueBox
+      speaker={speaker}
+      text={text}
+      showNext={false}
+      extraHint="Presiona Tab para ir a las opciones de respuesta."
+    >
+      <div
+        className="dgl-options"
+        role="group"
+        aria-label="Opciones de respuesta"
+      >
+        <button
+          onClick={onAccept}
+          onFocus={() =>
+            announce?.(yesInstructions, estimateReadMs(yesInstructions))
+          }
+          className="option-btn option-yes"
+          aria-label={yesInstructions}
+        >
+          Sí
+        </button>
+        <button
+          onClick={onReject}
+          onFocus={() =>
+            announce?.(noInstructions, estimateReadMs(noInstructions))
+          }
+          className="option-btn option-no"
+          aria-label={noInstructions}
+        >
+          No
+        </button>
+      </div>
+    </DialogueBox>
+  );
+}
 
 export default function WorldHUD({
   scene,
@@ -12,11 +62,10 @@ export default function WorldHUD({
   onReject,
   activeCareer,
   activeNPC,
+  announce,
 }) {
-
   const currentKey = activeCareer || activeNPC;
   const npc = currentKey ? NPCS[currentKey] : null;
-
 
   if (scene === "CAREER" && mode === "career-feedback") {
     return (
@@ -32,14 +81,12 @@ export default function WorldHUD({
 
   if (mode === "intro" && dialogue) {
     return (
-      
-        <DialogueBox
-          speaker={dialogue.speaker}
-          text={dialogue.text}
-          onNext={onNext}
-          showNext
-        />
-   
+      <DialogueBox
+        speaker={dialogue.speaker}
+        text={dialogue.text}
+        onNext={onNext}
+        showNext
+      />
     );
   }
 
@@ -51,60 +98,40 @@ export default function WorldHUD({
       : "¿Deseas iniciar una conversación?";
 
     return (
-   
-        <DialogueBox
-          speaker={npcName}
-          text={dialogueText}
-          showNext={false}
-        >
-          <div className="dgl-options" role="group" aria-label="Opciones de respuesta">
-            <button
-              onClick={onAccept}
-              className="option-btn option-yes"
-              aria-label="Sí, quiero conocer esta carrera"
-            >
-              Sí
-            </button>
-            <button
-              onClick={onReject}
-              className="option-btn option-no"
-              aria-label="No, no quiero conocer esta carrera ahora"
-            >
-              No
-            </button>
-          </div>
-        </DialogueBox>
-  
+      <ConfirmDialog
+        dialogKey={`interact-${currentKey}`}
+        speaker={npcName}
+        text={dialogueText}
+        onAccept={onAccept}
+        onReject={onReject}
+        announce={announce}
+      />
     );
   }
+
   if (mode === "house-interact") {
-  const careerName = npc?.career_name || currentKey;
+    const careerName = npc?.career_name || currentKey;
 
-  return (
-    <DialogueBox
-      speaker={careerName}  
-      text={`¿Quieres explorar ${careerName}?`}
-      showNext={false}
-    >
-      <div className="dgl-options" role="group" aria-label="Opciones de respuesta">
-        <button onClick={onAccept} className="option-btn option-yes">Sí</button>
-        <button onClick={onReject} className="option-btn option-no">No</button>
-      </div>
-    </DialogueBox>
-  );
-}
+    return (
+      <ConfirmDialog
+        dialogKey={`house-interact-${currentKey}`}
+        speaker={careerName}
+        text={`¿Quieres explorar ${careerName}?`}
+        onAccept={onAccept}
+        onReject={onReject}
+        announce={announce}
+      />
+    );
+  }
 
- 
   if ((mode === "dialogue" || mode === "career-ending") && dialogue) {
     return (
-   
-        <DialogueBox
-          speaker={dialogue.speaker}
-          text={dialogue.text}
-          onNext={onNext}
-          showNext={true}
-        />
-  
+      <DialogueBox
+        speaker={dialogue.speaker}
+        text={dialogue.text}
+        onNext={onNext}
+        showNext={true}
+      />
     );
   }
 

@@ -73,6 +73,12 @@
   outline: none;
 }
 
+
+.auth-title:focus-visible {
+  box-shadow: 0 0 0 4px var(--gold-glow);
+  border-radius: 6px;
+}
+
 form[aria-label] {
   width: 100%;
   display: flex;
@@ -146,6 +152,14 @@ form[aria-label] {
   cursor: not-allowed;
 }
 
+.auth-btn:focus-visible,
+.google-btn:focus-visible,
+.auth-link:focus-visible,
+.auth-close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--gold-glow);
+}
+
 .auth-divider {
   display: flex;
   align-items: center;
@@ -215,6 +229,7 @@ form[aria-label] {
   text-decoration-color: var(--gold);
   text-underline-offset: 3px;
   transition: color 0.2s;
+  border-radius: 4px;
 }
 
 .auth-link:hover {

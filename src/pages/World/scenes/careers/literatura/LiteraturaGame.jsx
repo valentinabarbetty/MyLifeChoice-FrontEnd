@@ -58,6 +58,27 @@ const STORY_FRAGMENTS = {
   ],
 };
 
+const PHASE_LABEL = {
+  inicio: "Inicio",
+  desarrollo: "Desarrollo",
+  final: "Final",
+};
+
+const GAME_TITLE = "Construye tu propia historia";
+
+const GAME_INTRO_TEXT =
+  `${GAME_TITLE}. Este es un juego de creación de historias. Debes ` +
+  "construir una historia seleccionando un fragmento para el Inicio, " +
+  "un fragmento para el Desarrollo y un fragmento para el Final. En " +
+  "cada etapa encontrarás tres fragmentos. Debes escoger uno y " +
+  "colocarlo en el área correspondiente para construir tu historia. " +
+  "Utiliza Tab para avanzar entre las opciones y Shift más Tab para " +
+  "regresar. Presiona Enter o Espacio para seleccionar un fragmento. " +
+  "Una vez seleccionado, utiliza las flechas para moverlo y presiona " +
+  "Enter o Espacio para colocarlo. Comenzaremos por el Inicio. Hay " +
+  "tres fragmentos disponibles. Utiliza Tab para recorrerlos y " +
+  "selecciona el que quieras utilizar para comenzar tu historia.";
+
 export default function LiteraturaGame({ onComplete }) {
   const [currentPhase, setCurrentPhase] = useState("inicio");
   const [selections, setSelections] = useState({
@@ -70,96 +91,151 @@ export default function LiteraturaGame({ onComplete }) {
   const [draggedItem, setDraggedItem] = useState(null);
   const [showStoryModal, setShowStoryModal] = useState(false);
   const [focusedFragment, setFocusedFragment] = useState(null);
-const showAccessibleAlert = async ({ icon, title, text }) => {
-  const previouslyFocused = document.activeElement;
-  
-  const swalConfig = {
-    title,
-    text,
-    icon,
-    confirmButtonText: "Aceptar",
-    confirmButtonColor: "#f59e0b",
-    background: "#fef7e7",
-    backdrop: "rgba(0,0,0,0.4)",
-    allowOutsideClick: false,
-    allowEscapeKey: true,
-    showConfirmButton: true,
-    didOpen: () => {
-      const confirmButton = Swal.getConfirmButton();
-      if (confirmButton) {
-        confirmButton.focus();
-        confirmButton.setAttribute('aria-label', `Cerrar alerta: ${title}`);
-      }
-      
-      const announcer = document.getElementById("status-announcer");
-      if (announcer) {
-        announcer.textContent = `${title}. ${text}. Presiona Enter o Espacio para cerrar la alerta.`;
-      }
-      
-      const popup = Swal.getPopup();
-      if (popup) {
-        popup.setAttribute('role', 'alertdialog');
-        popup.setAttribute('aria-modal', 'true');
-        popup.setAttribute('aria-label', title);
-        popup.style.borderRadius = '20px';
-      }
-      
-      const content = Swal.getHtmlContainer();
-      if (content) {
-        content.setAttribute('aria-live', 'polite');
-      }
-    },
-    willClose: () => {
-      if (previouslyFocused && previouslyFocused.focus) {
-        previouslyFocused.focus();
-      }
-    }
+
+
+  const [phaseAnnouncement, setPhaseAnnouncement] = useState("");
+
+  const introRef = useRef(null);
+
+
+  const firstFragmentRef = useRef(null);
+
+  const phaseAnnouncerRef = useRef(null);
+
+  const announce = (text) => {
+    const announcer = document.getElementById("status-announcer");
+    if (!announcer) return;
+    announcer.textContent = "";
+    requestAnimationFrame(() => {
+      announcer.textContent = text;
+    });
   };
 
-  return Swal.fire(swalConfig);
-};
+  const showAccessibleAlert = async ({ icon, title, text }) => {
+    const previouslyFocused = document.activeElement;
+
+    const swalConfig = {
+      title,
+      text,
+      icon,
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "#f59e0b",
+      background: "#fef7e7",
+      backdrop: "rgba(0,0,0,0.4)",
+      allowOutsideClick: false,
+      allowEscapeKey: true,
+      showConfirmButton: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton();
+        if (confirmButton) {
+          confirmButton.focus();
+          confirmButton.setAttribute("aria-label", `Cerrar alerta: ${title}`);
+        }
+
+        announce(`${title}. ${text}. Presiona Enter o Espacio para cerrar la alerta.`);
+
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.setAttribute("role", "alertdialog");
+          popup.setAttribute("aria-modal", "true");
+          popup.setAttribute("aria-label", title);
+          popup.style.borderRadius = "20px";
+        }
+
+        const content = Swal.getHtmlContainer();
+        if (content) {
+          content.setAttribute("aria-live", "polite");
+        }
+      },
+      willClose: () => {
+        if (previouslyFocused && previouslyFocused.focus) {
+          previouslyFocused.focus();
+        }
+      },
+    };
+
+    return Swal.fire(swalConfig);
+  };
+
   const zoneRefs = {
     inicio: useRef(null),
     desarrollo: useRef(null),
     final: useRef(null),
   };
 
+  
   useEffect(() => {
-    const phaseMessages = {
-      inicio: "Puedes seleccionar un fragmento para el inicio de la historia",
-      desarrollo: "Ahora selecciona un fragmento para el desarrollo",
-      final:
-        "Último paso: selecciona un fragmento para el final de la historia",
+    let raf1 = null;
+    let raf2 = null;
+
+    const focusIntro = () => {
+      introRef.current?.focus();
     };
 
-    const message = phaseMessages[currentPhase];
-    if (message) {
-      const announcer = document.getElementById("status-announcer");
-      if (announcer) {
-        announcer.textContent = message;
-      }
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(focusIntro);
+    });
+
+    const timeoutId = setTimeout(focusIntro, 350);
+
+    return () => {
+      if (raf1) cancelAnimationFrame(raf1);
+      if (raf2) cancelAnimationFrame(raf2);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  const handleIntroKeyDown = (e) => {
+    if (e.key === "Tab" && !e.shiftKey) {
+      e.preventDefault();
+      firstFragmentRef.current?.focus();
     }
-  }, [currentPhase]);
+  };
 
   useEffect(() => {
-    if (showStoryModal) {
-      const modal = document.querySelector(".story-modal");
-      if (modal) {
-        modal.focus();
-      }
+    if (!phaseAnnouncement) return;
 
-      const announcer = document.getElementById("status-announcer");
-      if (announcer) {
-        announcer.textContent =
-          "¡Has completado la historia! Revisa tu historia creada y presiona el botón Terminar para continuar.";
-      }
+    let raf1 = null;
+    let raf2 = null;
 
-      document.body.style.overflow = "hidden";
+    const focusAnnouncer = () => {
+      phaseAnnouncerRef.current?.focus();
+    };
 
-      return () => {
-        document.body.style.overflow = "";
-      };
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(focusAnnouncer);
+    });
+
+    const timeoutId = setTimeout(focusAnnouncer, 350);
+
+    return () => {
+      if (raf1) cancelAnimationFrame(raf1);
+      if (raf2) cancelAnimationFrame(raf2);
+      clearTimeout(timeoutId);
+    };
+  }, [phaseAnnouncement]);
+
+  const handlePhaseAnnouncerKeyDown = (e) => {
+    if (e.key === "Tab" && !e.shiftKey) {
+      e.preventDefault();
+      firstFragmentRef.current?.focus();
     }
+  };
+
+  useEffect(() => {
+    if (!showStoryModal) return;
+
+    document.body.style.overflow = "hidden";
+
+    const focusId = setTimeout(() => {
+      const heading = document.getElementById("story-modal-title");
+      heading?.focus();
+    }, 700);
+
+    return () => {
+      clearTimeout(focusId);
+      document.body.style.overflow = "";
+    };
   }, [showStoryModal]);
 
   const handleDragStart = (e, fragment) => {
@@ -168,10 +244,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
     e.dataTransfer.effectAllowed = "copy";
     e.target.style.opacity = "0.5";
 
-    const announcer = document.getElementById("status-announcer");
-    if (announcer) {
-      announcer.textContent = `Arrastrando: ${fragment.text}`;
-    }
+    announce(`Arrastrando: ${fragment.text}`);
   };
 
   const handleDragEnd = (e) => {
@@ -182,6 +255,64 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
   const handleDragOver = (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "copy";
+  };
+
+  const placeFragment = async (fragment, zoneType) => {
+    if (zoneType !== currentPhase) {
+      await showAccessibleAlert({
+        icon: "warning",
+        title: "¡Espera!",
+        text: `Primero completa la parte de "${PHASE_LABEL[currentPhase]}"`,
+      });
+      return;
+    }
+
+    if (fragment.type !== zoneType) {
+      await showAccessibleAlert({
+        icon: "error",
+        title: "¡Fragmento incorrecto!",
+        text: `Este fragmento pertenece a "${PHASE_LABEL[fragment.type]}"`,
+      });
+      return;
+    }
+
+    if (selections[zoneType] !== null) {
+      await showAccessibleAlert({
+        icon: "info",
+        title: "Ya elegiste tu opción",
+        text: `Ya seleccionaste un fragmento para ${PHASE_LABEL[zoneType]}`,
+      });
+      return;
+    }
+
+    setSelections((prev) => ({
+      ...prev,
+      [zoneType]: fragment,
+    }));
+
+    if (currentPhase === "inicio" || currentPhase === "desarrollo") {
+      await showAccessibleAlert({
+        icon: "success",
+        title: "Fragmento colocado correctamente",
+        text: `Tu fragmento quedó colocado en el ${PHASE_LABEL[currentPhase]}.`,
+      });
+
+      const completedPhase = currentPhase;
+      const nextPhase = completedPhase === "inicio" ? "desarrollo" : "final";
+      const purpose =
+        nextPhase === "desarrollo"
+          ? "construir esta parte de la historia"
+          : "terminar tu historia";
+
+      setPhaseAnnouncement(
+        `${PHASE_LABEL[completedPhase]} completado. Ahora estás en ` +
+          `${PHASE_LABEL[nextPhase]}. Hay tres fragmentos disponibles para ` +
+          `${purpose}. Utiliza Tab para recorrer las opciones.`,
+      );
+      setCurrentPhase(nextPhase);
+    } else if (currentPhase === "final") {
+      setShowStoryModal(true);
+    }
   };
 
   const handleDrop = async (e, zoneType) => {
@@ -196,165 +327,24 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
 
     if (!fragment) return;
 
-    if (zoneType !== currentPhase) {
-      await showAccessibleAlert({
-        icon: "warning",
-        title: "¡Espera!",
-        text: `Primero completa la parte de "${currentPhase.toUpperCase()}"`,
-        timer: 2000,
-      });
-      return;
-    }
-
-    if (fragment.type !== zoneType) {
-      await showAccessibleAlert({
-        icon: "error",
-        title: "¡Fragmento incorrecto!",
-        text: `Este fragmento pertenece a "${fragment.type.toUpperCase()}"`,
-        timer: 2000,
-      });
-      return;
-    }
-
-    if (selections[zoneType] !== null) {
-      await showAccessibleAlert({
-        icon: "info",
-        title: "Ya elegiste tu opción",
-        text: `Ya seleccionaste un fragmento para ${zoneType.toUpperCase()}`,
-        timer: 2000,
-      });
-      return;
-    }
-
-    setSelections((prev) => ({
-      ...prev,
-      [zoneType]: fragment,
-    }));
-
-    const announcer = document.getElementById("status-announcer");
-    if (announcer) {
-      announcer.textContent = `Has seleccionado: ${fragment.text} para ${zoneType.toUpperCase()}`;
-    }
-
-   if (currentPhase === "inicio") {
-  await showAccessibleAlert({
-    icon: "success",
-    title: "¡Bien hecho!",
-    text: "Ahora selecciona un fragmento para el Desarrollo"
-  });
-  setCurrentPhase("desarrollo");
-  setTimeout(() => {
-    zoneRefs.desarrollo.current?.focus();
-  }, 100);
-} else if (currentPhase === "desarrollo") {
-  await showAccessibleAlert({
-    icon: "success",
-    title: "¡Vamos bien!",
-    text: "Último paso: selecciona un fragmento para el Final"
-  });
-  setCurrentPhase("final");
-  setTimeout(() => {
-    zoneRefs.final.current?.focus();
-  }, 100);
-} else if (currentPhase === "final") {
-      setShowStoryModal(true);
-    }
+    await placeFragment(fragment, zoneType);
   };
 
   const handleKeyDown = (e, fragment, zoneType) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-
-      if (zoneType !== currentPhase) {
-        Swal.fire({
-          title: "¡Espera! 📖",
-          text: `Primero completa la parte de "${currentPhase.toUpperCase()}"`,
-          icon: "warning",
-          confirmButtonColor: "#22c55e",
-          background: "#fef7e7",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-        return;
-      }
-
-      if (fragment.type !== zoneType) {
-        Swal.fire({
-          title: "¡Fragmento incorrecto!",
-          text: `Este fragmento pertenece a "${fragment.type.toUpperCase()}"`,
-          icon: "error",
-          confirmButtonColor: "#22c55e",
-          background: "#fef7e7",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-        return;
-      }
-
-      if (selections[zoneType] !== null) {
-        Swal.fire({
-          title: "Ya elegiste tu opción",
-          text: `Ya seleccionaste un fragmento para ${zoneType.toUpperCase()}`,
-          icon: "info",
-          confirmButtonColor: "#22c55e",
-          background: "#fef7e7",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-        return;
-      }
-
-      setSelections((prev) => ({
-        ...prev,
-        [zoneType]: fragment,
-      }));
-
-      const announcer = document.getElementById("status-announcer");
-      if (announcer) {
-        announcer.textContent = `Has seleccionado: ${fragment.text} para ${zoneType.toUpperCase()}`;
-      }
-
-      if (currentPhase === "inicio") {
-        Swal.fire({
-          title: "¡Bien hecho!",
-          text: "Ahora selecciona un fragmento para el DESARROLLO",
-          icon: "success",
-          confirmButtonColor: "#22c55e",
-          background: "#fef7e7",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-        setCurrentPhase("desarrollo");
-        setTimeout(() => {
-          zoneRefs.desarrollo.current?.focus();
-        }, 100);
-      } else if (currentPhase === "desarrollo") {
-        Swal.fire({
-          title: "¡Vamos bien!",
-          text: "Último paso: selecciona un fragmento para el FINAL",
-          icon: "success",
-          confirmButtonColor: "#22c55e",
-          background: "#fef7e7",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-        setCurrentPhase("final");
-        setTimeout(() => {
-          zoneRefs.final.current?.focus();
-        }, 100);
-      } else if (currentPhase === "final") {
-        setShowStoryModal(true);
-      }
+      placeFragment(fragment, zoneType);
     }
   };
 
   const handleKeyboardDrop = (e, zoneType) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      const announcer = document.getElementById("status-announcer");
-      if (announcer) {
-        announcer.textContent = `Zona ${zoneType.toUpperCase()} activa. Arrastra un fragmento o selecciona uno de la lista.`;
-      }
+      announce(
+        `Zona de ${PHASE_LABEL[zoneType]} activa. Utiliza Tab para ir a la ` +
+          `lista de fragmentos disponibles y presiona Enter o Espacio sobre ` +
+          `uno para colocarlo aquí.`,
+      );
     }
   };
 
@@ -371,11 +361,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
     setGameFinished(true);
     setShowConfetti(true);
 
-    const announcer = document.getElementById("status-announcer");
-    if (announcer) {
-      announcer.textContent =
-        "¡Felicidades! Has completado la historia. ¡Eres un gran escritor!";
-    }
+    announce("¡Felicidades! Has completado la historia. ¡Eres un gran escritor!");
 
     setTimeout(() => {
       setShowConfetti(false);
@@ -425,7 +411,18 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
         role="region"
         aria-label="Panel del juego"
       >
+        <div
+          ref={introRef}
+          id="game-intro"
+          className="sr-only"
+          tabIndex={-1}
+          onKeyDown={handleIntroKeyDown}
+        >
+          {GAME_INTRO_TEXT}
+        </div>
+
         <div className="literatura-header">
+          <h1 className="literatura-title">{GAME_TITLE}</h1>
           <img
             src="/assets/ui/Literatura/litPerson.png"
             className="literatura-npc"
@@ -484,7 +481,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
             onDrop={(e) => handleDrop(e, "inicio")}
             tabIndex={currentPhase === "inicio" ? 0 : -1}
             role="button"
-            aria-label={`Zona de INICIO ${currentPhase === "inicio" ? "activa - puedes colocar fragmentos aquí" : selections.inicio ? "completada" : "bloqueada"}`}
+            aria-label={`Zona de Inicio ${currentPhase === "inicio" ? "activa" : selections.inicio ? "completada" : "bloqueada"}`}
             onKeyDown={(e) =>
               currentPhase === "inicio" && handleKeyboardDrop(e, "inicio")
             }
@@ -495,7 +492,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
               {selections.inicio ? (
                 <div
                   className="placed-fragment"
-                  aria-label={`Fragmento seleccionado: ${selections.inicio.text}`}
+                  aria-label={`Fragmento colocado en Inicio: ${selections.inicio.text}`}
                 >
                   {selections.inicio.text}
                 </div>
@@ -504,7 +501,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
                   className="empty-zone"
                   aria-label={
                     currentPhase === "inicio"
-                      ? "Zona vacía, arrastra o presiona Enter para seleccionar un fragmento"
+                      ? "Zona vacía. Selecciona un fragmento de la lista para colocarlo aquí."
                       : "Esperando turno"
                   }
                 >
@@ -523,7 +520,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
             onDrop={(e) => handleDrop(e, "desarrollo")}
             tabIndex={currentPhase === "desarrollo" ? 0 : -1}
             role="button"
-            aria-label={`Zona de DESARROLLO ${currentPhase === "desarrollo" ? "activa - puedes colocar fragmentos aquí" : selections.desarrollo ? "completada" : "bloqueada"}`}
+            aria-label={`Zona de Desarrollo ${currentPhase === "desarrollo" ? "activa" : selections.desarrollo ? "completada" : "bloqueada"}`}
             onKeyDown={(e) =>
               currentPhase === "desarrollo" &&
               handleKeyboardDrop(e, "desarrollo")
@@ -535,7 +532,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
               {selections.desarrollo ? (
                 <div
                   className="placed-fragment"
-                  aria-label={`Fragmento seleccionado: ${selections.desarrollo.text}`}
+                  aria-label={`Fragmento colocado en Desarrollo: ${selections.desarrollo.text}`}
                 >
                   {selections.desarrollo.text}
                 </div>
@@ -544,7 +541,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
                   className="empty-zone"
                   aria-label={
                     currentPhase === "desarrollo"
-                      ? "Zona vacía, arrastra o presiona Enter para seleccionar un fragmento"
+                      ? "Zona vacía. Selecciona un fragmento de la lista para colocarlo aquí."
                       : selections.inicio
                         ? "Esperando turno"
                         : "Necesitas completar el inicio primero"
@@ -567,7 +564,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
             onDrop={(e) => handleDrop(e, "final")}
             tabIndex={currentPhase === "final" ? 0 : -1}
             role="button"
-            aria-label={`Zona de FINAL ${currentPhase === "final" ? "activa - puedes colocar fragmentos aquí" : selections.final ? "completada" : "bloqueada"}`}
+            aria-label={`Zona de Final ${currentPhase === "final" ? "activa" : selections.final ? "completada" : "bloqueada"}`}
             onKeyDown={(e) =>
               currentPhase === "final" && handleKeyboardDrop(e, "final")
             }
@@ -578,7 +575,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
               {selections.final ? (
                 <div
                   className="placed-fragment"
-                  aria-label={`Fragmento seleccionado: ${selections.final.text}`}
+                  aria-label={`Fragmento colocado en Final: ${selections.final.text}`}
                 >
                   {selections.final.text}
                 </div>
@@ -587,7 +584,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
                   className="empty-zone"
                   aria-label={
                     currentPhase === "final"
-                      ? "Zona vacía, arrastra o presiona Enter para seleccionar un fragmento"
+                      ? "Zona vacía. Selecciona un fragmento de la lista para colocarlo aquí."
                       : selections.desarrollo
                         ? "Esperando turno"
                         : "Necesitas completar el desarrollo primero"
@@ -604,9 +601,19 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
           </div>
         </div>
         <div
+          ref={phaseAnnouncerRef}
+          id="phase-transition-announcer"
+          className="sr-only"
+          tabIndex={-1}
+          onKeyDown={handlePhaseAnnouncerKeyDown}
+        >
+          {phaseAnnouncement}
+        </div>
+
+        <div
           className="available-fragments"
           role="region"
-          aria-label={`Fragmentos disponibles para ${currentPhase.toUpperCase()}`}
+          aria-label={`Fragmentos disponibles para ${PHASE_LABEL[currentPhase]}`}
         >
           <h3 id="fragments-title">
             Fragmentos disponibles - {currentPhase.toUpperCase()}
@@ -617,25 +624,30 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
             aria-label="Lista de fragmentos para seleccionar"
             aria-labelledby="fragments-title"
           >
-            {getAvailableFragments().map((fragment, index) => (
-              <div
-                key={fragment.id}
-                className="fragment-card"
-                draggable
-                onDragStart={(e) => handleDragStart(e, fragment)}
-                onDragEnd={handleDragEnd}
-                tabIndex={0}
-                role="option"
-                aria-label={`Fragmento ${index + 1}: ${fragment.text}. Presiona Enter o Espacio para seleccionarlo`}
-                onKeyDown={(e) => handleKeyDown(e, fragment, currentPhase)}
-                aria-selected={focusedFragment === fragment.id}
-              >
-                <span className="drag-icon" aria-hidden="true">
-                  ⋮⋮
-                </span>
-                {fragment.text}
-              </div>
-            ))}
+            {getAvailableFragments().map((fragment, index) => {
+              const fragmentLabel = `Fragmento de ${PHASE_LABEL[currentPhase]} ${index + 1} de 3: ${fragment.text}. Presiona Enter o Espacio para seleccionarlo y colocarlo en el área de ${PHASE_LABEL[currentPhase]}.`;
+
+              return (
+                <div
+                  key={fragment.id}
+                  className="fragment-card"
+                  ref={index === 0 ? firstFragmentRef : null}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, fragment)}
+                  onDragEnd={handleDragEnd}
+                  tabIndex={0}
+                  role="option"
+                  aria-label={fragmentLabel}
+                  onKeyDown={(e) => handleKeyDown(e, fragment, currentPhase)}
+                  aria-selected={focusedFragment === fragment.id}
+                >
+                  <span className="drag-icon" aria-hidden="true">
+                    ⋮⋮
+                  </span>
+                  {fragment.text}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -667,11 +679,12 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
                   role="alert"
                   id="story-modal-description"
                 >
-                  Modal abierto. Has completado tu historia. El inicio dice:{" "}
-                  {selections.inicio.text}. El desarrollo dice:{" "}
+                  Fragmento colocado correctamente en el Final. Historia
+                  completada. Has construido tu propia historia. El inicio
+                  dice: {selections.inicio.text}. El desarrollo dice:{" "}
                   {selections.desarrollo.text}. El final dice:{" "}
-                  {selections.final.text}. Presiona el botón Terminar para
-                  continuar.
+                  {selections.final.text}. Utiliza Tab para ir al botón
+                  Terminar y presiona Enter para continuar.
                 </div>
 
                 <div className="story-modal-npc">
@@ -704,7 +717,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
                       <span className="story-label" id="story-inicio-label">
                         INICIO
                       </span>
-                      <p aria-labelledby="story-inicio-label" tabIndex={0}>
+                      <p aria-labelledby="story-inicio-label">
                         {selections.inicio.text}
                       </p>
                     </div>
@@ -712,7 +725,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
                       <span className="story-label" id="story-desarrollo-label">
                         DESARROLLO
                       </span>
-                      <p aria-labelledby="story-desarrollo-label" tabIndex={0}>
+                      <p aria-labelledby="story-desarrollo-label">
                         {selections.desarrollo.text}
                       </p>
                     </div>
@@ -720,7 +733,7 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
                       <span className="story-label" id="story-final-label">
                         FINAL
                       </span>
-                      <p aria-labelledby="story-final-label" tabIndex={0}>
+                      <p aria-labelledby="story-final-label">
                         {selections.final.text}
                       </p>
                     </div>
@@ -737,7 +750,6 @@ const showAccessibleAlert = async ({ icon, title, text }) => {
                     }
                   }}
                   aria-label="Terminar y cerrar la historia"
-                  autoFocus
                 >
                   Terminar
                 </button>

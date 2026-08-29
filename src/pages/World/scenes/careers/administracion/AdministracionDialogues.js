@@ -118,17 +118,21 @@ export const administracionIntroDialogues = [
   "animation": "talking"
 },
 
-{
-  "speaker": "Raquelle",
-  "text": "Tendrás que administrar recursos, asignar presupuesto y organizar personal de la mejor manera posible.",
-  "animation": "talking"
-},
-
-{
-  "speaker": "Raquelle",
-  "text": "Cada decisión puede afectar el resultado, así que analiza bien cada escenario. ¡Manos a la obra!",
-  "animation": "talking"
-},
+  {
+    speaker: "Raquelle",
+    text: "Vas a resolver cuatro situaciones eligiendo presupuesto y personal: bajo, medio o alto.",
+    animation: "talking"
+  },
+  {
+    speaker: "Raquelle",
+    text: "Si usas lector de pantalla, usa Tab para moverte y Enter o espacio para seleccionar. Yo te guiaré en cada paso.",
+    animation: "talking"
+  },
+  {
+    speaker: "Raquelle",
+    text: "Cada decisión puede afectar el resultado, así que analiza bien cada escenario. ¡Manos a la obra!",
+    animation: "talking"
+  },
 ];
 
 export const administracionEndingDialogues = [

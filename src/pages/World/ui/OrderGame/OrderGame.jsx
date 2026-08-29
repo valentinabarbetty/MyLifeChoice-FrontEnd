@@ -27,6 +27,20 @@ const getItemLabel = (item) =>
 const stripEmojis = (str = "") =>
   str.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "").trim();
 
+// Instrucciones que dnd-kit asocia automáticamente a cada tarjeta mediante
+// aria-describedby (genera su propio elemento oculto internamente). Por
+// defecto ese texto viene en inglés; esta es la causa real del "inglés"
+// reportado, no un texto suelto en algún otro lugar del componente. Se
+// sobrescribe aquí, una sola vez para todo el contexto de arrastre.
+const dndScreenReaderInstructions = {
+  draggable:
+    "Presiona Enter o la barra espaciadora para seleccionar esta tarjeta. " +
+    "Mientras está seleccionada, usa las flechas izquierda y derecha para " +
+    "cambiar su posición entre las cuatro disponibles. Presiona Enter o " +
+    "espacio nuevamente para confirmar la nueva posición, o Escape para " +
+    "cancelar el movimiento.",
+};
+
 function SortableItem({ item, renderItem, index, totalItems }) {
   const {
     attributes,
@@ -54,7 +68,7 @@ function SortableItem({ item, renderItem, index, totalItems }) {
       data-order={index + 1}
       tabIndex={0}
       role="button"
-      aria-label={`${getItemLabel(item)}, posición ${index + 1} de ${totalItems}. Presiona Enter para seleccionar y usar flechas para mover.`}
+      aria-label={`Tarjeta: ${getItemLabel(item)}, posición ${index + 1} de ${totalItems}.`}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -147,6 +161,62 @@ export default function OrderGame({
     }),
   );
 
+  // Bandera para detectar que onDragOver se disparó justo después de
+  // onDragStart (dnd-kit ejecuta una primera detección de colisión apenas
+  // se selecciona la tarjeta, incluso sin que el usuario haya movido nada
+  // todavía). Como ambos anuncios comparten la MISMA región viva de
+  // dnd-kit, si ocurren así de seguido el segundo sobrescribe al primero
+  // antes de que el lector de pantalla llegue a leerlo — por eso solo se
+  // escuchaba la posición. La solución es fusionarlos en un único mensaje
+  // atómico cuando esto pasa, en vez de depender de que se lean como dos
+  // anuncios separados.
+  const justSelectedRef = useRef(false);
+
+  // Anuncios propios de dnd-kit para el ciclo de arrastre por teclado
+  // (selección, cambio de posición, confirmación, cancelación). Estos usan
+  // la región viva que dnd-kit administra internamente para su sistema de
+  // accesibilidad — separada de `announcerRef`, que este componente usa
+  // para otros mensajes (título/subtítulo al montar, resultado de
+  // "Validar"). Mantenerlas separadas evita que ambas regiones compitan
+  // por anunciar lo mismo al mismo tiempo.
+  const dndAccessibility = {
+    screenReaderInstructions: dndScreenReaderInstructions,
+    announcements: {
+      onDragStart() {
+        justSelectedRef.current = true;
+        return "Tarjeta seleccionada.";
+      },
+      onDragOver({ over }) {
+        if (!over) return "";
+        const position = order.findIndex((i) => i.id === over.id) + 1;
+        if (position <= 0) return "";
+        const justSelected = justSelectedRef.current;
+        justSelectedRef.current = false;
+        return justSelected
+          ? `Tarjeta seleccionada. Tarjeta en posición ${position} de ${order.length}.`
+          : `Tarjeta en posición ${position} de ${order.length}.`;
+      },
+      onDragEnd({ active, over }) {
+        justSelectedRef.current = false;
+        const item = order.find((i) => i.id === active.id);
+        const label = item ? getItemLabel(item) : "";
+        if (!over) {
+          return `Tarjeta ${label} devuelta a su posición original.`.trim();
+        }
+        const position = order.findIndex((i) => i.id === over.id) + 1;
+        return `Tarjeta ${label} posicionada satisfactoriamente en la posición ${position} de ${order.length}.`.trim();
+      },
+      onDragCancel({ active }) {
+        justSelectedRef.current = false;
+        const item = order.find((i) => i.id === active.id);
+        const label = item ? getItemLabel(item) : "";
+        const position = order.findIndex((i) => i.id === active.id) + 1;
+        return `Movimiento cancelado. Tarjeta ${label} permanece en la posición ${position} de ${order.length}.`.trim();
+      },
+    },
+  };
+
+
   useEffect(() => {
     const focusId = setTimeout(() => {
       titleRef.current?.focus();
@@ -205,9 +275,10 @@ export default function OrderGame({
       const newIndex = order.findIndex((i) => i.id === over.id);
       const newOrder = arrayMove(order, oldIndex, newIndex);
       setOrder(newOrder);
-      setAnnouncement(
-        `${getItemLabel(order[oldIndex])} movido a la posición ${newIndex + 1}`,
-      );
+      // No se anuncia nada aquí: dndAccessibility.announcements.onDragEnd
+      // (arriba) ya produce el anuncio de confirmación de posición en
+      // español a través de la región viva propia de dnd-kit. Anunciar
+      // también desde acá duplicaría el mensaje (ver punto 10 del pedido).
     }
   };
 
@@ -265,6 +336,7 @@ export default function OrderGame({
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
             sensors={sensors}
+            accessibility={dndAccessibility}
           >
             <SortableContext
               items={order.map((i) => i.id)}

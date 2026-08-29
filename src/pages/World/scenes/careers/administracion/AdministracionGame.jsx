@@ -7,6 +7,28 @@ import "./AdministracionGame.css";
 import GameCompleteModal from "../../../ui/GameCompleteModal/GameCompleteModal";
 import Swal from "sweetalert2";
 
+const MONEY_OPTIONS = [
+  { value: "baja", label: "Bajo", cost: "10%", desc: "Inversión mínima" },
+  { value: "media", label: "Medio", cost: "18%", desc: "Inversión estándar" },
+  { value: "alta", label: "Alto", cost: "25%", desc: "Inversión máxima" },
+];
+
+const PEOPLE_OPTIONS = [
+  { value: "baja", label: "Bajo", cost: "8%", desc: "Equipo mínimo" },
+  { value: "media", label: "Medio", cost: "15%", desc: "Equipo estándar" },
+  { value: "alta", label: "Alto", cost: "25%", desc: "Equipo completo" },
+];
+
+const SCREEN_READER_WORDS_PER_MINUTE = 150;
+const READING_DELAY_SAFETY_BUFFER_MS = 700;
+const MIN_READING_DELAY_MS = 1200;
+
+function estimateReadingDelayMs(message) {
+  const wordCount = message.trim().split(/\s+/).filter(Boolean).length;
+  const readingMs = (wordCount / SCREEN_READER_WORDS_PER_MINUTE) * 60000;
+  return Math.max(MIN_READING_DELAY_MS, Math.round(readingMs + READING_DELAY_SAFETY_BUFFER_MS));
+}
+
 export default function AdministracionGame({ onComplete }) {
   const scenarios = [
     {
@@ -44,12 +66,90 @@ export default function AdministracionGame({ onComplete }) {
   ]);
   const [step, setStep] = useState(0);
 
-  const bubbleTextRef = useRef();
+  const announcerRef = useRef();
+
+  const overlayRef = useRef(null);
+  const situationInfoRef = useRef(null);
+  const continueBtnRef = useRef(null);
+  const previousFocusRef = useRef(null);
+  const hiddenSiblingsRef = useRef([]);
+  const resultsAnnouncedRef = useRef(false);
+  const pendingSituationFocusDelayRef = useRef(80);
+
+  const resourcesId = useId();
+  const progressId = useId();
+  const situationTextId = useId();
+  const instructionId = useId();
+  const tabHintId = useId();
+
+  const announce = (message) => {
+    if (!announcerRef.current) return;
+    announcerRef.current.textContent = "";
+    setTimeout(() => {
+      if (announcerRef.current) announcerRef.current.textContent = message;
+    }, 50);
+  };
 
   useEffect(() => {
-    if (bubbleTextRef.current) {
-      bubbleTextRef.current.focus();
+    previousFocusRef.current = document.activeElement;
+
+    const overlay = overlayRef.current;
+    if (overlay && overlay.parentElement) {
+      const siblings = Array.from(overlay.parentElement.children).filter(
+        (el) => el !== overlay
+      );
+      siblings.forEach((el) => {
+        if (!el.hasAttribute("aria-hidden")) {
+          el.setAttribute("aria-hidden", "true");
+          hiddenSiblingsRef.current.push(el);
+        }
+      });
     }
+
+    return () => {
+      hiddenSiblingsRef.current.forEach((el) => el.removeAttribute("aria-hidden"));
+      hiddenSiblingsRef.current = [];
+      if (previousFocusRef.current && previousFocusRef.current.focus) {
+        previousFocusRef.current.focus();
+      }
+    };
+  }, []);
+
+  const handleOverlayKeyDown = (e) => {
+    if (e.key !== "Tab") return;
+    const overlay = overlayRef.current;
+    if (!overlay) return;
+
+    const focusable = Array.from(
+      overlay.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => !el.disabled && el.offsetParent !== null);
+
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else if (document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+
+  useEffect(() => {
+    const delay = resultsAnnouncedRef.current ? pendingSituationFocusDelayRef.current : 80;
+    const focusTimer = setTimeout(() => {
+      situationInfoRef.current?.focus();
+      resultsAnnouncedRef.current = false;
+    }, delay);
+
+    return () => clearTimeout(focusTimer);
   }, [step]);
 
   const current = scenarios[step];
@@ -80,7 +180,13 @@ export default function AdministracionGame({ onComplete }) {
         return 0;
     }
   };
-  const showAccessibleAlert = async ({ icon, title, text }) => {
+
+  const showAccessibleAlert = async ({
+    icon,
+    title,
+    text,
+    confirmButtonColor = "#f59e0b",
+  }) => {
     const previouslyFocused = document.activeElement;
 
     const swalConfig = {
@@ -88,7 +194,7 @@ export default function AdministracionGame({ onComplete }) {
       text,
       icon,
       confirmButtonText: "Aceptar",
-      confirmButtonColor: "#f59e0b",
+      confirmButtonColor,
       background: "#fef7e7",
       backdrop: true,
       allowOutsideClick: false,
@@ -105,7 +211,6 @@ export default function AdministracionGame({ onComplete }) {
           popup.setAttribute("role", "alertdialog");
           popup.setAttribute("aria-modal", "true");
           popup.setAttribute("aria-label", title);
-
           popup.style.borderRadius = "20px";
         }
 
@@ -123,6 +228,7 @@ export default function AdministracionGame({ onComplete }) {
 
     return Swal.fire(swalConfig);
   };
+
   const getMoneyScore = (selected, correct) => {
     if (!selected) return 0;
     if (selected === correct) return 15;
@@ -161,6 +267,7 @@ export default function AdministracionGame({ onComplete }) {
         icon: "warning",
         title: "Presupuesto insuficiente",
         text: `No tienes suficiente presupuesto. Te queda ${budgetLeft}% y necesitas ${newCost}%`,
+        confirmButtonColor: "#f59e0b",
       });
       return;
     }
@@ -175,7 +282,7 @@ export default function AdministracionGame({ onComplete }) {
     setBudgetLeft(newBudgetLeft);
   };
 
-  const handlePeopleChange = (level) => {
+  const handlePeopleChange = async (level) => {
     const oldCost = currentAssignment.people
       ? getPeopleCost(currentAssignment.people)
       : 0;
@@ -183,12 +290,11 @@ export default function AdministracionGame({ onComplete }) {
     const newStaffLeft = staffLeft + oldCost - newCost;
 
     if (newStaffLeft < 0) {
-      Swal.fire({
+      await showAccessibleAlert({
+        icon: "warning",
         title: "Personal insuficiente",
         text: `No tienes suficiente personal. Te queda ${staffLeft}% y necesitas ${newCost}%`,
-        icon: "warning",
         confirmButtonColor: "#22c55e",
-        background: "#fef7e7",
       });
       return;
     }
@@ -209,27 +315,58 @@ export default function AdministracionGame({ onComplete }) {
         icon: "warning",
         title: "Selecciona ambas opciones",
         text: "Debes asignar tanto presupuesto como personal para esta situación",
+        confirmButtonColor: "#f59e0b",
       });
       return;
     }
 
-    const newReputation =
-      reputation + currentAssignment.moneyScore + currentAssignment.peopleScore;
-    setReputation(Math.min(100, newReputation));
+    const reputationGained = currentAssignment.moneyScore + currentAssignment.peopleScore;
+    const newReputation = Math.min(100, reputation + reputationGained);
 
-    if (step === scenarios.length - 1) {
+    const isLastSituation = step === scenarios.length - 1;
+
+    continueBtnRef.current?.blur();
+
+    const resultsMessage = isLastSituation
+      ? `Situación ${scenarios.length} de ${scenarios.length} completada. Reputación obtenida: ${reputationGained}%. El juego ha terminado.`
+      : `Situación completada.`;
+    announce(resultsMessage);
+
+    setReputation(newReputation);
+
+    if (isLastSituation) {
       setGameFinished(true);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 4000);
       return;
     }
 
+    resultsAnnouncedRef.current = true;
+    pendingSituationFocusDelayRef.current = estimateReadingDelayMs(resultsMessage);
     setStep((s) => s + 1);
   };
+
+  const LiveAnnouncer = (
+    <div
+      ref={announcerRef}
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      style={{
+        position: "absolute",
+        width: "1px",
+        height: "1px",
+        overflow: "hidden",
+        clip: "rect(0,0,0,0)",
+        whiteSpace: "nowrap",
+      }}
+    />
+  );
 
   if (gameFinished) {
     return (
       <>
+        {LiveAnnouncer}
         {showConfetti && <ConfettiEffect />}
         <GameCompleteModal
           title="¡Felicidades!"
@@ -245,24 +382,16 @@ export default function AdministracionGame({ onComplete }) {
     );
   }
 
-  const getCurrentCost = () => {
-    let cost = { money: 0, people: 0 };
-    if (currentAssignment.money)
-      cost.money = getMoneyCost(currentAssignment.money);
-    if (currentAssignment.people)
-      cost.people = getPeopleCost(currentAssignment.people);
-    return cost;
-  };
-
-  const currentCost = getCurrentCost();
-  const situationsLeft = scenarios.length - step;
-  const totalEarned = assignments.reduce(
-    (sum, a) => sum + (a.moneyScore || 0) + (a.peopleScore || 0),
-    0,
-  );
-
   return (
-    <div className="adminGameOverlay">
+    <div
+      className="adminGameOverlay"
+      ref={overlayRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Juego de administración de empresa"
+      onKeyDown={handleOverlayKeyDown}
+    >
+      {LiveAnnouncer}
       <div className="adminGamePanel">
         <div
           className="adminGameTopBar"
@@ -291,22 +420,47 @@ export default function AdministracionGame({ onComplete }) {
 
         <div
           className="adminGameProgress"
-          tabIndex={0}
-          aria-live="polite"
-          aria-atomic="true"
-          style={{ outline: "none" }}
+          ref={situationInfoRef}
+          id={progressId}
+          role="group"
+          tabIndex={-1}
+          aria-labelledby={`${resourcesId} ${progressId} ${situationTextId} ${instructionId} ${tabHintId}`}
         >
           Situación {step + 1} de {scenarios.length}
         </div>
 
-        <p
-          className="adminGameInstruction"
-          tabIndex={0}
-          style={{ outline: "none" }}
+        <span
+          id={resourcesId}
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+            clip: "rect(0,0,0,0)",
+            whiteSpace: "nowrap",
+          }}
         >
+          {`Tus recursos actuales: reputación ${reputation}%, presupuesto disponible ${budgetLeft}%, personal disponible ${staffLeft}%.`}
+        </span>
+
+        <p className="adminGameInstruction" id={instructionId}>
           Ayúdame a asignar presupuesto y personal para solucionar la siguiente
           situación
         </p>
+
+        <span
+          id={tabHintId}
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+            clip: "rect(0,0,0,0)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Utilice Tab para avanzar hasta las opciones.
+        </span>
 
         <div className="adminGameNpcContainer">
           <img
@@ -316,12 +470,7 @@ export default function AdministracionGame({ onComplete }) {
             aria-hidden="true"
           />
           <div className="adminGameBubble">
-            <p
-              ref={bubbleTextRef}
-              className="adminGameBubbleText"
-              tabIndex={0}
-              style={{ outline: "none" }}
-            >
+            <p className="adminGameBubbleText" id={situationTextId}>
               {current.text}
             </p>
           </div>
@@ -330,57 +479,34 @@ export default function AdministracionGame({ onComplete }) {
         <div className="adminGameControls">
           <ResourceSelector
             title="Presupuesto a asignar"
+            resourcePrefix="Presupuesto"
+            resourceType="money"
             value={currentAssignment.money}
-            options={[
-              {
-                value: "baja",
-                label: "Bajo",
-                cost: "10%",
-                desc: "Inversión mínima",
-              },
-              {
-                value: "media",
-                label: "Medio",
-                cost: "18%",
-                desc: "Inversión estándar",
-              },
-              {
-                value: "alta",
-                label: "Alto",
-                cost: "25%",
-                desc: "Inversión máxima",
-              },
-            ]}
+            options={MONEY_OPTIONS}
             onChange={handleMoneyChange}
+            isLastSituation={step === scenarios.length - 1}
           />
           <ResourceSelector
             title="Personal a asignar"
+            resourcePrefix="Personal"
+            resourceType="people"
             value={currentAssignment.people}
-            options={[
-              {
-                value: "baja",
-                label: "Bajo",
-                cost: "8%",
-                desc: "Equipo mínimo",
-              },
-              {
-                value: "media",
-                label: "Medio",
-                cost: "15%",
-                desc: "Equipo estándar",
-              },
-              {
-                value: "alta",
-                label: "Alto",
-                cost: "25%",
-                desc: "Equipo completo",
-              },
-            ]}
+            options={PEOPLE_OPTIONS}
             onChange={handlePeopleChange}
+            isLastSituation={step === scenarios.length - 1}
           />
         </div>
 
-        <button className="adminGameBtn" onClick={handleContinue}>
+        <button
+          className="adminGameBtn"
+          ref={continueBtnRef}
+          onClick={handleContinue}
+          aria-label={
+            step === scenarios.length - 1
+              ? "Finalizar. Presione Enter para finalizar el juego."
+              : "Continuar. Presione Enter para continuar con la siguiente situación."
+          }
+        >
           {step === scenarios.length - 1 ? "Finalizar" : "Continuar"}
         </button>
       </div>
@@ -406,8 +532,6 @@ function AdminStat({ img, label, value, percent }) {
           aria-valuemin={0}
           aria-valuemax={100}
           aria-label={`${label} ${percent}%`}
-          tabIndex={0}
-          style={{ outline: "none" }}
         >
           <div
             className="adminGameProgressFill"
@@ -419,8 +543,42 @@ function AdminStat({ img, label, value, percent }) {
   );
 }
 
-function ResourceSelector({ title, value, options, onChange }) {
+function buildOptionAriaLabel({
+  resourcePrefix,
+  resourceType,
+  levelLabel,
+  cost,
+  desc,
+  position,
+  total,
+  isSelected,
+  isLastSituation,
+}) {
+  const identity = `${resourcePrefix}. ${levelLabel}. ${cost} ${desc}. Opción ${position} de ${total}.`;
+
+  if (isSelected) {
+    if (resourceType === "money") {
+      return `${identity} Opción seleccionada. Utilice Tab para avanzar a las opciones de asignar personal.`;
+    }
+    return isLastSituation
+      ? `${identity} Opción seleccionada. Utilice Tab para avanzar hasta el botón Finalizar.`
+      : `${identity} Opción seleccionada. Utilice Tab para avanzar hasta el botón Continuar.`;
+  }
+
+  return `${identity} Utilice Tab para ir a las demás opciones. Presione Enter para seleccionar.`;
+}
+
+function ResourceSelector({
+  title,
+  resourcePrefix,
+  resourceType,
+  value,
+  options,
+  onChange,
+  isLastSituation = false,
+}) {
   const groupId = useId();
+  const total = options.length;
 
   return (
     <div className="resourceSelector" role="group" aria-labelledby={groupId}>
@@ -428,25 +586,40 @@ function ResourceSelector({ title, value, options, onChange }) {
         {title}
       </h3>
       <div className="resourceOptions">
-        {options.map((opt) => (
-          <button
-            key={opt.value}
-            className={`resourceOption ${value === opt.value ? "active" : ""}`}
-            onClick={() => onChange(opt.value)}
-            aria-pressed={value === opt.value}
-            aria-label={`${opt.label}, costo ${opt.cost}, ${opt.desc}`}
-          >
-            <div className="resourceOptionLabel" aria-hidden="true">
-              {opt.label}
-            </div>
-            <div className="resourceOptionCost" aria-hidden="true">
-              {opt.cost}
-            </div>
-            <div className="resourceOptionDesc" aria-hidden="true">
-              {opt.desc}
-            </div>
-          </button>
-        ))}
+        {options.map((opt, index) => {
+          const isSelected = value === opt.value;
+
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              className={`resourceOption ${isSelected ? "active" : ""}`}
+              onClick={() => onChange(opt.value)}
+              aria-pressed={isSelected}
+              aria-label={buildOptionAriaLabel({
+                resourcePrefix,
+                resourceType,
+                levelLabel: opt.label,
+                cost: opt.cost,
+                desc: opt.desc,
+                position: index + 1,
+                total,
+                isSelected,
+                isLastSituation,
+              })}
+            >
+              <div className="resourceOptionLabel" aria-hidden="true">
+                {opt.label}
+              </div>
+              <div className="resourceOptionCost" aria-hidden="true">
+                {opt.cost}
+              </div>
+              <div className="resourceOptionDesc" aria-hidden="true">
+                {opt.desc}
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

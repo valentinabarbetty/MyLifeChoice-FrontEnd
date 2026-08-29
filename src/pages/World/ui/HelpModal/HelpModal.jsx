@@ -16,6 +16,7 @@ export default function HelpModal({ open, onClose }) {
 
   useEffect(() => {
     if (!open) return;
+    const previouslyFocused = document.activeElement;
 
     const focusId = setTimeout(() => closeBtnRef.current?.focus(), 100);
 
@@ -25,13 +26,8 @@ export default function HelpModal({ open, onClose }) {
       requestAnimationFrame(() => {
         if (announcerRef.current) {
           announcerRef.current.textContent =
-            "Cómo jugar. " +
-            "Objetivo: Explora el mundo y completa todas las carreras profesionales. " +
-            "Movimiento: usa las flechas del teclado. " +
-            "Interacción: acércate a los personajes y haz clic para hablar. " +
-            "Diálogos: usa el botón siguiente para avanzar. " +
-            "Progreso: completa cada carrera para desbloquear la siguiente. " +
-            "Presiona Escape o el botón Entendido para cerrar.";
+            "Cómo jugar. Cinco instrucciones. Presiona Tab para escucharlas, o presiona Escape para cerrar esta " +
+            "ventana.";
         }
       });
     }, 300);
@@ -39,6 +35,7 @@ export default function HelpModal({ open, onClose }) {
     return () => {
       clearTimeout(focusId);
       clearTimeout(announceId);
+      previouslyFocused?.focus?.();
     };
   }, [open]);
 
@@ -107,20 +104,15 @@ export default function HelpModal({ open, onClose }) {
             ref={closeBtnRef}
             className="help-close-btn"
             onClick={onClose}
-            aria-label="Cerrar modal de ayuda"
+            aria-label="Cerrar ayuda y volver al menú"
           >
             <span aria-hidden="true">✕</span>
           </button>
         </div>
 
-        <div
-          className="help-body"
-          role="list"
-          aria-label="Instrucciones del juego"
-        >
+        <div className="help-body">
           <div
             className="help-section"
-            role="listitem"
             aria-label="Objetivo: Explora el mundo y completa todas las carreras profesionales"
           >
             <div className="help-icon" aria-hidden="true">
@@ -136,8 +128,7 @@ export default function HelpModal({ open, onClose }) {
 
           <div
             className="help-section"
-            role="listitem"
-            aria-label="Movimiento: usa las teclas de flecha arriba, abajo, izquierda y derecha para moverte"
+            aria-label="Movimiento: usa las teclas W, A, S y D para moverte"
           >
             <div className="help-icon" aria-hidden="true">
               🕹️
@@ -150,13 +141,12 @@ export default function HelpModal({ open, onClose }) {
                 <span className="help-key">A</span>
                 <span className="help-key">D</span>
               </div>
-              <p>Usa las flechas del teclado para moverte</p>
+              <p>Usa las teclas W, A, S y D para moverte</p>
             </div>
           </div>
 
           <div
             className="help-section"
-            role="listitem"
             aria-label="Interacción: acércate a los personajes y haz clic en ellos para hablar"
           >
             <div className="help-icon" aria-hidden="true">
@@ -170,7 +160,6 @@ export default function HelpModal({ open, onClose }) {
 
           <div
             className="help-section"
-            role="listitem"
             aria-label="Diálogos: usa el botón siguiente para avanzar en la conversación"
           >
             <div className="help-icon" aria-hidden="true">
@@ -184,7 +173,6 @@ export default function HelpModal({ open, onClose }) {
 
           <div
             className="help-section"
-            role="listitem"
             aria-label="Progreso: completa cada carrera para desbloquear la siguiente"
           >
             <div className="help-icon" aria-hidden="true">

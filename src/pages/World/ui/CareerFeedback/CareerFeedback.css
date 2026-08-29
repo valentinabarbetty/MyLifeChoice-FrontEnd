@@ -15,6 +15,17 @@
   width: 420px;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
 }
+.feedback-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0; 
+}
+
+.feedback-fieldset:focus,
+.feedback-fieldset:focus-visible {
+  outline: none; 
+}
 
 .feedback-question {
   font-size: 16px;

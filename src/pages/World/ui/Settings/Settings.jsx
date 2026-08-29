@@ -52,6 +52,13 @@ export default function Settings({ open, onClose, soundEnabled, onSoundToggle, o
 
   useEffect(() => {
     if (!open) return;
+
+    // NUEVO: igual que en HelpModal, guardamos qué elemento tenía el
+    // foco antes de abrir esta ventana (el botón "Configuración") para
+    // devolvérselo al cerrar. Sin esto, VoiceOver queda "perdido" en
+    // vez de volver justo a donde estaba la persona.
+    const previouslyFocused = document.activeElement;
+
     const focusId    = setTimeout(() => closeBtnRef.current?.focus(), 100);
     const announceId = setTimeout(() => {
       if (!announcerRef.current) return;
@@ -66,7 +73,14 @@ export default function Settings({ open, onClose, soundEnabled, onSoundToggle, o
         }
       });
     }, 300);
-    return () => { clearTimeout(focusId); clearTimeout(announceId); };
+    return () => {
+      clearTimeout(focusId);
+      clearTimeout(announceId);
+      // NUEVO: devolvemos el foco al cerrar (Escape, clic afuera,
+      // Restaurar, Guardar y Cerrar — cualquier camino que desmonte
+      // este componente).
+      previouslyFocused?.focus?.();
+    };
   }, [open]);
 
   useEffect(() => {
@@ -177,21 +191,27 @@ export default function Settings({ open, onClose, soundEnabled, onSoundToggle, o
               <span className="settings-option-label">Música de fondo</span>
             </div>
 
-           
-            <label
-              className="settings-switch"
-              aria-label={`Música de fondo: ${localSoundEnabled ? "activada" : "desactivada"}. Toca para cambiar.`}
-            >
-              <input
-                type="checkbox"
-                checked={localSoundEnabled}
-                onChange={(e) => handleSoundToggle(e.target.checked)}
-                role="switch"
-                aria-checked={localSoundEnabled}
-                aria-label="Música de fondo"
-              />
-              <span className="settings-switch-slider" aria-hidden="true" />
-            </label>
+            {/* CORREGIDO: quité el aria-label que estaba aquí, en el
+                <label> que envuelve el interruptor. VoiceOver enfoca el
+                <input> de adentro, no este <label>, así que ese texto
+                nunca se leía — era código muerto. Ahora la única fuente
+                de la etiqueta es el <input>, más abajo. */}
+            {/* CORREGIDO: el checkbox oculto con clip + role="switch" no era
+    confiable con VoiceOver (el clic funcionaba porque el <label>
+    reenvía el clic al input, pero el cursor de VoiceOver no siempre
+    lo encontraba). Un <button role="switch"> nativo es el patrón
+    recomendado por WAI-ARIA: siempre aparece en el árbol de
+    accesibilidad y Enter/Espacio funcionan automáticamente. */}
+<button
+  type="button"
+  className="settings-switch"
+  role="switch"
+  aria-checked={localSoundEnabled}
+  aria-label="Música de fondo. Presiona Enter o espacio para activar o desactivar."
+  onClick={() => handleSoundToggle(!localSoundEnabled)}
+>
+  <span className="settings-switch-slider" aria-hidden="true" />
+</button>
           </div>
 
           {localSoundEnabled && (
@@ -211,7 +231,7 @@ export default function Settings({ open, onClose, soundEnabled, onSoundToggle, o
                   value={localVolume}
                   onChange={handleVolumeChange}
                   className="volume-slider"
-                  aria-label="Volumen de la música"
+                  aria-label="Volumen de la música. Utiliza las flechas para subir o bajar el volumen."
                   aria-valuemin={0}
                   aria-valuemax={100}
                   aria-valuenow={Math.round(localVolume * 100)}

@@ -1,21 +1,31 @@
-import { Html } from "@react-three/drei";
+// Loader.jsx
+import { useEffect, useRef } from "react";
+import "./Loader.css";
 
 export default function Loader() {
+  const headingRef = useRef(null);
+  const mensajeCompleto = "Cargando mundo. Un momento por favor.";
+
+  useEffect(() => {
+    const focusId = setTimeout(() => headingRef.current?.focus(), 100);
+    return () => clearTimeout(focusId);
+  }, []);
+
   return (
-    <Html center>
-      <div style={styles.container}>
-        <p>Cargando mundo...</p>
+    <div className="loader-screen">
+      <h1
+        ref={headingRef}
+        tabIndex={-1}
+        className="loader-title"
+        role="status"
+        aria-live="polite"
+        aria-label={mensajeCompleto}
+      >
+        Cargando mundo…
+      </h1>
+      <div className="loader-spinner" aria-hidden="true">
+        <span></span><span></span><span></span>
       </div>
-    </Html>
+    </div>
   );
 }
-
-const styles = {
-  container: {
-    padding: "12px 18px",
-    background: "rgba(0,0,0,0.7)",
-    borderRadius: "10px",
-    color: "#fff",
-    textAlign: "center",
-  },
-};

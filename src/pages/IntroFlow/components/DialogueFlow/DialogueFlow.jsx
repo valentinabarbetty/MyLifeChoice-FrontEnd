@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Scene3D from "../Scene3D/Scene3D";
 import DialogueBox from "../../../../components/DialogueBox/DialogueBox";
 import TextInputBox from "../../../../components/TextInputBox/TextInputBox";
@@ -28,6 +28,36 @@ export default function DialogueFlow({
       if (announcerRef.current) announcerRef.current.textContent = msg;
     });
   };
+
+  useEffect(() => {
+    if (!guide) return;
+    const id = setTimeout(() => {
+      announce(
+        `Ahora estás en el diálogo con ${guide.name}. Presiona Tab y luego Enter para avanzar a cada mensaje.`
+      );
+    }, 300);
+    return () => clearTimeout(id);
+  }, [guide]);
+
+  useEffect(() => {
+    if (dialogueIndex !== 3) return;
+
+    const questionText = dialogues[dialogueIndex] || "";
+    const readMs = Math.max(900, questionText.split(/\s+/).length * 150);
+
+    const id = setTimeout(() => {
+      const input = document.querySelector(".input-wrapper input");
+      if (input) {
+        input.setAttribute(
+          "aria-label",
+          "Nombre. Presiona Enter cuando termines de escribirlo para continuar."
+        );
+        input.focus();
+        announce("Escribe tu nombre en el campo de arriba, y presiona Enter cuando termines para continuar.");
+      }
+    }, readMs + 3000); 
+    return () => clearTimeout(id);
+  }, [dialogueIndex, dialogues]);
 
   const showAccessibleAlert = async ({
     icon,
@@ -116,6 +146,7 @@ export default function DialogueFlow({
     }
 
     if (dialogueIndex >= dialogues.length - 1) {
+      announce("Diálogo terminado. Continuando al siguiente paso.");
       onDialogueEnd?.();
       return;
     }
@@ -155,12 +186,13 @@ export default function DialogueFlow({
           </div>
         )}
 
-        <div className="dialogue-box-wrapper" key={dialogues[dialogueIndex]}>
+        <div className="dialogue-box-wrapper">
           <DialogueBox
             text={dialogues[dialogueIndex]}
             speaker={guide.name}
             onNext={handleNext}
             animateOnce={dialogueIndex === 0}
+            showNext={dialogueIndex !== 3}
           />
         </div>
 

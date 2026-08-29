@@ -15,11 +15,12 @@ import { Physics } from "@react-three/rapier";
 import BackButton from "./ui/BackButton/BackButton";
 import Loader from "./ui/Loader/Loader";
 import HelpModal from "./ui/HelpModal/HelpModal";
-import CareerSummary from "../Summary/Summary";
 import worldMusic from "/assets/music/World.mp3";
 import "./World.css";
 import Settings from "./ui/Settings/Settings";
 import A11yCareerPanel from "./A11yCareerPanel";
+import { useMinLoad } from "./hooks/useMinLoad";
+import { useNavigate } from "react-router-dom";
 
 const STORAGE_KEYS = {
   SOUND_ENABLED: "mlc_sound_enabled",
@@ -38,6 +39,7 @@ const loadSoundSettings = () => {
 };
 
 export default function World() {
+  const navigate = useNavigate();
   const {
     mode,
     setMode,
@@ -73,7 +75,7 @@ export default function World() {
 
   useEffect(() => {
     if (allCompleted) {
-      setScene("SUMMARY");
+      navigate("/resumen");
     }
   }, [allCompleted, setScene]);
 
@@ -120,7 +122,10 @@ export default function World() {
     });
     return result;
   }, [visibleCareers.join(",")]);
-
+const dialogOpen =
+  mode === "interact" ||
+  mode === "house-interact" ||
+  mode === "career-feedback";
   const [npcPositions, setNpcPositions] = useState({});
   const nearNPC = useNPCProximity(playerPos, npcPositions);
   const careerData = CAREER_DIALOGUES[activeCareer];
@@ -245,24 +250,29 @@ export default function World() {
     };
   }, []);
 
-  const announce = (message) => {
-    const announcement = document.createElement("div");
-    announcement.setAttribute("aria-live", "polite");
-    announcement.setAttribute("aria-atomic", "true");
-    announcement.style.position = "absolute";
-    announcement.style.left = "-9999px";
-    announcement.style.top = "-9999px";
-    announcement.style.width = "1px";
-    announcement.style.height = "1px";
-    announcement.style.overflow = "hidden";
+  const announce = (message, minMs = 1000) => {
+  const announcement = document.createElement("div");
+  announcement.setAttribute("aria-live", "polite");
+  announcement.setAttribute("aria-atomic", "true");
+  announcement.style.position = "absolute";
+  announcement.style.left = "-9999px";
+  announcement.style.top = "-9999px";
+  announcement.style.width = "1px";
+  announcement.style.height = "1px";
+  announcement.style.overflow = "hidden";
+  document.body.appendChild(announcement);
+
+  setTimeout(() => {
     announcement.textContent = message;
-    document.body.appendChild(announcement);
+  }, 100);
 
-    setTimeout(() => {
-      document.body.removeChild(announcement);
-    }, 1000);
-  };
+  const estimatedMs = message.split(/\s+/).length * 150;
+  const delay = Math.max(minMs, estimatedMs) + 100;
 
+  setTimeout(() => {
+    document.body.removeChild(announcement);
+  }, delay);
+};
   useEffect(() => {
     if (nearNPC) {
       const npcInfo = NPCS[nearNPC];
@@ -270,9 +280,28 @@ export default function World() {
       announce(`${npcInfo?.career_name}. Presiona Enter para interactuar`);
     }
   }, [nearNPC]);
+  
+const ready = useMinLoad(6000);
+const welcomedRef = useRef(false);
 
+const worldRootRef = useRef(null);
+
+
+useEffect(() => {
+  if (ready && scene === "WORLD" && !welcomedRef.current) {
+    welcomedRef.current = true;
+
+    worldRootRef.current?.focus();
+
+    setTimeout(() => {
+      announce(
+        "Bienvenida al mundo. Usa Tab para navegar entre carreras y Enter para seleccionar."
+      );
+    }, 200);
+  }
+}, [ready, scene]);
   return (
-    <>
+    <div ref={worldRootRef} tabIndex={-1} style={{ outline: "none" }}>
       <BackButton />
 
       <button
@@ -291,16 +320,18 @@ export default function World() {
         ⚙️
       </button>
       {scene === "WORLD" && (
-        <A11yCareerPanel
-          onInteract={(career) => {
-            setActiveNPC(career);
-            setMode("house-interact");
-          }}
-          onHighlight={setHighlightedCareer}
-        />
-      )}
+  <A11yCareerPanel
+    visibleCareers={availableCareers}
+    inert={dialogOpen}
+    onInteract={(career) => {
+      setActiveNPC(career);
+      setMode("house-interact");
+    }}
+    onHighlight={setHighlightedCareer}
+  />
+)}
       <WorldCanvas>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={null}>
           {scene === "WORLD" && (
             <Physics gravity={[0, -9.8, 0]} debug={false}>
               <WorldScene
@@ -330,7 +361,7 @@ export default function World() {
           <CameraManager scene={scene} mode={mode} playerPos={playerPos} />
         </Suspense>
       </WorldCanvas>
-
+{!ready && <Loader />}
       {scene === "CAREER" && mode === "career-game" && ActiveGame && (
         <ActiveGame
           onComplete={() => {
@@ -339,8 +370,6 @@ export default function World() {
           }}
         />
       )}
-
-      {scene === "SUMMARY" && <CareerSummary />}
 
       <WorldHUD
         scene={scene}
@@ -401,6 +430,7 @@ export default function World() {
         }}
         activeCareer={activeCareer}
         activeNPC={activeNPC}
+        announce={announce} 
       />
 
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
@@ -413,6 +443,6 @@ export default function World() {
         volume={volume}
         onVolumeChange={handleVolumeChange}
       />
-    </>
+    </div>
   );
 }

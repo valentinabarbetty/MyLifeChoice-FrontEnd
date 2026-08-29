@@ -92,6 +92,67 @@ const DESCRIPCIONES_FACTURAS = [
   },
 ];
 
+const UNIDADES = ["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"];
+const DIECIS = ["diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve"];
+const DECENAS = ["", "diez", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"];
+const CENTENAS = ["", "ciento", "doscientos", "trescientos", "cuatrocientos", "quinientos", "seiscientos", "setecientos", "ochocientos", "novecientos"];
+
+function convertirDecenas(n) {
+  if (n < 10) return UNIDADES[n];
+  if (n < 20) return DIECIS[n - 10];
+  if (n < 30) return n === 20 ? "veinte" : `veinti${UNIDADES[n - 20]}`;
+  const decena = Math.floor(n / 10);
+  const unidad = n % 10;
+  return unidad === 0 ? DECENAS[decena] : `${DECENAS[decena]} y ${UNIDADES[unidad]}`;
+}
+
+function convertirCentenas(n) {
+  if (n === 100) return "cien";
+  const centena = Math.floor(n / 100);
+  const resto = n % 100;
+  let texto = centena > 0 ? CENTENAS[centena] : "";
+  if (resto > 0) texto += (texto ? " " : "") + convertirDecenas(resto);
+  return texto;
+}
+
+function numeroAPalabras(numero) {
+  const n = Math.round(Math.abs(Number(numero) || 0));
+  if (n === 0) return "cero";
+
+  let restante = n;
+  const millones = Math.floor(restante / 1000000);
+  restante %= 1000000;
+  const miles = Math.floor(restante / 1000);
+  restante %= 1000;
+
+  let texto = "";
+  if (millones > 0) {
+    texto += millones === 1 ? "un millón" : `${convertirCentenas(millones)} millones`;
+  }
+  if (miles > 0) {
+    texto += (texto ? " " : "") + (miles === 1 ? "mil" : `${convertirCentenas(miles)} mil`);
+  }
+  if (restante > 0) {
+    texto += (texto ? " " : "") + convertirCentenas(restante);
+  }
+  return texto.trim();
+}
+
+const formatearPesosHablado = (monto) => `${numeroAPalabras(monto)} pesos`;
+
+const sanitizeMoneyMentionsForSpeech = (text = "") =>
+  text.replace(/\$\s?([\d.,]+)/g, (_match, digits) => {
+    const numero = Number(digits.replace(/[.,]/g, ""));
+    return formatearPesosHablado(numero);
+  });
+
+const getFacturaTabHint = (index) => {
+  const isLast = index === FACTURAS.length - 1;
+  return isLast
+    ? "Esta es la última factura. Presiona Tab para ir al libro de gastos y comenzar a corregir los valores con los botones menos y más."
+    : "Presiona Tab para ir a la siguiente factura.";
+};
+
 export default function ContaduriaGame({ onComplete }) {
   const [valores, setValores] = useState({
     alquiler: 1200,
@@ -168,8 +229,7 @@ export default function ContaduriaGame({ onComplete }) {
   const updateValor = (key, delta) => {
     setValores((prev) => {
       const next = Math.max(0, prev[key] + delta);
-      const fila = FILAS.find((f) => f.key === key);
-      setAnnouncement(`${fila.descripcion}: $${next.toLocaleString()}`);
+      setAnnouncement(`Valor actual del libro de gastos: ${formatearPesosHablado(next)}.`);
       return { ...prev, [key]: next };
     });
   };
@@ -182,7 +242,7 @@ export default function ContaduriaGame({ onComplete }) {
     setAnnouncement(
       `Factura ${index + 1} de ${FACTURAS.length}. ${descripcion.titulo}. ` +
         `Fecha: ${descripcion.fecha}. Cliente: ${descripcion.cliente}. ` +
-        `Dirección: ${descripcion.direccion}. ${descripcion.explicacion}`,
+        `Dirección: ${descripcion.direccion}. ${sanitizeMoneyMentionsForSpeech(descripcion.explicacion)}`,
     );
   };
 
@@ -205,14 +265,6 @@ export default function ContaduriaGame({ onComplete }) {
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 4000);
     } else {
-      const incorrectos = resultados
-        .filter((r) => !r.correcto)
-        .map(
-          (r) =>
-            `${r.descripcion}: debe ser $${VALORES_CORRECTOS[r.key].toLocaleString()}`,
-        )
-        .join(". ");
-
       setAnnouncement(`Valores incorrectos.`);
 
       await showAccessibleAlert({
@@ -225,9 +277,9 @@ export default function ContaduriaGame({ onComplete }) {
   const getFacturaAriaLabel = () => {
     const desc = DESCRIPCIONES_FACTURAS[currentFactura];
     const conceptosTexto = desc.conceptos
-      .map((c) => `${c.nombre}: ${c.valor}`)
+      .map((c) => `${c.nombre}: ${sanitizeMoneyMentionsForSpeech(c.valor)}`)
       .join(", ");
-    return `${desc.titulo}. Fecha: ${desc.fecha}. Dirección: ${desc.direccion}. Cliente: ${desc.cliente}. Conceptos: ${conceptosTexto}. Total: ${desc.total}. ${desc.explicacion}`;
+    return `${desc.titulo}. Fecha: ${desc.fecha}. Dirección: ${desc.direccion}. Cliente: ${desc.cliente}. Conceptos: ${conceptosTexto}. Total: ${sanitizeMoneyMentionsForSpeech(desc.total)}. ${sanitizeMoneyMentionsForSpeech(desc.explicacion)}`;
   };
 
   if (gameFinished) {
@@ -262,12 +314,7 @@ export default function ContaduriaGame({ onComplete }) {
         aria-live="polite"
         aria-atomic="true"
       />
-      <div
-        className="contaduriaPanel"
-        role="region"
-        aria-labelledby="contaduria-title"
-        aria-describedby="contaduria-instructions"
-      >
+      <div className="contaduriaPanel">
         <div id="contaduria-instructions" className="sr-only">
           Revisa las facturas del carrusel y ajusta los valores del libro de
           gastos usando los botones más y menos. Cuando todos los valores sean
@@ -284,13 +331,19 @@ export default function ContaduriaGame({ onComplete }) {
               ref={titleRef}
               tabIndex={-1}
               className="contaduriaTitle"
-              aria-live="polite"
+              aria-describedby="contaduria-title-hint"
             >
               Detective de cuentas
             </h1>
             <p id="contaduria-subtitle" className="contaduriaSubtitle">
               Corrige los errores en el libro de gastos usando las facturas
             </p>
+            <span id="contaduria-title-hint" className="sr-only">
+              A continuación encontrarás cuatro facturas y un libro de
+              gastos. Debes corregir los valores del libro de gastos de
+              acuerdo con la información de las facturas. Presiona Tab
+              para ir a las facturas.
+            </span>
           </div>
         </div>
 
@@ -316,6 +369,8 @@ export default function ContaduriaGame({ onComplete }) {
                 className="contaduriaArrow"
                 onClick={prevFactura}
                 aria-label="Factura anterior"
+                tabIndex={-1}
+                aria-hidden="true"
               >
                 <span aria-hidden="true">◀</span>
               </button>
@@ -351,6 +406,8 @@ export default function ContaduriaGame({ onComplete }) {
                 className="contaduriaArrow"
                 onClick={nextFactura}
                 aria-label="Siguiente factura"
+                tabIndex={-1}
+                aria-hidden="true"
               >
                 <span aria-hidden="true">▶</span>
               </button>
@@ -367,7 +424,7 @@ export default function ContaduriaGame({ onComplete }) {
                   className={`contaduriaDot ${i === currentFactura ? "contaduriaDotActive" : ""}`}
                   role="tab"
                   aria-selected={i === currentFactura}
-                  aria-label={`Factura ${i + 1}: ${DESCRIPCIONES_FACTURAS[i].titulo}. Total: ${DESCRIPCIONES_FACTURAS[i].total}. Cliente: ${DESCRIPCIONES_FACTURAS[i].cliente}`}
+                  aria-label={`Factura ${i + 1} de ${FACTURAS.length}: ${DESCRIPCIONES_FACTURAS[i].titulo}. Total: ${sanitizeMoneyMentionsForSpeech(DESCRIPCIONES_FACTURAS[i].total)}. Cliente: ${DESCRIPCIONES_FACTURAS[i].cliente}. ${getFacturaTabHint(i)}`}
                   onClick={() => goToFactura(i)}
                 />
               ))}
@@ -394,6 +451,11 @@ export default function ContaduriaGame({ onComplete }) {
             role="table"
             aria-label="Libro de gastos"
           >
+            <span id="libro-gastos-hint" className="sr-only">
+              Libro de gastos. Utiliza los botones menos y más para corregir
+              los valores según la información de las facturas.
+            </span>
+
             <div className="contaduriaTableHeader" role="row">
               <span role="columnheader">Fecha</span>
               <span role="columnheader">Descripción</span>
@@ -401,7 +463,10 @@ export default function ContaduriaGame({ onComplete }) {
             </div>
 
             <div className="contaduriaTableBody" role="rowgroup">
-              {FILAS.map((fila) => (
+              {FILAS.map((fila, filaIndex) => {
+                const isLastControl = filaIndex === FILAS.length - 1;
+
+                return (
                 <div
                   key={fila.key}
                   className={`contaduriaRow ${fila.facturaIndex === currentFactura ? "contaduriaRowActive" : ""}`}
@@ -421,15 +486,15 @@ export default function ContaduriaGame({ onComplete }) {
                     <button
                       className="contaduriaBtnMinus"
                       onClick={() => updateValor(fila.key, -100)}
-                      aria-label={`Reducir ${fila.descripcion} en $100. Valor actual: $${valores[fila.key].toLocaleString()}`}
+                      aria-label={`Valor de la factura: ${formatearPesosHablado(VALORES_CORRECTOS[fila.key])}. Valor actual del libro de gastos: ${formatearPesosHablado(valores[fila.key])}. Botón menos. Presiona Enter para disminuir el valor. Utiliza Tab para ir al botón más.`}
+                      aria-describedby={filaIndex === 0 ? "libro-gastos-hint" : undefined}
                     >
                       <span aria-hidden="true">−</span>
                     </button>
 
                     <span
                       className="contaduriaValor"
-                      aria-live="polite"
-                      aria-label={`${fila.descripcion}: $${valores[fila.key].toLocaleString()}`}
+                      aria-label={`${fila.descripcion}: ${formatearPesosHablado(valores[fila.key])}`}
                     >
                       ${valores[fila.key].toLocaleString()}
                     </span>
@@ -437,13 +502,14 @@ export default function ContaduriaGame({ onComplete }) {
                     <button
                       className="contaduriaBtnPlus"
                       onClick={() => updateValor(fila.key, 100)}
-                      aria-label={`Aumentar ${fila.descripcion} en $100. Valor actual: $${valores[fila.key].toLocaleString()}`}
+                      aria-label={`Valor de la factura: ${formatearPesosHablado(VALORES_CORRECTOS[fila.key])}. Valor actual del libro de gastos: ${formatearPesosHablado(valores[fila.key])}. Botón más. Presiona Enter para aumentar el valor.${isLastControl ? " Este es el último valor. Presiona Tab para ir al botón Validar y luego presiona Enter para validar la información." : ""}`}
                     >
                       <span aria-hidden="true">+</span>
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

@@ -1,8 +1,10 @@
-import React, { use, useEffect, useRef } from "react";
+import React, { use, useEffect, useRef, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, useGLTF, useAnimations } from "@react-three/drei";
+import Loader from "../../../World/ui/Loader/Loader"; 
 
-const GUIDE_MODELS = {
+
+export const GUIDE_MODELS = {
   1: "/assets/models/guides/girl_guide_animated.glb",
   2: "/assets/models/guides/guy_guide_animated.glb",
   3: "/assets/models/guides/nb_guide_animated.glb",
@@ -85,12 +87,6 @@ function GuideModel({ guideId, showArrows, animationState }) {
 }
 
 export default function Scene3D({ guideId, showArrows, animationState }) {
-  // console.log(
-  //   "Rendering Scene3D with guideId:",
-  //   guideId,
-  //   "and showArrows:",
-  //   showArrows
-  // );
   if (!guideId) return null;
   return (
     <Canvas
@@ -105,11 +101,14 @@ export default function Scene3D({ guideId, showArrows, animationState }) {
         pointerEvents: "none",
       }}
     >
-      <GuideModel
-        guideId={guideId.id}
-        showArrows={showArrows}
-        animationState={animationState}
-      />
+
+      <Suspense fallback={<Loader />}>
+        <GuideModel
+          guideId={guideId.id}
+          showArrows={showArrows}
+          animationState={animationState}
+        />
+      </Suspense>
     </Canvas>
   );
 }

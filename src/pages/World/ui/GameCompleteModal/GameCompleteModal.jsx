@@ -15,16 +15,33 @@ export default function GameCompleteModal({
   onContinue,
   showConfetti = true,
 }) {
-  const audioRef = useRef(null);
-  const hasPlayed = useRef(false);
-  const titleRef = useRef(null);
+  const audioRef     = useRef(null);
+  const hasPlayed    = useRef(false);
+  const titleRef     = useRef(null);
+  const announcerRef = useRef(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [volume, setVolume] = useState(0.6);
 
+  const announce = (msg) => {
+    if (!announcerRef.current) return;
+    announcerRef.current.textContent = "";
+    requestAnimationFrame(() => {
+      if (announcerRef.current) announcerRef.current.textContent = msg;
+    });
+  };
+
+  // NUEVO: antes solo se enfocaba el título (que VoiceOver sí lee al
+  // recibir el foco), pero nunca se decía cómo llegar al botón
+  // Continuar ni qué hacía. Ahora, apenas después de enfocar el
+  // título, se anuncia también la instrucción de navegación.
   useEffect(() => {
     if (titleRef.current) {
       titleRef.current.focus();
     }
+    const id = setTimeout(() => {
+      announce("Presiona Tab hasta llegar al botón Continuar, y luego Enter para seguir.");
+    }, 400);
+    return () => clearTimeout(id);
   }, []);
 
   useEffect(() => {
@@ -99,18 +116,33 @@ export default function GameCompleteModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
+        aria-describedby="modal-instructions"
       >
+        <div
+          ref={announcerRef}
+          className="sr-only"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        />
+
         <div className="game-complete-icon" aria-hidden="true">🏆</div>
 
         <h1
           id="modal-title"
           ref={titleRef}
           className="game-complete-title"
-          tabIndex={0}
+          tabIndex={-1}
           style={{ outline: "none" }}
         >
           {title}
         </h1>
+
+        {/* Instrucción visible solo para lectores de pantalla, en el orden
+            natural de lectura justo después del título. */}
+        <p id="modal-instructions" className="sr-only">
+          Presiona Tab hasta llegar al botón Continuar, y luego Enter para seguir.
+        </p>
 
         <div className="game-complete-divider" aria-hidden="true" />
 
@@ -132,7 +164,11 @@ export default function GameCompleteModal({
           </div>
         )}
 
-        <button className="game-complete-btn" onClick={handleContinue}>
+        <button
+          className="game-complete-btn"
+          onClick={handleContinue}
+          aria-label="Continuar"
+        >
           Continuar
         </button>
       </div>
