@@ -52,11 +52,6 @@ export default function Settings({ open, onClose, soundEnabled, onSoundToggle, o
 
   useEffect(() => {
     if (!open) return;
-
-    // NUEVO: igual que en HelpModal, guardamos qué elemento tenía el
-    // foco antes de abrir esta ventana (el botón "Configuración") para
-    // devolvérselo al cerrar. Sin esto, VoiceOver queda "perdido" en
-    // vez de volver justo a donde estaba la persona.
     const previouslyFocused = document.activeElement;
 
     const focusId    = setTimeout(() => closeBtnRef.current?.focus(), 100);
@@ -76,9 +71,6 @@ export default function Settings({ open, onClose, soundEnabled, onSoundToggle, o
     return () => {
       clearTimeout(focusId);
       clearTimeout(announceId);
-      // NUEVO: devolvemos el foco al cerrar (Escape, clic afuera,
-      // Restaurar, Guardar y Cerrar — cualquier camino que desmonte
-      // este componente).
       previouslyFocused?.focus?.();
     };
   }, [open]);

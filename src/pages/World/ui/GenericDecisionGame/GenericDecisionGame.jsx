@@ -81,11 +81,6 @@ export default function GenericDecisionGame({
 
   const current = cases[index];
 
-  // NUEVO: al entrar al minijuego (o pasar a la siguiente pregunta), se
-  // enfoca la burbuja del personaje y, apenas después, se anuncia todo
-  // el contexto de una sola vez: dónde estás, qué opciones hay, y cómo
-  // seleccionar y avanzar. Sin esto, la persona solo escuchaba la frase
-  // del personaje, sin saber en qué juego está ni qué puede hacer.
   useEffect(() => {
     if (bubbleRef.current) {
       bubbleRef.current.focus();
@@ -102,14 +97,10 @@ export default function GenericDecisionGame({
 
     const id = setTimeout(() => announce(contextMessage), 300);
     return () => clearTimeout(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 
   const handleSelectOption = (value, label) => {
     setSelected(value);
-    // NUEVO: confirma en voz qué se eligió, ya que antes no había
-    // ninguna confirmación hablada de la selección más allá de lo que
-    // OptionCard pueda comunicar visualmente.
     announce(`Elegiste: ${label}. Ve al botón Continuar con tab y presiona Enter para avanzar.`);
   };
 

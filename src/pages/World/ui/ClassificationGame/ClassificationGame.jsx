@@ -34,18 +34,7 @@ export default function ClassificationGame({
     return () => clearTimeout(id);
   }, []);
 
-  // Cuando la clasificación se completa correctamente, todo el panel
-  // (incluido el botón "Continuar" que tenía el foco) se desmonta y se
-  // reemplaza por GameCompleteModal. Sin manejo de foco, el navegador
-  // devuelve el foco a <body> al perderse su elemento activo, y desde
-  // ahí el lector de pantalla puede empezar a recorrer elementos
-  // externos a la aplicación (pestañas del navegador, etc.).
-  //
-  // No usamos setTimeout: React ya garantiza que completionRef.current
-  // apunta al nuevo <div> (ver JSX más abajo) para cuando este efecto
-  // se ejecuta, porque los refs se asignan durante el commit, antes de
-  // que useEffect corra. Por eso basta con enfocar directamente aquí,
-  // sin esperar con un temporizador arbitrario.
+
   useEffect(() => {
     if (!gameFinished) return;
     completionRef.current?.focus();
@@ -154,11 +143,6 @@ export default function ClassificationGame({
         : "Elemento clasificado satisfactoriamente. Utiliza Shift + Tab para volver a las tarjetas y seleccionar otro elemento.",
     );
     setSelectedItem(null);
-    // A propósito NO se mueve el foco aquí y NO se intercepta
-    // Shift+Tab ni Tab con JavaScript. El foco permanece en el espacio
-    // de clasificación donde se presionó Enter; es el usuario quien
-    // decide cuándo navegar, usando el comportamiento estándar del
-    // teclado del navegador.
   };
 
   const moveItemBack = (item) => {

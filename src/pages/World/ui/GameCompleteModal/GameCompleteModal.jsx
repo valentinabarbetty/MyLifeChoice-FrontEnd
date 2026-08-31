@@ -30,10 +30,6 @@ export default function GameCompleteModal({
     });
   };
 
-  // NUEVO: antes solo se enfocaba el título (que VoiceOver sí lee al
-  // recibir el foco), pero nunca se decía cómo llegar al botón
-  // Continuar ni qué hacía. Ahora, apenas después de enfocar el
-  // título, se anuncia también la instrucción de navegación.
   useEffect(() => {
     if (titleRef.current) {
       titleRef.current.focus();

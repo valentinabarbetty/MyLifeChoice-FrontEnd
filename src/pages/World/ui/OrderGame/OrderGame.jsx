@@ -27,11 +27,7 @@ const getItemLabel = (item) =>
 const stripEmojis = (str = "") =>
   str.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "").trim();
 
-// Instrucciones que dnd-kit asocia automáticamente a cada tarjeta mediante
-// aria-describedby (genera su propio elemento oculto internamente). Por
-// defecto ese texto viene en inglés; esta es la causa real del "inglés"
-// reportado, no un texto suelto en algún otro lugar del componente. Se
-// sobrescribe aquí, una sola vez para todo el contexto de arrastre.
+
 const dndScreenReaderInstructions = {
   draggable:
     "Presiona Enter o la barra espaciadora para seleccionar esta tarjeta. " +
@@ -161,24 +157,8 @@ export default function OrderGame({
     }),
   );
 
-  // Bandera para detectar que onDragOver se disparó justo después de
-  // onDragStart (dnd-kit ejecuta una primera detección de colisión apenas
-  // se selecciona la tarjeta, incluso sin que el usuario haya movido nada
-  // todavía). Como ambos anuncios comparten la MISMA región viva de
-  // dnd-kit, si ocurren así de seguido el segundo sobrescribe al primero
-  // antes de que el lector de pantalla llegue a leerlo — por eso solo se
-  // escuchaba la posición. La solución es fusionarlos en un único mensaje
-  // atómico cuando esto pasa, en vez de depender de que se lean como dos
-  // anuncios separados.
   const justSelectedRef = useRef(false);
 
-  // Anuncios propios de dnd-kit para el ciclo de arrastre por teclado
-  // (selección, cambio de posición, confirmación, cancelación). Estos usan
-  // la región viva que dnd-kit administra internamente para su sistema de
-  // accesibilidad — separada de `announcerRef`, que este componente usa
-  // para otros mensajes (título/subtítulo al montar, resultado de
-  // "Validar"). Mantenerlas separadas evita que ambas regiones compitan
-  // por anunciar lo mismo al mismo tiempo.
   const dndAccessibility = {
     screenReaderInstructions: dndScreenReaderInstructions,
     announcements: {
@@ -275,10 +255,7 @@ export default function OrderGame({
       const newIndex = order.findIndex((i) => i.id === over.id);
       const newOrder = arrayMove(order, oldIndex, newIndex);
       setOrder(newOrder);
-      // No se anuncia nada aquí: dndAccessibility.announcements.onDragEnd
-      // (arriba) ya produce el anuncio de confirmación de posición en
-      // español a través de la región viva propia de dnd-kit. Anunciar
-      // también desde acá duplicaría el mensaje (ver punto 10 del pedido).
+
     }
   };
 
